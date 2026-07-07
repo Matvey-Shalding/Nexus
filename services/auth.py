@@ -55,16 +55,16 @@ class AuthService:
             len(create_user_request.name) < NAME_MIN_LENGTH
             or len(create_user_request.name) > NAME_MAX_LENGTH
         ):
-            raise InvalidName("Name length must be between 2 and 20 characters")
+            raise InvalidName()
 
         if (
             len(create_user_request.password) < PASSWORD_MIN_LENGTH
             or len(create_user_request.password) > PASSWORD_MAX_LENGTH
         ):
-            raise InvalidPassword("Password length must be between 6 and 20 characters")
+            raise InvalidPassword()
 
         if not re.search(EMAIL_REGEXP, create_user_request.email):
-            raise InvalidEmail("Email address is invalid")
+            raise InvalidEmail()
 
         user = await UserRepository().get_user_by_email(
             db=db, email=create_user_request.email
