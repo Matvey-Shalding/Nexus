@@ -1,5 +1,4 @@
 from typing import Annotated
-import os
 
 from fastapi import Depends, HTTPException
 from jose import JWTError, jwt
@@ -27,3 +26,6 @@ async def get_current_user(
         )
 
     return user
+
+user_dependency = Annotated[User, Depends(get_current_user)]
+

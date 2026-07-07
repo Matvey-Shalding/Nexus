@@ -1,8 +1,5 @@
 import os
-from typing import Annotated
 
-from fastapi import Depends
-from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from sqlalchemy.orm import DeclarativeBase

@@ -3,7 +3,6 @@ from fastapi import FastAPI
 import asyncio
 
 from app.database import Base, engine
-from app.models.user import User,RefreshToken
 
 from dotenv import load_dotenv
 
