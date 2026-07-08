@@ -1,13 +1,15 @@
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
+from sqlalchemy.pool import NullPool
+
 from app.database import Base
 
 from api.main  import app
 
 TEST_DATABASE_URL="postgresql+asyncpg://postgres:123456@localhost:5432/test_nexus"
 
-engine = create_async_engine(TEST_DATABASE_URL)
+engine = create_async_engine(TEST_DATABASE_URL,poolclass=NullPool)
 
 TestingSessionLocal = async_sessionmaker(bind=engine, autoflush=False, autocommit=False)
 

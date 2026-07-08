@@ -2,12 +2,17 @@ import pytest
 
 from tests.database import create_tables,drop_tables
 
+from app.database import get_db
+
+from tests.database import override_get_db
 
 from httpx import AsyncClient,ASGITransport
 
 from api.main import app
 
-@pytest.fixture(scope="session")
+app.dependency_overrides[get_db] = override_get_db
+
+@pytest.fixture()
 
 async def setup_database():
 
