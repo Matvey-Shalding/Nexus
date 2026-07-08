@@ -17,12 +17,11 @@ from starlette import status
 
 from services.auth import AuthService
 
-from app.config import REFRESH_TOKEN_EXPIRE_SECONDS
+from app.config import REFRESH_TOKEN_EXPIRE_SECONDS, Environment
 
-from app.error import AUTH_ERROR
+from app.error import AUTH_ERROR,NO_LOGIN_ERROR
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
-
 
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
@@ -55,7 +54,7 @@ async def login(login_user_request: LoginUserRequest, db: db_dependency):
         session.get("refresh_token"),
         httponly=True,
         max_age=REFRESH_TOKEN_EXPIRE_SECONDS,
-        secure=True,
+        secure=Environment == Environment.PRODUCTION,
     )
 
     return response
@@ -67,7 +66,7 @@ async def login(login_user_request: LoginUserRequest, db: db_dependency):
 async def refresh(db: db_dependency, refresh_token: str | None = Cookie(None)):
 
     if not refresh_token:
-        raise AUTH_ERROR
+        raise NO_LOGIN_ERROR
 
     service = AuthService()
 
@@ -87,8 +86,7 @@ async def logout(db: db_dependency, refresh_token: str | None = Cookie(None)):
     response.delete_cookie(
         "refresh_token",
         httponly=True,
-        secure=True,
+        secure=Environment == Environment.PRODUCTION,
     )
 
     return response
-

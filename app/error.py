@@ -12,6 +12,11 @@ DUPLICATE_EMAIL_ERROR = HTTPException(
     detail="Such email already exists.",
 )
 
+NO_LOGIN_ERROR = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="User is not logged in.",
+)
+
 
 class ValidationError(HTTPException):
     def __init__(self, detail: str):

@@ -1,3 +1,6 @@
+from enum import Enum
+
+
 REFRESH_TOKEN_EXPIRE_SECONDS = 2592000  # 30 days
 
 REFRESH_TOKEN_EXPIRE_DAYS = 30
@@ -13,3 +16,10 @@ NAME_MIN_LENGTH = 2
 NAME_MAX_LENGTH = 20
 
 EMAIL_REGEXP = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+
+class Environment(Enum):
+    DEVELOPMENT = 'development'
+    PRODUCTION = 'production'
+
+ENVIRONMENT: Environment  = Environment.DEVELOPMENT
+
