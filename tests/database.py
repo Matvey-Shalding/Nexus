@@ -5,7 +5,7 @@ from app.database import Base
 
 from api.main  import app
 
-TEST_DATABASE_URL = "mysql+asyncmy://root:1--QwertY--1@localhost:3306/test_nexus"
+TEST_DATABASE_URL="postgresql+asyncpg://postgres:123456@localhost:5432/test_nexus"
 
 engine = create_async_engine(TEST_DATABASE_URL)
 

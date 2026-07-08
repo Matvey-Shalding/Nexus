@@ -22,9 +22,7 @@ async def create_tables():
 app.include_router(auth_router)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
-
+if __name__ == "__main__":
+    asyncio.run(create_tables())
 
