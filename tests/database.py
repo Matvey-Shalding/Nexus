@@ -11,7 +11,7 @@ TEST_DATABASE_URL="postgresql+asyncpg://postgres:123456@localhost:5432/test_nexu
 
 engine = create_async_engine(TEST_DATABASE_URL,poolclass=NullPool)
 
-TestingSessionLocal = async_sessionmaker(bind=engine, autoflush=False, autocommit=False)
+TestingSessionLocal = async_sessionmaker(bind=engine, autoflush=False, autocommit=False,expire_on_commit=False)
 
 async def override_get_db():
     try:
