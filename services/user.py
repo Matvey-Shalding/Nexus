@@ -16,6 +16,12 @@ from app.security import oauth2_bearer
 from repositories.user import UserRepository
 from app.schemas.user import UpdateUserRequest
 
+from app.config import NAME_MAX_LENGTH,NAME_MIN_LENGTH,EMAIL_REGEXP
+
+import re
+
+from app.error import InvalidName,InvalidEmail
+
 
 class UserService:
 
@@ -24,12 +30,23 @@ class UserService:
         
         data = request.model_dump(exclude_unset=True)
 
+        if "name" in data:
+            name = data["name"]
+
+            if len(name) < NAME_MIN_LENGTH or len(name) > NAME_MAX_LENGTH:
+                raise InvalidName()
+
         # validate such user exists
 
         if "email" in data:
 
+            email = data["email"]
+
+            if not re.search(EMAIL_REGEXP, email):
+                raise InvalidEmail()
+
             user = await UserRepository().get_user_by_email(
-                db=db, email=data["email"]
+                db=db, email=email
             )
 
             if user and user.id != current_user.id:
