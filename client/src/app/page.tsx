@@ -1,6 +1,3 @@
-
 export default function Home() {
-  return (
-    <span className='text-3xl'>hello world</span>
-  );
+	return <div className="h-screen w-screen grid place-content-center"></div>;
 }
