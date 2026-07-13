@@ -31,6 +31,12 @@ axiosInstance.interceptors.response.use(
 				return Promise.reject(error);
 			}
 
+			// ignore auth routes
+
+			if (error.config.url === '/auth/register' || error.config.url === '/auth/login') {
+				return Promise.reject(error);
+			}
+
 			// ignore already retried requests
 			if (error.config._retry) {
 				return Promise.reject(error);

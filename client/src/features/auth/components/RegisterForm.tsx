@@ -11,10 +11,11 @@ import { Loader, Lock, Mail, User } from 'lucide-react';
 import { Routes } from '@/shared/config/routes';
 import { InputGroupAddon } from '@/shared/ui/input-group';
 import { AxiosError } from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { toast } from 'sonner';
-import { FormInput, registerUser, TRegisterSchema, useAuthStore, useRegisterForm, VisibilityToggle } from '..';
+import { FormInput, registerUser, TRegisterSchema, useRegisterForm, VisibilityToggle } from '..';
 
 interface Props {
 	className?: string;
@@ -34,18 +35,15 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 		isValid,
 		setError,
 		errors,
-		setIsSubmitting
+		setIsSubmitting,
 	} = useRegisterForm();
-
-	const setAccessToken = useAuthStore(state => state.setAccessToken);
 
 	const router = useRouter();
 
 	const onSubmit = async (data: TRegisterSchema) => {
-
 		setIsSubmitting(true);
 
-		await toast.promise(registerUser(data, setAccessToken), {
+		await toast.promise(registerUser(data), {
 			loading: 'Creating your account...',
 			success: () => {
 				router.push(Routes.TASKS);
@@ -61,7 +59,7 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 			},
 			finally: () => {
 				setIsSubmitting(false);
-			}
+			},
 		});
 	};
 
@@ -161,7 +159,7 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 									</Button>
 								</div>
 								<FieldDescription className="text-center">
-									Already have an account? <a href="#">Sign in</a>
+									Already have an account? <Link href={Routes.LOGIN}>Sign in</Link>
 								</FieldDescription>
 							</Field>
 						</FieldGroup>

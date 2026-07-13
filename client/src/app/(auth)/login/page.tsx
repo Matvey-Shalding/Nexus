@@ -1,7 +1,9 @@
+import { LoginForm } from '@/features/auth';
+
 export default function Login() {
 	return (
-		<div>
-			<h1>Login</h1>
+		<div className="w-screen h-screen grid place-content-center">
+			<LoginForm />
 		</div>
 	);
 }

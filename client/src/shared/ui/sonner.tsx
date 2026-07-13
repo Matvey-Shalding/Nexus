@@ -9,6 +9,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
 	return (
 		<Sonner
+			duration={3000}
 			position="top-center"
 			closeButton={true}
 			theme={theme as ToasterProps['theme']}
@@ -29,7 +30,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 				} as React.CSSProperties
 			}
 			toastOptions={{
-				duration: 5000,
+				duration: 3000,
 				classNames: {
 					toast: 'cn-toast',
 				},
