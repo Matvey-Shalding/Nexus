@@ -3,15 +3,26 @@
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Field, FieldDescription, FieldGroup } from '@/shared/ui/field';
+import { Field, FieldDescription, FieldError, FieldGroup } from '@/shared/ui/field';
 import { Logo } from '@/shared/ui/logo';
 
 import { Loader, Lock, Mail, User } from 'lucide-react';
 
+import { Routes } from '@/shared/config/routes';
 import { InputGroupAddon } from '@/shared/ui/input-group';
-import { FormInput, TRegisterSchema, useRegisterForm, VisibilityToggle } from '..';
+import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
+import { memo } from 'react';
+import { toast } from 'sonner';
+import { FormInput, registerUser, TRegisterSchema, useAuthStore, useRegisterForm, VisibilityToggle } from '..';
 
-export function RegisterForm({ className }: { className?: string }) {
+interface Props {
+	className?: string;
+}
+
+//TODO: test register
+
+export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: string }) => {
 	const {
 		handleSubmit,
 		control,
@@ -21,11 +32,37 @@ export function RegisterForm({ className }: { className?: string }) {
 		setIsConfirmPasswordVisible,
 		isSubmitting,
 		isValid,
+		setError,
+		errors,
+		setIsSubmitting
 	} = useRegisterForm();
 
+	const setAccessToken = useAuthStore(state => state.setAccessToken);
+
+	const router = useRouter();
+
 	const onSubmit = async (data: TRegisterSchema) => {
-		await new Promise(resolve => setTimeout(resolve, 2000));
-		console.log(data);
+
+		setIsSubmitting(true);
+
+		await toast.promise(registerUser(data, setAccessToken), {
+			loading: 'Creating your account...',
+			success: () => {
+				router.push(Routes.TASKS);
+				return 'Welcome to Nexus';
+			},
+			error: (error: AxiosError) => {
+				if (error.response?.status === 409) {
+					setError('email', { message: 'User already exists' });
+					return 'User already exists';
+				} else {
+					return 'Something went wrong. Please try again.';
+				}
+			},
+			finally: () => {
+				setIsSubmitting(false);
+			}
+		});
 	};
 
 	return (
@@ -106,20 +143,23 @@ export function RegisterForm({ className }: { className?: string }) {
 								</Field>
 							</Field>
 							<Field>
-								<Button
-									disabled={!isValid || isSubmitting}
-									size="lg"
-									type="submit"
-								>
-									{isSubmitting ? (
-										<span className="flex items-center gap-x-1.5">
-											<Loader className="animate-spin size-4" />
-											Loading...
-										</span>
-									) : (
-										<span>Launch workspace</span>
-									)}
-								</Button>
+								<div className="flex flex-col gap-y-1">
+									<FieldError errors={[errors.root]} />
+									<Button
+										disabled={!isValid || isSubmitting}
+										size="lg"
+										type="submit"
+									>
+										{isSubmitting ? (
+											<span className="flex items-center gap-x-1.5">
+												<Loader className="animate-spin size-4" />
+												Loading...
+											</span>
+										) : (
+											<span>Launch workspace</span>
+										)}
+									</Button>
+								</div>
 								<FieldDescription className="text-center">
 									Already have an account? <a href="#">Sign in</a>
 								</FieldDescription>
@@ -133,4 +173,4 @@ export function RegisterForm({ className }: { className?: string }) {
 			</FieldDescription>
 		</div>
 	);
-}
+});

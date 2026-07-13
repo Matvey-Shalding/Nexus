@@ -1,8 +1,9 @@
 import { cn } from '@/lib/utils';
+import { appConfig } from '@/shared/config/app';
+import { Toaster } from '@/shared/ui/sonner';
+import { Metadata } from 'next';
 import { DM_Sans, Geist, Geist_Mono, Noto_Sans } from 'next/font/google';
 import './globals.css';
-import { appConfig } from '@/shared/config/app'
-import { Metadata } from 'next'
 
 const notoSansHeading = Noto_Sans({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -18,7 +19,7 @@ const geistMono = Geist_Mono({
 	subsets: ['latin'],
 });
 
-export const metadata: Metadata = appConfig
+export const metadata: Metadata = appConfig;
 
 export default function RootLayout({
 	children,
@@ -39,7 +40,10 @@ export default function RootLayout({
 				notoSansHeading.variable,
 			)}
 		>
-			<body className="min-h-full flex flex-col">{children}</body>
+			<body className="min-h-full flex flex-col">
+				{children}
+				<Toaster />
+			</body>
 		</html>
 	);
 }

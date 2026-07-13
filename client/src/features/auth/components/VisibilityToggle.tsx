@@ -10,7 +10,7 @@ interface Props {
 
 export const VisibilityToggle: React.FC<Props> = ({isVisible,setIsVisible}) => {
 	return (
-		<button onClick={() => setIsVisible(!isVisible)}>
+		<button type='button' onClick={() => setIsVisible(!isVisible)}>
 			{isVisible ? (
 				<Eye className="h-4.5 w-4.5" />
 			) : (

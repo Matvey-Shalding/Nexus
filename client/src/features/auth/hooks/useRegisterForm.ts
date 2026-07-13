@@ -7,11 +7,14 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { TRegisterSchema, registerSchema } from '..';
 
+// TODO: refresh logic + login
+
 export const useRegisterForm = () => {
 	const {
 		handleSubmit,
 		control,
-		formState: { isValid, isSubmitting },
+		formState: { isValid, errors },
+		setError,
 	} = useForm<TRegisterSchema>({
 		resolver: zodResolver(registerSchema),
 		mode: 'onChange',
@@ -21,6 +24,8 @@ export const useRegisterForm = () => {
 
 	const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState<boolean>(false);
 
+	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
 	return {
 		handleSubmit,
 		control,
@@ -29,6 +34,9 @@ export const useRegisterForm = () => {
 		isConfirmPasswordVisible,
 		setIsConfirmPasswordVisible,
 		isValid,
+		setError,
+		errors,
+		setIsSubmitting,
 		isSubmitting,
 	};
 };
