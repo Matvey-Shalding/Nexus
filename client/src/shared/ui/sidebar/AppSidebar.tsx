@@ -6,7 +6,7 @@ import * as React from 'react';
 import { AudioWaveform, Command, GalleryVerticalEnd } from 'lucide-react';
 
 import { SidebarMenu, SidebarMenuItem, useSidebar } from '@/shared/ui/sidebar';
-import { Logo } from '../logo'
+import { Logo } from '../logo';
 
 const data = {
 	teams: [

@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { useForm } from 'react-hook-form'
-import { loginSchema, TLoginSchema } from '..'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useForm } from 'react-hook-form';
+import { loginSchema, TLoginSchema } from '..';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 
 export const useLoginForm = () => {
-		const {
+	const {
 		handleSubmit,
 		control,
 		formState: { isValid, errors },
@@ -29,7 +29,6 @@ export const useLoginForm = () => {
 		isValid,
 		setError,
 		errors,
-		setIsSubmitting
-	}
-
-}
+		setIsSubmitting,
+	};
+};

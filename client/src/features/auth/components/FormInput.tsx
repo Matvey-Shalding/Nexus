@@ -16,13 +16,7 @@ interface Props<T extends FieldValues> extends ComponentProps<typeof Input> {
 	children?: ReactNode; // adornment
 }
 
-export function FormInput<T extends FieldValues>({
-	fieldName,
-	control,
-	label,
-	children,
-	...inputProps
-}: Props<T>) {
+export function FormInput<T extends FieldValues>({ fieldName, control, label, children, ...inputProps }: Props<T>) {
 	{
 		return (
 			<Controller

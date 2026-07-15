@@ -10,7 +10,7 @@ export { useRegisterForm } from '@/features/auth/hooks/useRegisterForm';
 export { useLoginForm } from '@/features/auth/hooks/useLoginForm';
 
 export type { TRegisterSchema } from '@/features/auth/schemas/registerSchema';
-export type {TLoginSchema} from '@/features/auth/schemas/loginSchema'
+export type { TLoginSchema } from '@/features/auth/schemas/loginSchema';
 export type { ILoginRequest, ILoginResponse } from '@/features/auth/types/Login';
 export type { IRefreshResponse } from '@/features/auth/types/Refresh';
 export type { IRegisterRequest } from '@/features/auth/types/Register';

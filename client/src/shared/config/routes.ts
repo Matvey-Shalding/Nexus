@@ -4,8 +4,7 @@ export const Routes = {
 
 	DEFAULT: '/tasks',
 
-	TASKS: '/tasks'
-} as const
+	TASKS: '/tasks',
+} as const;
 
 export const PublicRoutes = [Routes.REGISTER, Routes.LOGIN];
-

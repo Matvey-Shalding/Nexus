@@ -16,7 +16,7 @@ import { memo } from 'react';
 import { toast } from 'sonner';
 import { FormInput, TLoginSchema, useLoginForm, VisibilityToggle } from '..';
 import { loginUser } from '../services/loginUser';
-import { Logo } from '@/shared/ui/logo'
+import { Logo } from '@/shared/ui/logo';
 
 interface Props {
 	className?: string;
@@ -65,7 +65,7 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 		<div className={cn('flex flex-col gap-6 w-120', className)}>
 			<Card className="card_gradient">
 				<div className="flex flex-col gap-2">
-					<Logo className='self-center'/>
+					<Logo className="self-center" />
 					<CardHeader className="text-center">
 						<CardTitle className="text-xl">Welcome back</CardTitle>
 						<CardDescription>Log in to access your command center.</CardDescription>
