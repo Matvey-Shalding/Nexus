@@ -48,6 +48,7 @@
 	--radius-4xl: calc(var(--radius) * 2.6);
 	--color-app-gradient: var(--app-gradient);
 	--color-card-gradient: var(--card-gradient);
+	--color-sidebar-gradient: var(--sidebar-gradient);
 }
 
 :root {
@@ -95,6 +96,8 @@
 		radial-gradient(at top left, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
 		radial-gradient(at bottom right, rgba(139, 92, 246, 0.05) 0px, transparent 45%),
 		radial-gradient(at bottom left, rgba(239, 68, 68, 0.03) 0px, transparent 35%);
+
+	--color-sidebar-gradient: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
 }
 
 .dark {
@@ -141,6 +144,8 @@
 		radial-gradient(at top left, rgba(19, 43, 102, 0.45) 0px, transparent 50%),
 		radial-gradient(at bottom right, rgba(80, 38, 168, 0.4) 0px, transparent 45%),
 		radial-gradient(at bottom left, rgba(56, 18, 26, 0.2) 0px, transparent 35%);
+
+	--color-sidebar-gradient: linear-gradient(180deg, #030306 0%, #110d24 100%);
 }
 
 @layer base {
@@ -157,5 +162,37 @@
 
 	.card_gradient {
 		background-image: var(--color-card-gradient);
+	}
+
+	.sidebar_gradient {
+		background-image: var(--color-sidebar-gradient);
+	}
+
+	.logo-button {
+		position: relative;
+		justify-content: center;
+	}
+
+	.logo-text {
+		position: relative;
+		font-family: var(--font-heading);
+		font-size: 1.75rem;
+		font-weight: 700;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+	}
+
+	.logo-text::after {
+		content: '';
+
+		width: 32px;
+		height: 32px;
+
+		position: absolute;
+		left: -2.3rem;
+		top: 50%;
+		transform: translateY(-50%);
+
+		background: url('/assets/icon.svg') center/contain no-repeat;
 	}
 }

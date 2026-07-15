@@ -1,7 +1,3 @@
 export default function Page() {
-	return (
-		<div>
-			<h1>Tasks</h1>
-		</div>
-	);
+	return <div className='h-full'>Tasks</div>;
 }

@@ -4,19 +4,19 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Field, FieldDescription, FieldError, FieldGroup } from '@/shared/ui/field';
-import { Logo } from '@/shared/ui/logo';
 
 import { Loader, Lock, Mail } from 'lucide-react';
 
 import { Routes } from '@/shared/config/routes';
 import { InputGroupAddon } from '@/shared/ui/input-group';
 import { AxiosError } from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { toast } from 'sonner';
-import Link from 'next/link';
 import { FormInput, TLoginSchema, useLoginForm, VisibilityToggle } from '..';
 import { loginUser } from '../services/loginUser';
+import { Logo } from '@/shared/ui/logo'
 
 interface Props {
 	className?: string;
@@ -64,8 +64,8 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 	return (
 		<div className={cn('flex flex-col gap-6 w-120', className)}>
 			<Card className="card_gradient">
-				<div className="flex flex-col gap-y-2.5">
-					<Logo />
+				<div className="flex flex-col gap-2">
+					<Logo className='self-center'/>
 					<CardHeader className="text-center">
 						<CardTitle className="text-xl">Welcome back</CardTitle>
 						<CardDescription>Log in to access your command center.</CardDescription>

@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Field, FieldDescription, FieldError, FieldGroup } from '@/shared/ui/field';
-import { Logo } from '@/shared/ui/logo';
 
 import { Loader, Lock, Mail, User } from 'lucide-react';
 
@@ -16,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { toast } from 'sonner';
 import { FormInput, registerUser, TRegisterSchema, useRegisterForm, VisibilityToggle } from '..';
+import { Logo } from '@/shared/ui/logo'
 
 interface Props {
 	className?: string;
@@ -66,8 +66,8 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 	return (
 		<div className={cn('flex flex-col gap-6 w-120', className)}>
 			<Card className="card_gradient">
-				<div className="flex flex-col gap-y-2.5">
-					<Logo />
+				<div className="flex flex-col gap-3">
+					<Logo className='self-center'/>
 					<CardHeader className="text-center">
 						<CardTitle className="text-xl">Build your command center</CardTitle>
 						<CardDescription>Everything you need to manage your day, in one place.</CardDescription>
