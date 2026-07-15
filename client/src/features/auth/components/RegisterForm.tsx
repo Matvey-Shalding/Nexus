@@ -46,7 +46,7 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 		await toast.promise(registerUser(data), {
 			loading: 'Creating your account...',
 			success: () => {
-				router.push(Routes.TASKS);
+				router.push(Routes.DEFAULT);
 				return 'Welcome to Nexus';
 			},
 			error: (error: AxiosError) => {
@@ -64,7 +64,7 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 	};
 
 	return (
-		<div className={cn('flex flex-col gap-6 w-120', className)}>
+		<div className={cn('flex w-120 flex-col gap-6', className)}>
 			<Card className="card_gradient">
 				<div className="flex flex-col gap-3">
 					<Logo className="self-center" />
@@ -150,7 +150,7 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 									>
 										{isSubmitting ? (
 											<span className="flex items-center gap-x-1.5">
-												<Loader className="animate-spin size-4" />
+												<Loader className="size-4 animate-spin" />
 												Loading...
 											</span>
 										) : (

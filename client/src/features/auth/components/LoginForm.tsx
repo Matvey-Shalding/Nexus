@@ -9,6 +9,7 @@ import { Loader, Lock, Mail } from 'lucide-react';
 
 import { Routes } from '@/shared/config/routes';
 import { InputGroupAddon } from '@/shared/ui/input-group';
+import { Logo } from '@/shared/ui/logo';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -16,7 +17,6 @@ import { memo } from 'react';
 import { toast } from 'sonner';
 import { FormInput, TLoginSchema, useLoginForm, VisibilityToggle } from '..';
 import { loginUser } from '../services/loginUser';
-import { Logo } from '@/shared/ui/logo';
 
 interface Props {
 	className?: string;
@@ -44,7 +44,7 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 		await toast.promise(loginUser(data), {
 			loading: 'Signing you in...',
 			success: () => {
-				router.push(Routes.TASKS);
+				router.push(Routes.DEFAULT);
 				return 'Welcome back to Nexus';
 			},
 			error: (error: AxiosError) => {
@@ -62,7 +62,7 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 	};
 
 	return (
-		<div className={cn('flex flex-col gap-6 w-120', className)}>
+		<div className={cn('flex w-120 flex-col gap-6', className)}>
 			<Card className="card_gradient">
 				<div className="flex flex-col gap-2">
 					<Logo className="self-center" />
@@ -116,7 +116,7 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 									>
 										{isSubmitting ? (
 											<span className="flex items-center gap-x-1.5">
-												<Loader className="animate-spin size-4" />
+												<Loader className="size-4 animate-spin" />
 												Logging in...
 											</span>
 										) : (

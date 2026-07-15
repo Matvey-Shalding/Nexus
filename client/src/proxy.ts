@@ -8,13 +8,13 @@ export function proxy(request: NextRequest) {
 
 	const isPublicRoute = PublicRoutes.includes(pathname as (typeof PublicRoutes)[number]);
 
-	if (isPublicRoute && refreshToken) {
-		return NextResponse.redirect(new URL(Routes.DEFAULT, request.url));
-	}
+	// if (isPublicRoute && refreshToken) {
+	// 	return NextResponse.redirect(new URL(Routes.DEFAULT, request.url));
+	// }
 
-	if (!isPublicRoute && !refreshToken) {
-		return NextResponse.redirect(new URL(Routes.LOGIN, request.url));
-	}
+	// if (!isPublicRoute && !refreshToken) {
+	// 	return NextResponse.redirect(new URL(Routes.LOGIN, request.url));
+	// }
 
 	return NextResponse.next();
 }

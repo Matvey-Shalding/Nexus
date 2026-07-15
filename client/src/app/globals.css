@@ -49,6 +49,7 @@
 	--color-app-gradient: var(--app-gradient);
 	--color-card-gradient: var(--card-gradient);
 	--color-sidebar-gradient: var(--sidebar-gradient);
+	--card-shadow: var(--shadow-card);
 }
 
 :root {
@@ -75,7 +76,7 @@
 	--chart-3: oklch(0.511 0.262 276.966);
 	--chart-4: oklch(0.457 0.24 277.023);
 	--chart-5: oklch(0.398 0.195 277.366);
-	--radius: 0.3rem;
+	--radius: 0.5rem;
 	--sidebar: oklch(0.985 0 0);
 	--sidebar-foreground: oklch(0.141 0.005 285.823);
 	--sidebar-primary: oklch(0.511 0.262 276.966);
@@ -85,19 +86,21 @@
 	--sidebar-border: oklch(0.92 0.004 286.32);
 	--sidebar-ring: oklch(0.705 0.015 286.067);
 
-	/* gradients */
-
+	/* Light Theme Gradients */
 	--color-app-gradient:
-		radial-gradient(at top left, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-		radial-gradient(at bottom right, rgba(245, 158, 11, 0.06) 0px, transparent 60%),
-		radial-gradient(at bottom left, rgba(239, 68, 68, 0.05) 0px, transparent 40%);
+		radial-gradient(at 0% 0%, rgba(67, 57, 242, 0.05) 0px, transparent 65%), #f8fafc; /* Ultra-light professional slate background */
 
 	--color-card-gradient:
-		radial-gradient(at top left, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
-		radial-gradient(at bottom right, rgba(139, 92, 246, 0.05) 0px, transparent 45%),
-		radial-gradient(at bottom left, rgba(239, 68, 68, 0.03) 0px, transparent 35%);
+		radial-gradient(at top left, rgba(67, 57, 242, 0.03) 0px, transparent 45%),
+		radial-gradient(at bottom right, rgba(31, 74, 184, 0.02) 0px, transparent 45%), rgba(255, 255, 255, 0.8); /* Elegant clean semi-transparency */
 
-	--color-sidebar-gradient: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+	--color-sidebar-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(241, 245, 249, 0.6) 100%);
+
+	/* Light Theme Card Shadows (Elevated Physical Style) */
+	--card-shadow:
+		0 1px 3px rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.04), 0 20px 25px -5px rgba(67, 57, 242, 0.02);
+
+	--sidebar-border-color: rgba(0, 0, 0, 0.06);
 }
 
 .dark {
@@ -124,28 +127,25 @@
 	--chart-3: oklch(0.511 0.262 276.966);
 	--chart-4: oklch(0.457 0.24 277.023);
 	--chart-5: oklch(0.398 0.195 277.366);
-	--sidebar: oklch(0.21 0.006 285.885);
+	--sidebar: oklch(0.13 0.018 285.8 / 40%);
 	--sidebar-foreground: oklch(0.985 0 0);
 	--sidebar-primary: oklch(0.585 0.233 277.117);
 	--sidebar-primary-foreground: oklch(0.962 0.018 272.314);
 	--sidebar-accent: oklch(0.274 0.006 286.033);
 	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-border: oklch(100% 0.00011 271.152);
 	--sidebar-ring: oklch(0.552 0.016 285.938);
 
-	/* gradients */
-
-	--color-app-gradient:
-		radial-gradient(at top left, rgba(80, 38, 168, 0.55) 0px, transparent 50%),
-		radial-gradient(at bottom right, rgba(19, 43, 102, 0.65) 0px, transparent 60%),
-		radial-gradient(at bottom left, rgba(56, 18, 26, 0.3) 0px, transparent 40%);
+	/* Dark Theme Gradients */
+	--color-app-gradient: radial-gradient(at 0% 0%, rgba(67, 57, 242, 0.15) 0px, transparent 65%), #030306;
 
 	--color-card-gradient:
-		radial-gradient(at top left, rgba(19, 43, 102, 0.45) 0px, transparent 50%),
-		radial-gradient(at bottom right, rgba(80, 38, 168, 0.4) 0px, transparent 45%),
-		radial-gradient(at bottom left, rgba(56, 18, 26, 0.2) 0px, transparent 35%);
+		radial-gradient(at top left, rgba(67, 57, 242, 0.12) 0px, transparent 45%),
+		radial-gradient(at bottom right, rgba(31, 74, 184, 0.08) 0px, transparent 45%), rgba(8, 8, 13, 0.85);
 
-	--color-sidebar-gradient: linear-gradient(180deg, #030306 0%, #110d24 100%);
+	--color-sidebar-gradient: linear-gradient(180deg, #090a15 0%, #06060e 40%, #120e28 100%);
+
+	--card-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.8), 0 20px 40px -10px rgba(45, 35, 110, 0.4);
 }
 
 @layer base {
@@ -153,46 +153,24 @@
 		@apply border-border outline-ring/50;
 	}
 	body {
-		background: var(--background);
-		background-image: var(--color-app-gradient);
+		background: var(--color-app-gradient);
 	}
 	html {
 		@apply font-sans;
 	}
 
 	.card_gradient {
-		background-image: var(--color-card-gradient);
+		background-color: transparent !important;
+		background: var(--color-card-gradient);
+		box-shadow: var(--card-shadow);
 	}
 
-	.sidebar_gradient {
-		background-image: var(--color-sidebar-gradient);
+	*:disabled {
+		cursor: not-allowed;
 	}
 
-	.logo-button {
-		position: relative;
-		justify-content: center;
-	}
-
-	.logo-text {
-		position: relative;
-		font-family: var(--font-heading);
-		font-size: 1.75rem;
-		font-weight: 700;
-		letter-spacing: 0.22em;
-		text-transform: uppercase;
-	}
-
-	.logo-text::after {
-		content: '';
-
-		width: 32px;
-		height: 32px;
-
-		position: absolute;
-		left: -2.3rem;
-		top: 50%;
-		transform: translateY(-50%);
-
-		background: url('/assets/icon.svg') center/contain no-repeat;
+	button:not(:disabled),
+	[role='button']:not(:disabled) {
+		cursor: pointer;
 	}
 }

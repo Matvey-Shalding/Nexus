@@ -1,3 +1,3 @@
 export default function Home() {
-	return <div className="h-screen w-screen grid place-content-center"></div>;
+	return <div className="grid h-screen w-screen place-content-center"></div>;
 }
