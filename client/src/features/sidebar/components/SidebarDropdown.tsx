@@ -19,7 +19,7 @@ interface Props {
 	setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const SidebarDropdown: React.FC<Props> = ({ isMobile,setIsDialogOpen }) => {
+export const SidebarDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen }) => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="w-full">

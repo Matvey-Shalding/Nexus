@@ -19,7 +19,7 @@ interface Props {
 	setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const LogoutDialog: React.FC<Props> = ({isDialogOpen,setIsDialogOpen}) => {
+export const LogoutDialog: React.FC<Props> = ({ isDialogOpen, setIsDialogOpen }) => {
 	const { isLoggingOut, handleLogout } = useLogout();
 
 	return (

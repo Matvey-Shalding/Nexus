@@ -1,4 +1,4 @@
-import { CalendarDays, Clock3, KanbanSquare, LayoutDashboard, NotebookPen, Settings, UserRound } from 'lucide-react';
+import { CalendarDays, Timer, KanbanSquare, LayoutDashboard, NotebookPen, Settings, UserRound } from 'lucide-react';
 
 import { Routes } from '../../../shared/config/routes';
 
@@ -21,7 +21,7 @@ export const navigation = [
 	{
 		title: 'Pomodoro',
 		href: Routes.POMODORO,
-		icon: Clock3,
+		icon: Timer,
 	},
 	{
 		title: 'Notes',

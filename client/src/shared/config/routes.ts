@@ -11,9 +11,7 @@ export const Routes = {
 	PROFILE: '/profile',
 	SETTINGS: '/settings',
 
-	DEFAULT: '/dashboard'
-
+	DEFAULT: '/dashboard',
 } as const;
-
 
 export const PublicRoutes = [Routes.REGISTER, Routes.LOGIN];

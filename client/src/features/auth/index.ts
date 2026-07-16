@@ -14,7 +14,7 @@ export type { TLoginSchema } from '@/features/auth/schemas/loginSchema';
 export type { ILoginRequest, ILoginResponse } from '@/features/auth/types/Login';
 export type { IRefreshResponse } from '@/features/auth/types/Refresh';
 export type { IRegisterRequest } from '@/features/auth/types/Register';
-export type {IUser} from "@/features/auth/types/User";
+export type { IUser } from '@/features/auth/types/User';
 
 export { login } from '@/features/auth/api/login';
 export { refresh } from '@/features/auth/api/refresh';
