@@ -448,128 +448,132 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
 
 const sidebarMenuButtonVariants = cva(
 	`
-  peer/menu-button
-  group/menu-button
-  relative
+	peer/menu-button
+	group/menu-button
+	relative
 
-  flex
-  w-full
-  items-center
-  gap-2.5
+	flex
+	w-full
+	items-center
+	gap-2.5
 
-  overflow-hidden
-  rounded-xl
+	overflow-hidden
+	rounded-xl
 
-  p-2
+	p-2
 
-  text-left
-  text-sm
+	text-left
+	text-sm
 
-  outline-hidden
-  ring-sidebar-ring
+	outline-hidden
+	ring-sidebar-ring
 
-  transition-colors
-  duration-200
-  ease-out
+	transition-[background-color,color,border-color]
+	duration-200
+	ease-out
 
-  group-has-data-[sidebar=menu-action]/menu-item:pr-8
+	group-has-data-[sidebar=menu-action]/menu-item:pr-8
 
-  group-data-[collapsible=icon]:size-8!
-  group-data-[collapsible=icon]:p-2
-  group-data-[collapsible=icon]:pl-2.5
-  group-data-[collapsible=icon]:[&>svg]:size-6
+	group-data-[collapsible=icon]:size-8!
+	group-data-[collapsible=icon]:p-2
+	group-data-[collapsible=icon]:pl-2.5
+	group-data-[collapsible=icon]:[&>svg]:size-6
 
-  focus-visible:ring-2
+	focus-visible:ring-2
 
-  disabled:pointer-events-none
-  disabled:opacity-50
+	disabled:pointer-events-none
+	disabled:opacity-50
 
-  aria-disabled:pointer-events-none
-  aria-disabled:opacity-50
+	aria-disabled:pointer-events-none
+	aria-disabled:opacity-50
 
-  before:absolute
-  before:left-0
-  before:top-1/2
-  before:h-5
-  before:w-[3px]
-  before:-translate-y-1/2
-  before:rounded-r-full
-  before:bg-primary
-  before:scale-y-0
-  before:transition-transform
-  before:duration-200
-  before:ease-out
+	before:absolute
+	before:left-0
+	before:top-1/2
+	before:h-5
+	before:w-[3px]
+	before:-translate-y-1/2
+	before:rounded-r-full
+	before:bg-primary
+	before:scale-y-0
+	before:transition-transform
+	before:duration-200
 
-  [&_svg]:shrink-0
-  [&_svg]:text-muted-foreground
-  [&_svg]:transition-all
-  [&_svg]:duration-200
-  [&_svg]:ease-out
-  [&_svg]:will-change-transform
+	[&_svg]:shrink-0
+	[&_svg]:text-muted-foreground
+	[&_svg]:transition-all
+	[&_svg]:duration-200
 
-  [&>span:last-child]:truncate
-  [&>span:last-child]:text-muted-foreground
-  [&>span:last-child]:transition-colors
-  [&>span:last-child]:duration-200
+	[&>span:last-child]:truncate
+	[&>span:last-child]:text-muted-foreground
+	[&>span:last-child]:transition-colors
+	[&>span:last-child]:duration-200
 
-  hover:bg-sidebar-accent/70
+	/* ---------- Fancy Hover ---------- */
 
-  data-[hover=none]:hover:bg-transparent
-  data-[hover=none]:hover:text-inherit
+	data-[hover=fancy]:hover:bg-primary/10
 
-  data-[hover=none]:before:hidden
+	data-[hover=fancy]:hover:before:scale-y-100
 
-  data-[hover=none]:hover:[&_svg]:translate-x-0
-  data-[hover=none]:hover:[&_svg]:text-muted-foreground
+	data-[hover=fancy]:hover:[&_svg]:translate-x-[2px]
+	data-[hover=fancy]:hover:[&_svg]:text-primary
 
-  data-[hover=none]:hover:[&>span]:text-muted-foreground
+	data-[hover=fancy]:hover:[&>span]:text-sidebar-foreground
 
-  data-[hover=fancy]:hover:before:scale-y-100
-  data-[hover=fancy]:hover:[&_svg]:translate-x-[2px]
-  data-[hover=fancy]:hover:[&_svg]:text-primary
-  data-[hover=fancy]:hover:[&>span]:text-sidebar-foreground
+	/* ---------- Hover disabled ---------- */
 
-  active:bg-sidebar-accent
+	data-[hover=none]:hover:bg-transparent
 
-  data-open:hover:bg-sidebar-accent
+	data-[hover=none]:hover:before:scale-y-0
 
-  data-active:bg-sidebar-accent
-  data-active:font-medium
-  data-active:text-sidebar-accent-foreground
+	data-[hover=none]:hover:[&_svg]:translate-x-0
+	data-[hover=none]:hover:[&_svg]:text-muted-foreground
 
-  data-active:before:scale-y-100
+	data-[hover=none]:hover:[&>span]:text-muted-foreground
 
-  data-active:[&_svg]:translate-x-[2px]
-  data-active:[&_svg]:text-primary
+	/* ---------- Active ---------- */
 
-  data-active:[&>span]:text-sidebar-accent-foreground
-  `,
+	data-active:bg-primary
+	data-active:text-primary-foreground
+	data-active:shadow-sm
+
+	data-active:before:bg-primary-foreground/90
+	data-active:before:scale-y-100
+	data-active:before:h-6
+
+	data-active:[&_svg]:text-primary-foreground
+	data-active:[&_svg]:translate-x-0
+
+	data-active:[&>span]:text-primary-foreground!
+	data-active:[&>span]:font-semibold
+
+	/* keep active stable */
+
+	data-active:hover:bg-primary!
+	data-active:hover:[&_svg]:translate-x-0!
+	data-active:hover:[&_svg]:text-primary-foreground!
+	data-active:hover:[&>span]:text-primary-foreground!
+	`,
 	{
 		variants: {
 			variant: {
 				default: '',
-
 				outline: `
-          bg-background
-          shadow-[0_0_0_1px_var(--sidebar-border)]
-
-          hover:shadow-[0_0_0_1px_var(--sidebar-accent)]
-        `,
+					bg-background
+					shadow-[0_0_0_1px_var(--sidebar-border)]
+					hover:shadow-[0_0_0_1px_var(--sidebar-accent)]
+				`,
 			},
-
 			size: {
 				default: 'h-8 text-sm',
-
 				sm: 'h-7 text-xs',
-
 				lg: `
-          h-12
-          text-sm
-          group-data-[collapsible=icon]:p-2!
-        `,
+					h-12
+					text-sm
+					group-data-[collapsible=icon]:p-2!
+				`,
 			},
 		},
-
 		defaultVariants: {
 			variant: 'default',
 			size: 'default',

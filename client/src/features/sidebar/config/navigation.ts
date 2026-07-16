@@ -1,6 +1,6 @@
 import { CalendarDays, Clock3, KanbanSquare, LayoutDashboard, NotebookPen, Settings, UserRound } from 'lucide-react';
 
-import { Routes } from './routes';
+import { Routes } from '../../../shared/config/routes';
 
 export const navigation = [
 	{

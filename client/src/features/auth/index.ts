@@ -14,10 +14,13 @@ export type { TLoginSchema } from '@/features/auth/schemas/loginSchema';
 export type { ILoginRequest, ILoginResponse } from '@/features/auth/types/Login';
 export type { IRefreshResponse } from '@/features/auth/types/Refresh';
 export type { IRegisterRequest } from '@/features/auth/types/Register';
+export type {IUser} from "@/features/auth/types/User";
 
 export { login } from '@/features/auth/api/login';
 export { refresh } from '@/features/auth/api/refresh';
 export { register } from '@/features/auth/api/register';
+export { logout } from '@/features/auth/api/logout';
+export { getCurrentUser } from '@/features/auth/api/getCurrentUser';
 
 export { useAuthStore } from '@/features/auth/store/auth.store';
 

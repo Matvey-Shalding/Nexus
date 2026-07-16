@@ -1,19 +1,12 @@
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbPage,
-	BreadcrumbSeparator,
-} from '@/shared/ui/breadcrumb';
-import { Separator } from '@/shared/ui/separator';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/shared/ui/sidebar';
-import { AppSidebar } from '@/shared/ui/sidebar/AppSidebar';
+'use server';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+import { Sidebar } from '@/features/sidebar';
+import { SidebarInset, SidebarProvider } from '@/shared/ui/sidebar';
+
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<SidebarProvider>
-			<AppSidebar />
+			<Sidebar />
 			<SidebarInset>{children}</SidebarInset>
 		</SidebarProvider>
 	);

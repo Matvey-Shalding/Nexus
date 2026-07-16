@@ -4,11 +4,11 @@ export const Routes = {
 
 	DASHBOARD: '/dashboard',
 
-	KANBAN: 'kanban',
-	TIME_BLOCKING: 'time-blocking',
-	POMODORO: 'pomodoro',
-	NOTES: 'notes',
-	PROFILE: 'profile',
+	KANBAN: '/kanban',
+	TIME_BLOCKING: '/time-blocking',
+	POMODORO: '/pomodoro',
+	NOTES: '/notes',
+	PROFILE: '/profile',
 	SETTINGS: '/settings',
 
 	DEFAULT: '/dashboard'
