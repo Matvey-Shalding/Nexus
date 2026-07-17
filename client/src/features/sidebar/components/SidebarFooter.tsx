@@ -2,29 +2,35 @@
 
 import React, { useState } from 'react';
 
-import { SidebarFooter as Footer, SidebarMenu, SidebarMenuItem, useSidebar } from '@/shared/ui/sidebar';
+import { SidebarFooter as Footer, SidebarMenu, useSidebar } from '@/shared/ui/sidebar';
 
 import { LogoutDialog } from './LogoutDialog';
-import { SidebarDropdown } from './SidebarDropdown';
+import { UserDropdown } from './UserDropdown';
+import { SettingsModal } from '@/features/settings'
 
 export const SidebarFooter: React.FC = () => {
 	const { isMobile } = useSidebar();
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	return (
 		<Footer>
 			<SidebarMenu>
-				<SidebarDropdown
+				<UserDropdown
 					isMobile={isMobile}
 					setIsDialogOpen={setIsDialogOpen}
+					setIsModalOpen={setIsModalOpen}
 				/>
-				<SidebarMenuItem>
-					<LogoutDialog
-						isDialogOpen={isDialogOpen}
-						setIsDialogOpen={setIsDialogOpen}
-					/>
-				</SidebarMenuItem>
+				<LogoutDialog
+					isDialogOpen={isDialogOpen}
+					setIsDialogOpen={setIsDialogOpen}
+				/>
+				<SettingsModal
+					isOpen={isModalOpen}
+					setIsOpen={setIsModalOpen}
+				/>
 			</SidebarMenu>
 		</Footer>
 	);

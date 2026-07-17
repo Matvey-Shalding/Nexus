@@ -14,8 +14,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { toast } from 'sonner';
-import { FormInput, registerUser, TRegisterSchema, useRegisterForm, VisibilityToggle } from '..';
+import { registerUser, TRegisterSchema, useRegisterForm, VisibilityToggle } from '..';
 import { Logo } from '@/shared/ui/logo';
+import { FormInput } from '@/shared/components/FormInput'
 
 interface Props {
 	className?: string;

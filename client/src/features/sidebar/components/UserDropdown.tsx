@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { SidebarMenuButton } from '@/shared/ui/sidebar';
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
+import { Bell, ChevronsUpDown, LogOut, Settings, Sparkles } from 'lucide-react';
 import React from 'react';
 import {
 	DropdownMenu,
@@ -17,9 +17,10 @@ import { UserInfo } from './UserInfo';
 interface Props {
 	isMobile: boolean;
 	setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const SidebarDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen }) => {
+export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen,setIsModalOpen }) => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="w-full">
@@ -53,13 +54,9 @@ export const SidebarDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen }) 
 					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>
-						<DropdownMenuItem>
-							<BadgeCheck />
-							Account
-						</DropdownMenuItem>
-						<DropdownMenuItem>
-							<CreditCard />
-							Billing
+						<DropdownMenuItem onClick={() => setIsModalOpen(true)}>
+							<Settings />
+							Settings
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<Bell />

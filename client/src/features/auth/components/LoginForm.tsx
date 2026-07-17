@@ -15,8 +15,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { toast } from 'sonner';
-import { FormInput, TLoginSchema, useLoginForm, VisibilityToggle } from '..';
+import { TLoginSchema, useLoginForm, VisibilityToggle } from '..';
 import { loginUser } from '../services/loginUser';
+import { FormInput } from '@/shared/components/FormInput'
 
 interface Props {
 	className?: string;

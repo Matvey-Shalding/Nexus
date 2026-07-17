@@ -2,7 +2,7 @@
 
 import { Field, FieldError, FieldLabel } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/shared/ui/input-group';
+import { InputGroup, InputGroupInput } from '@/shared/ui/input-group';
 import { ComponentProps, ReactNode } from 'react';
 
 import type { Control, FieldValues, Path } from 'react-hook-form';
