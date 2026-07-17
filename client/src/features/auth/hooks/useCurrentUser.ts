@@ -12,5 +12,5 @@ export const useCurrentUser = () => {
 		select: data => data.data,
 	});
 
-	return { user, isPending,isError };
+	return { user, isPending, isError };
 };

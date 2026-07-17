@@ -6,7 +6,7 @@ import { SidebarFooter as Footer, SidebarMenu, useSidebar } from '@/shared/ui/si
 
 import { LogoutDialog } from './LogoutDialog';
 import { UserDropdown } from './UserDropdown';
-import { SettingsModal } from '@/features/settings'
+import { SettingsModal } from '@/features/settings';
 
 export const SidebarFooter: React.FC = () => {
 	const { isMobile } = useSidebar();

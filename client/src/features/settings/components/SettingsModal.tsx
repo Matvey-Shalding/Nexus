@@ -7,11 +7,11 @@ import { Tabs, TabsContent } from '@/shared/ui/tabs';
 import React from 'react';
 import { SettingsTabs } from './SettingsTabs';
 import { ProfileTab } from './tabs/ProfileTab';
-import { GeneralTab } from './tabs/GeneralTab'
-import { AppearanceTab } from './tabs/AppearanceTab'
-import { EditorTab } from './tabs/EditorTab'
-import { AITab } from './tabs/AITab'
-import { SecurityTab } from './tabs/SecurityTab'
+import { GeneralTab } from './tabs/GeneralTab';
+import { AppearanceTab } from './tabs/AppearanceTab';
+import { EditorTab } from './tabs/EditorTab';
+import { AITab } from './tabs/AITab';
+import { SecurityTab } from './tabs/SecurityTab';
 
 interface Props {
 	isOpen: boolean;
@@ -24,9 +24,7 @@ export const SettingsModal: React.FC<Props> = ({ isOpen, setIsOpen }) => {
 			open={isOpen}
 			onOpenChange={setIsOpen}
 		>
-			<DialogContent
-				className="flex h-128 min-w-3xl flex-col gap-0 p-0"
-			>
+			<DialogContent className="flex h-128 min-w-3xl flex-col gap-0 p-0">
 				<DialogHeader className="mb-4 px-6 pt-4">
 					<DialogTitle className="text-xl">Settings</DialogTitle>
 
@@ -42,11 +40,11 @@ export const SettingsModal: React.FC<Props> = ({ isOpen, setIsOpen }) => {
 
 					<div className="flex-1 p-6">
 						<ProfileTab />
-						<GeneralTab/>
-						<AppearanceTab/>
-						<EditorTab/>
-						<AITab/>
-						<SecurityTab/>
+						<GeneralTab />
+						<AppearanceTab />
+						<EditorTab />
+						<AITab />
+						<SecurityTab />
 					</div>
 				</Tabs>
 			</DialogContent>

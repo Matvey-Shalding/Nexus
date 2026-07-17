@@ -17,7 +17,7 @@ import { memo } from 'react';
 import { toast } from 'sonner';
 import { TLoginSchema, useLoginForm, VisibilityToggle } from '..';
 import { loginUser } from '../services/loginUser';
-import { FormInput } from '@/shared/components/FormInput'
+import { FormInput } from '@/shared/components/FormInput';
 
 interface Props {
 	className?: string;

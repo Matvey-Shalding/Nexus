@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const UserInfo: React.FC<Props> = ({ className }) => {
-	
 	const { data: user, isPending } = useQuery({
 		queryKey: ['user'],
 		queryFn: getCurrentUser,

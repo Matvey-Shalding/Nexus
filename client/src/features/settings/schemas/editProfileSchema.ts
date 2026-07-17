@@ -11,5 +11,4 @@ export const editProfileSchema = z.object({
 	}),
 });
 
-
 export type TEditProfileSchema = z.infer<typeof editProfileSchema>;

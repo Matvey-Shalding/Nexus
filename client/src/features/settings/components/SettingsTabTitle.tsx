@@ -1,4 +1,4 @@
-import { Separator } from '@/shared/ui/separator'
+import { Separator } from '@/shared/ui/separator';
 import React from 'react';
 
 interface Props {
