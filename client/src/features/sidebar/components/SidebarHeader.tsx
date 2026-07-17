@@ -25,7 +25,7 @@ export const SidebarHeader: React.FC<Props> = ({ className }) => {
 			<Button
 				onClick={() => toggleSidebar()}
 				className={cn(
-					'bg-popover pointer-events-auto absolute top-1/2 right-0 grid size-7 translate-x-1/2 -translate-y-1/2 place-content-center rounded-md transition-all duration-300',
+					'pointer-events-auto absolute top-1/2 right-0 grid size-7 translate-x-1/2 -translate-y-1/2 place-content-center rounded-md transition-all duration-300',
 					{
 						'translate-x-[130%]': !open,
 					},

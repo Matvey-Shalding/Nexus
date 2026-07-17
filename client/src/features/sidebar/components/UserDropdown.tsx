@@ -20,7 +20,7 @@ interface Props {
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen,setIsModalOpen }) => {
+export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIsModalOpen }) => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="w-full">
@@ -28,7 +28,7 @@ export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen,setIsM
 					data-hover="none"
 					size="lg"
 					className={cn(
-						'data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground hover:bg-accent! min-w-full self-stretch data-[state=open]:p-0!',
+						'hover:bg-accent! min-w-full group-data-[collapsible=icon]:pl-1.5! group-data-[collapsible=icon]:hover:bg-transparent!',
 					)}
 				>
 					<UserInfo />
@@ -65,13 +65,13 @@ export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen,setIsM
 					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
-						className="hover:bg-destructive/20!"
+						className="hover:bg-destructive/20! text-destructive!"
 						onClick={() => {
 							setIsDialogOpen(true);
 						}}
 					>
-						<LogOut className="text-destructive!" />
-						<span className="text-destructive!">Log out</span>
+						<LogOut />
+						<span>Log out</span>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenuGroup>
