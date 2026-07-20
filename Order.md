@@ -1,290 +1,583 @@
-# DEVELOPMENT ORDER (STRICT)
+For the best UX, I would build the task system in a way where **every step produces a usable feature**. Do not start with drag-and-drop because it depends on the entire data flow being correct.
+
+The order I would choose:
 
 ---
 
-# 1. BACKEND FOUNDATION
+# Phase 0 — Finalize task domain
 
-## 1.1 Project setup
-- FastAPI app structure
-- Config (.env)
-- Database connection (PostgreSQL)
-- Alembic migrations setup
+Before coding, lock the model.
 
----
+Your MVP:
 
-## 1.2 Base models
-- User
-- Base timestamps mixin
+```text
+Task
+├── id
+├── title
+├── priority
+├── due_date
+├── completed
+├── position
+├── created_at
+└── updated_at
+```
 
----
+Decisions:
 
-## 1.3 Auth system
-- Register endpoint
-- Login endpoint
-- JWT access token
-- JWT refresh token
-- Password hashing (bcrypt)
-- Auth middleware (protected routes)
+* `completed` replaces status
+* `position` controls manual ordering
+* due date controls default grouping
 
----
-
-## 1.4 User session layer
-- Get current user endpoint
-- Logout (token invalidate strategy or client-only removal)
+Do not add more fields yet.
 
 ---
 
-# 2. NOTES CORE
+# Phase 1 — Backend CRUD
 
-## 2.1 Database models
-- Note
-- Folder
-- Tag
-- NoteTag relation (many-to-many)
+## 1. Create schemas
 
----
+Structure:
 
-## 2.2 Notes API
-- Create note
-- Update note
-- Delete note
-- Get note by id
-- List notes (pagination)
-- Search notes (basic LIKE query)
+```
+features/tasks/
 
----
+backend:
 
-## 2.3 Folder system
-- Create folder
-- Rename folder
-- Delete folder
-- Assign note → folder
+tasks/
+├── models.py
+├── schemas.py
+├── repository.py
+├── service.py
+├── router.py
+```
 
----
+Schemas:
 
-## 2.4 Tags system
-- Create tag
-- Assign tag to note
-- Remove tag from note
-- Filter notes by tag
+### Create
 
----
+```python
+TaskCreate
+```
 
-# 3. TASK SYSTEM
+Example:
 
-## 3.1 Models
-- Task
-- TaskStatus enum (todo / doing / done)
-- Priority enum (low / medium / high)
+```json
+{
+  "title": "Learn React Query",
+  "priority": 2,
+  "due_date": "2026-07-20"
+}
+```
 
 ---
 
-## 3.2 API
-- Create task
-- Update task
-- Delete task
-- List tasks
-- Filter by status
-- Filter by priority
+### Update
+
+Important: every field optional.
+
+```python
+TaskUpdate
+```
+
+Example:
+
+```json
+{
+  "title": "New title"
+}
+```
+
+or:
+
+```json
+{
+  "completed": true
+}
+```
+
+or:
+
+```json
+{
+  "position": 2500
+}
+```
+
+One endpoint handles everything.
 
 ---
 
-## 3.3 Task extensions
-- Due date
-- Sort by priority/date
+### Response
+
+```python
+TaskResponse
+```
+
+Contains all fields.
 
 ---
 
-# 4. PROJECT SYSTEM
+# Phase 2 — Basic GET /tasks
 
-## 4.1 Models
-- Project
+Do not implement sorting/grouping options yet.
 
----
+Create:
 
-## 4.2 Relations
-- Project → Notes
-- Project → Tasks
+```
+GET /tasks
+```
 
----
+Return:
 
-## 4.3 API
-- Create project
-- Update project
-- Delete project
-- Get project details
-- Assign note/task to project
+```json
+[
+ {
+  "id":1,
+  "title":"Learn FastAPI",
+  "priority":3,
+  "due_date":"2026-07-20",
+  "completed":false,
+  "position":1000
+ }
+]
+```
 
----
+At this stage:
 
-# 5. FRONTEND FOUNDATION
+Backend:
 
-## 5.1 Setup
-- React + Vite + TS
-- Router setup
-- Auth context/store
-- API client (Axios)
-
----
-
-## 5.2 Layout
-- Sidebar
-- Topbar
-- Protected layout wrapper
-
----
-
-## 5.3 Auth UI
-- Login page
-- Register page
-- Token handling
+```text
+fetch tasks
+↓
+ORDER BY position
+↓
+return
+```
 
 ---
 
-# 6. NOTES FRONTEND
+# Phase 3 — Build frontend task list
 
-## 6.1 UI
-- Notes list
-- Note editor
-- Folder sidebar
-- Tag display
+Before drag/drop, create the normal UI.
 
----
+Something like:
 
-## 6.2 Features
-- Create note
-- Edit note
-- Delete note
-- Move to folder
-- Assign tags
+```
+Tasks
 
----
+Today
+----------------
+□ Learn FastAPI
+□ Build API
 
-# 7. TASK FRONTEND
 
-## 7.1 Views
-- List view
-- Kanban board
+Tomorrow
+----------------
+□ Read docs
 
----
 
-## 7.2 Features
-- Create task
-- Edit task
-- Change status
-- Set priority
-- Set due date
+Later
+----------------
+□ Project ideas
+```
 
----
+Implement:
 
-# 8. PROJECT FRONTEND
+* fetch tasks with React Query
+* loading state
+* empty state
+* error state
 
-## 8.1 UI
-- Project list
-- Project page
+Example:
 
----
-
-## 8.2 Features
-- View linked notes/tasks
-- Assign items to project
+```ts
+useQuery({
+    queryKey:['tasks'],
+    queryFn:getTasks
+})
+```
 
 ---
 
-# 9. CALENDAR + TIME BLOCKING
+# Phase 4 — Create task UX
 
-## 9.1 Backend
-- TimeBlock model
-- Start time / end time
+The ideal flow:
 
----
+User clicks:
 
-## 9.2 Frontend
-- Calendar view
-- Drag & drop blocks
-- Daily planner view
+```
++ New task
+```
 
----
+Modal/popover:
 
-# 10. POMODORO SYSTEM
+```
+Title
+Priority
+Due date
 
-## 10.1 Backend
-- PomodoroSession model
-- Link session → task/project
+[Create]
+```
 
----
+After creation:
 
-## 10.2 Frontend
-- Timer UI
-- Session tracking
-- Start / pause / stop
+```text
+POST /tasks
 
----
+success
 
-# 11. ATTACHMENTS
+invalidate ['tasks']
+```
 
-## 11.1 Backend
-- Attachment model
-- File upload endpoint
-- File storage (/uploads)
+The new task appears in the correct column.
 
----
+Do not manually insert it yet.
 
-## 11.2 Frontend
-- Upload UI
-- File list in notes
-- Preview attachments
+First prioritize correctness.
 
 ---
 
-# 12. DASHBOARD
+# Phase 5 — Update task
 
-## 12.1 Backend
-- Aggregation endpoints:
-  - today tasks
-  - weekly stats
-  - focus time
+Implement inline editing.
+
+Examples:
+
+Click title:
+
+```
+Learn React
+       ↓
+[Learn React Query]
+```
+
+Save:
+
+```
+PATCH /tasks/1
+
+{
+"title":"Learn React Query"
+}
+```
+
+For checkbox:
+
+```
+PATCH /tasks/1
+
+{
+"completed":true
+}
+```
 
 ---
 
-## 12.2 Frontend
-- Dashboard widgets
-- Stats cards
-- Charts
+# Phase 6 — Implement server grouping
+
+Now improve:
+
+```
+GET /tasks
+```
+
+Response becomes:
+
+```json
+{
+ "groups":[
+  {
+   "key":"today",
+   "label":"Today",
+   "tasks":[]
+  }
+ ]
+}
+```
+
+Backend logic:
+
+```
+fetch tasks
+
+for each task:
+    calculate group
+
+sort by position
+
+return groups
+```
+
+Example:
+
+```python
+today
+tomorrow
+this_week
+next_week
+later
+no_date
+```
+
+Now frontend becomes much cleaner:
+
+```tsx
+groups.map(group => (
+    <TaskColumn group={group}/>
+))
+```
 
 ---
 
-# 13. AI LAYER (LAST)
+# Phase 7 — Add drag and drop
 
-## 13.1 Backend AI
-- Ollama integration
-- Embedding pipeline
-- Qdrant vector DB
-- RAG search pipeline
+Only now.
 
----
+Use:
 
-## 13.2 Features
-- Global search
-- Chat with notes/tasks
-- Summaries
-- “What did I do last week?”
+```
+dnd-kit
+```
+
+Implement in this order:
 
 ---
 
-# STRICT BUILD ORDER SUMMARY
+## 7.1 Drag inside same column
 
-1. Backend setup
-2. Auth
-3. Notes backend
-4. Tasks backend
-5. Projects backend
-6. Frontend base
-7. Notes UI
-8. Tasks UI
-9. Projects UI
-10. Calendar / Time blocks
-11. Pomodoro
-12. Attachments
-13. Dashboard
-14. AI
+Example:
+
+Before:
+
+```
+A
+B
+C
+```
+
+Move:
+
+```
+B
+A
+C
+```
+
+Calculate:
+
+```
+new_position =
+(previous.position + next.position) / 2
+```
+
+Send:
+
+```json
+PATCH /tasks/B
+
+{
+"position":1500
+}
+```
+
+---
+
+## 7.2 Move between columns
+
+Example:
+
+```
+Today
+
+A
+B
+
+
+Tomorrow
+
+C
+```
+
+Move:
+
+```
+A → Tomorrow
+```
+
+Need:
+
+```json
+PATCH /tasks/A
+
+{
+"due_date":"tomorrow",
+"position":1500
+}
+```
+
+Backend updates:
+
+* due date
+* position
+
+---
+
+# Phase 8 — Optimistic updates
+
+Now improve UX.
+
+Currently:
+
+```
+drag
+ ↓
+request
+ ↓
+wait
+ ↓
+update
+```
+
+Change to:
+
+```
+drag
+ ↓
+instant UI update
+ ↓
+PATCH request
+ ↓
+success
+```
+
+React Query:
+
+```ts
+onMutate()
+```
+
+Save previous cache.
+
+If failure:
+
+rollback.
+
+This makes it feel like a professional app.
+
+---
+
+# Phase 9 — Add sorting
+
+Now add:
+
+```
+sort_by
+```
+
+Options:
+
+```
+position
+title
+priority
+due_date
+```
+
+Request:
+
+```
+GET /tasks?sort_by=priority&order=desc
+```
+
+Backend:
+
+```
+group
+↓
+sort inside groups
+↓
+return
+```
+
+---
+
+# Phase 10 — Advanced views
+
+Only after everything works.
+
+Add:
+
+```
+Group by:
+
+- due date
+- priority
+- completed
+```
+
+Example:
+
+Priority board:
+
+```
+High
+-----
+Task A
+
+Medium
+-----
+Task B
+```
+
+---
+
+# Final architecture
+
+Backend:
+
+```
+tasks
+|
+├── CRUD
+|
+├── grouping service
+|
+├── sorting service
+|
+└── ordering service
+```
+
+Frontend:
+
+```
+tasks feature
+
+├── api
+│   └── tasks.ts
+│
+├── hooks
+│   ├── useTasks
+│   ├── useCreateTask
+│   └── useUpdateTask
+│
+├── components
+│   ├── TaskBoard
+│   ├── TaskColumn
+│   ├── TaskCard
+│   └── CreateTask
+│
+└── utils
+    └── grouping.ts
+```
+
+---
+
+The key UX principle:
+
+1. **Make CRUD feel instant and reliable first**
+2. **Add organization (groups)**
+3. **Add manipulation (drag/drop)**
+4. **Optimize (optimistic updates)**
+5. **Add customization (sorting/views)**
+
+This order prevents you from building a complicated system where the basic task experience is still unstable.
