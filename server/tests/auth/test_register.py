@@ -11,7 +11,6 @@ async def test_register_valid_user_returns_201(setup_database, http_client):
 
     response = await http_client.post(url="/auth/register", json=data)
 
-    print("response", response.json())
 
     assert response.status_code == 201
 

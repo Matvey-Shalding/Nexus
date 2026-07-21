@@ -6,16 +6,20 @@ from starlette import status
 
 from app.deps import db_dependency
 from app.models.user import User
-from app.security import oauth2_bearer
+from app.security import http_bearer
+
+from fastapi.security import HTTPAuthorizationCredentials
 
 
 from services.auth import AuthService
 
 
 async def get_current_user(
-    token: Annotated[str, Depends(oauth2_bearer)],
     db: db_dependency,
+    credentials: HTTPAuthorizationCredentials = Depends(http_bearer),
 ) -> User:
+
+    token = credentials.credentials
 
     user = await AuthService().get_user_by_token(token, db)
 
@@ -27,5 +31,5 @@ async def get_current_user(
 
     return user
 
-user_dependency = Annotated[User, Depends(get_current_user)]
 
+user_dependency = Annotated[User, Depends(get_current_user)]

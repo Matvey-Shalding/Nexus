@@ -11,23 +11,23 @@ from starlette import status
 
 from app.deps import db_dependency
 from app.models.user import User
-from app.security import oauth2_bearer
 
 from repositories.user import UserRepository
 from app.schemas.user import UpdateUserRequest
 
-from app.config import NAME_MAX_LENGTH,NAME_MIN_LENGTH,EMAIL_REGEXP
+from app.config import NAME_MAX_LENGTH, NAME_MIN_LENGTH, EMAIL_REGEXP
 
 import re
 
-from app.error import InvalidName,InvalidEmail
+from app.error import InvalidName, InvalidEmail
 
 
 class UserService:
 
-    
-    async def update_user(self,request: UpdateUserRequest,db: AsyncSession,current_user: User) -> User:
-        
+    async def update_user(
+        self, request: UpdateUserRequest, db: AsyncSession, current_user: User
+    ) -> User:
+
         data = request.model_dump(exclude_unset=True)
 
         if "name" in data:
@@ -45,25 +45,19 @@ class UserService:
             if not re.search(EMAIL_REGEXP, email):
                 raise InvalidEmail()
 
-            user = await UserRepository().get_user_by_email(
-                db=db, email=email
-            )
+            user = await UserRepository().get_user_by_email(db=db, email=email)
 
             if user and user.id != current_user.id:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
                     detail="Such email already exists.",
                 )
-        
-        for key,value in data.items():
-            setattr(current_user,key,value)
-        
+
+        for key, value in data.items():
+            setattr(current_user, key, value)
+
         await db.commit()
 
         await db.refresh(current_user)
 
         return current_user
-
-
-        
-

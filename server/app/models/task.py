@@ -1,6 +1,6 @@
 import enum
 
-from sqlalchemy import Boolean, Enum, Float, ForeignKey, Integer
+from sqlalchemy import Boolean, CheckConstraint, Date, Enum, Float, ForeignKey, Integer
 
 from sqlalchemy import DateTime, String, func
 
@@ -8,12 +8,19 @@ from app.database import Base
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from datetime import datetime
+from datetime import date, datetime
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.models.user import User
+
+
+class PriorityEnum(enum.IntEnum):
+    DEFAULT = 0
+    LOW = 1
+    MEDIUM = 2
+    HIGH = 3
 
 
 class Task(Base):
@@ -29,14 +36,14 @@ class Task(Base):
         nullable=False,
     )
 
-    due_date: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True),
+    due_date: Mapped[date | None] = mapped_column(
+        Date,
         nullable=True,
     )
 
-    priority: Mapped[int] = mapped_column(
+    priority: Mapped[PriorityEnum] = mapped_column(
         Integer,
-        default=0,
+        default=PriorityEnum.DEFAULT,
         nullable=False,
     )
 
@@ -46,9 +53,8 @@ class Task(Base):
         nullable=False,
     )
 
-    position: Mapped[Float] = mapped_column(
+    position: Mapped[float | None] = mapped_column(
         Float,
-        default=1000,
         nullable=True,
     )
 
@@ -68,4 +74,11 @@ class Task(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now(),
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "priority IN (0,1,2,3)",
+            name="ck_task_priority",
+        ),
     )

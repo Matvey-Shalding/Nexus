@@ -39,3 +39,7 @@ class InvalidPassword(ValidationError):
 class InvalidEmail(ValidationError):
     def __init__(self):
         super().__init__("Email address is invalid.")
+
+class InvalidDate(ValidationError):
+    def __init__(self):
+        super().__init__("Expired dates are not allowed.")
