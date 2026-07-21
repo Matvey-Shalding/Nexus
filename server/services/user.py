@@ -24,11 +24,7 @@ from app.error import InvalidName, InvalidEmail
 
 class UserService:
 
-    async def update_user(
-        self, request: UpdateUserRequest, db: AsyncSession, current_user: User
-    ) -> User:
-
-        data = request.model_dump(exclude_unset=True)
+    async def _validate_user(self, current_user: User, data: dict, db: AsyncSession):
 
         if "name" in data:
             name = data["name"]
@@ -53,11 +49,12 @@ class UserService:
                     detail="Such email already exists.",
                 )
 
-        for key, value in data.items():
-            setattr(current_user, key, value)
+    async def update_user(
+        self, request: UpdateUserRequest, db: AsyncSession, current_user: User
+    ) -> User:
 
-        await db.commit()
+        data = request.model_dump(exclude_unset=True)
 
-        await db.refresh(current_user)
+        await self._validate_user(current_user, data, db)
 
-        return current_user
+        return await UserRepository().update_user(data, db, current_user)
