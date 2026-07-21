@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schemas.task import CreateTaskRequest
+from app.schemas.task import CreateTaskRequest, UpdateTaskRequest
 from app.models.task import Task
 
-import datetime
+
 
 
 class TaskRepository:
@@ -11,8 +11,6 @@ class TaskRepository:
     async def add_task(
         self, db: AsyncSession, create_task_request: CreateTaskRequest, user_id: int
     ) -> Task:
-        
-
 
         task_model = Task(
             title=create_task_request.title,
@@ -30,3 +28,25 @@ class TaskRepository:
         await db.refresh(task_model)
 
         return task_model
+
+    async def get_task_by_id(self, db: AsyncSession, task_id: int) -> Task | None:
+        return await db.get(Task, ident=task_id)
+
+    async def update_task(
+        self, db: AsyncSession, task: Task, update_task_request: UpdateTaskRequest
+    ):
+
+        for key, values in update_task_request.model_dump(exclude_unset=True).items():
+            setattr(task, key, values)
+
+        await db.commit()
+
+        await db.refresh(task)
+
+        return task
+    
+    async def delete_task(self, db: AsyncSession, task: Task):
+
+        await db.delete(task)
+
+        await db.commit()

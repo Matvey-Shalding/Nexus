@@ -13,11 +13,23 @@ class CreateTaskRequest(BaseModel):
 
     completed: bool
 
-    position: int | None = None
+    position: float | None = None
+
+class UpdateTaskRequest(BaseModel):
+
+    title: str | None = None
+
+    due_date: date | None = None
+
+    priority: int | None = None
+
+    completed: bool | None = None
+
+    position: float | None = None
 
 
 
-class CreateTaskResponse(BaseModel):
+class TaskResponse(BaseModel):
 
     title: str
 
@@ -27,4 +39,4 @@ class CreateTaskResponse(BaseModel):
 
     completed: bool
 
-    position: int | None = None
+    position: float | None = None

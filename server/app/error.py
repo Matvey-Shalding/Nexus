@@ -18,6 +18,14 @@ NO_LOGIN_ERROR = HTTPException(
 )
 
 
+class NotFoundError(HTTPException):
+    def __init__(self, detail: str):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=detail,
+        )
+
+
 class ValidationError(HTTPException):
     def __init__(self, detail: str):
         super().__init__(
@@ -43,3 +51,7 @@ class InvalidEmail(ValidationError):
 class InvalidDate(ValidationError):
     def __init__(self):
         super().__init__("Expired dates are not allowed.")
+
+class InvalidTaskId(NotFoundError):
+    def __init__(self):
+        super().__init__("Such task does not exist.")
