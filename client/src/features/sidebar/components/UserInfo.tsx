@@ -9,9 +9,10 @@ import { Avatar } from '../../../shared/ui/avatar';
 
 interface Props {
 	className?: string;
+	open: boolean;
 }
 
-export const UserInfo: React.FC<Props> = ({ className }) => {
+export const UserInfo: React.FC<Props> = ({ className, open }) => {
 	const { data: user, isPending } = useQuery({
 		queryKey: ['user'],
 		queryFn: getCurrentUser,
@@ -20,7 +21,7 @@ export const UserInfo: React.FC<Props> = ({ className }) => {
 
 	return (
 		<div className={cn('flex items-center gap-2 py-1.5 text-left text-sm', className)}>
-			<Avatar className={cn({ 'relative -left-0.5': !open })} />
+			<Avatar className={cn(!open && 'relative -left-0.5')} />
 			<div className="grid flex-1 text-left text-sm leading-tight">
 				{isPending ? (
 					<div className="flex flex-col gap-y-1">

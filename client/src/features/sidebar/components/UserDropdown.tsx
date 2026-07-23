@@ -1,7 +1,4 @@
 import { cn } from '@/lib/utils';
-import { SidebarMenuButton } from '@/shared/ui/sidebar';
-import { Bell, ChevronsUpDown, LogOut, Settings, Sparkles } from 'lucide-react';
-import React from 'react';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,17 +7,21 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from '../../../shared/ui/dropdown-menu';
-import { UserInfo } from './UserInfo';
+} from '@/shared/ui/dropdown-menu';
+import { SidebarMenuButton } from '@/shared/ui/sidebar';
+import { Bell, ChevronsUpDown, LogOut, Settings, Sparkles } from 'lucide-react';
+import React from 'react';
+import { UserInfo } from './UserInfo'
 ('lucide-react');
 
 interface Props {
 	isMobile: boolean;
+	open: boolean;
 	setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIsModalOpen }) => {
+export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIsModalOpen, open }) => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="w-full">
@@ -31,7 +32,7 @@ export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIs
 						'hover:bg-accent! min-w-full group-data-[collapsible=icon]:pl-1.5! group-data-[collapsible=icon]:hover:bg-transparent!',
 					)}
 				>
-					<UserInfo />
+					<UserInfo open={open} />
 					<ChevronsUpDown className="ml-auto size-4" />
 				</SidebarMenuButton>
 			</DropdownMenuTrigger>
@@ -43,7 +44,7 @@ export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIs
 					sideOffset={4}
 				>
 					<DropdownMenuLabel className="p-0 font-normal">
-						<UserInfo className="px-1" />
+						{/* <UserInfo className="px-1" open={open} /> */}
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>

@@ -19,14 +19,14 @@ from services.auth import AuthService
 
 from app.config import REFRESH_TOKEN_EXPIRE_SECONDS, Environment
 
-from app.error import AUTH_ERROR,NO_LOGIN_ERROR
+from app.error import AUTH_ERROR, NO_LOGIN_ERROR
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(create_user_request: CreateUserRequest, db: db_dependency):
-    
+
     await AuthService().register(db=db, create_user_request=create_user_request)
 
 
@@ -66,12 +66,26 @@ async def login(login_user_request: LoginUserRequest, db: db_dependency):
 )
 async def refresh(db: db_dependency, refresh_token: str | None = Cookie(None)):
 
-    if not refresh_token:
-        raise NO_LOGIN_ERROR
+    try:
 
-    service = AuthService()
+        if not refresh_token:
+            raise NO_LOGIN_ERROR
 
-    return await service.refresh(refresh_token, db)
+        service = AuthService()
+
+        return await service.refresh(refresh_token, db)
+
+    except HTTPException as e:
+
+        response = JSONResponse(content={"detail": "Session expired."}, status_code=401)
+
+        response.delete_cookie(
+            "refresh_token",
+            httponly=True,
+            secure=Environment == Environment.PRODUCTION,
+        )
+
+        return response
 
 
 @auth_router.post("/logout", status_code=status.HTTP_200_OK)
