@@ -16,6 +16,11 @@ from app.error import InvalidDate, InvalidTaskId
 
 from datetime import date
 
+from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
+
+from services.task.group_tasks import GroupedTasks, group_tasks
+
+from services.task.sort_tasks import sort_tasks
 
 class TaskService:
 
@@ -53,7 +58,7 @@ class TaskService:
 
         return await task_repository.update_task(db, task, request)
 
-    async def delete_task(self,db: AsyncSession, task_id: int, current_user: User):
+    async def delete_task(self, db: AsyncSession, task_id: int, current_user: User):
 
         task_repository = TaskRepository()
 
@@ -63,3 +68,24 @@ class TaskService:
             raise InvalidTaskId()
 
         return await task_repository.delete_task(db, task)
+
+    async def get_tasks(
+        self,
+        db: AsyncSession,
+        current_user: User,
+        group_by: TaskGroupBy = TaskGroupBy.DEFAULT,
+        sort_by: TaskSortBy = TaskSortBy.DEFAULT,
+        sort_order: TaskSortOrder = TaskSortOrder.ASC,
+    ) -> GroupedTasks:
+
+        task_repository = TaskRepository()
+
+        fetched_tasks = await task_repository.get_tasks(db, current_user.id)
+
+        tasks = list(fetched_tasks)
+
+        grouped_tasks: GroupedTasks = group_tasks(tasks, group_by)
+
+        sort_tasks(grouped_tasks,sort_by,order_by=sort_order)
+
+        return grouped_tasks

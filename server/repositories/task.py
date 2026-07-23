@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.task import CreateTaskRequest, UpdateTaskRequest
@@ -50,3 +51,7 @@ class TaskRepository:
         await db.delete(task)
 
         await db.commit()
+    
+    async def get_tasks(self,db: AsyncSession, user_id: int):
+
+        return(await db.execute(select(Task).where(Task.user_id == user_id))).scalars().all()
