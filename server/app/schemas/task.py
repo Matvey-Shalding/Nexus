@@ -31,6 +31,8 @@ class UpdateTaskRequest(BaseModel):
 
 class TaskResponse(BaseModel):
 
+    id: int
+
     title: str
 
     due_date: date | None

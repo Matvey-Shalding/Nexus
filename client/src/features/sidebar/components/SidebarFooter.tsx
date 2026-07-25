@@ -14,11 +14,7 @@ export const SidebarFooter: React.FC = () => {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
-	const {accessToken} = useAuthStore()
-
-	console.log("access token",accessToken)
-
+	
 	return (
 		<Footer>
 			<SidebarMenu>

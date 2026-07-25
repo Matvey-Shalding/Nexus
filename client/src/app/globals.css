@@ -50,6 +50,23 @@
 	--color-card-gradient: var(--card-gradient);
 	--color-sidebar-gradient: var(--sidebar-gradient);
 	--card-shadow: var(--shadow-card);
+
+	/* Task Priority Design System Variables */
+	--color-priority-high-bg: var(--priority-high-bg);
+	--color-priority-high-fg: var(--priority-high-fg);
+	--color-priority-high-border: var(--priority-high-border);
+
+	--color-priority-medium-bg: var(--priority-medium-bg);
+	--color-priority-medium-fg: var(--priority-medium-fg);
+	--color-priority-medium-border: var(--priority-medium-border);
+
+	--color-priority-low-bg: var(--priority-low-bg);
+	--color-priority-low-fg: var(--priority-low-fg);
+	--color-priority-low-border: var(--priority-low-border);
+
+	--color-priority-none-bg: var(--priority-none-bg);
+	--color-priority-none-fg: var(--priority-none-fg);
+	--color-priority-none-border: var(--priority-none-border);
 }
 
 :root {
@@ -87,20 +104,37 @@
 	--sidebar-ring: oklch(0.705 0.015 286.067);
 
 	/* Light Theme Gradients */
-	--color-app-gradient:
-		radial-gradient(at 0% 0%, rgba(67, 57, 242, 0.05) 0px, transparent 65%), #f8fafc; /* Ultra-light professional slate background */
+	--color-app-gradient: radial-gradient(at 0% 0%, rgba(67, 57, 242, 0.05) 0px, transparent 65%), #f8fafc;
 
 	--color-card-gradient:
 		radial-gradient(at top left, rgba(67, 57, 242, 0.03) 0px, transparent 45%),
-		radial-gradient(at bottom right, rgba(31, 74, 184, 0.02) 0px, transparent 45%), rgba(255, 255, 255, 0.8); /* Elegant clean semi-transparency */
+		radial-gradient(at bottom right, rgba(31, 74, 184, 0.02) 0px, transparent 45%), rgba(255, 255, 255, 0.8);
 
 	--color-sidebar-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(241, 245, 249, 0.6) 100%);
 
-	/* Light Theme Card Shadows (Elevated Physical Style) */
+	/* Light Theme Card Shadows */
 	--card-shadow:
 		0 1px 3px rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.04), 0 20px 25px -5px rgba(67, 57, 242, 0.02);
 
 	--sidebar-border-color: rgba(0, 0, 0, 0.06);
+
+	/* Light Theme Task Priority Tokens (OKLCH) */
+	/* Semi-Solid Light Theme Priority Tokens (A Bit Richer & Punchier) */
+	--priority-high-bg: oklch(0.86 0.1 22); /* Clear Punchy Red Fill */
+	--priority-high-fg: oklch(0.35 0.18 22); /* Deep Crimson Text */
+	/* --priority-high-border: oklch(0.78 0.12 22); */
+
+	--priority-medium-bg: oklch(82.233% 0.15074 73.384); /* Clear Punchy Amber Fill */
+	--priority-medium-fg: oklch(0.38 0.15 75); /* Deep Amber Text */
+	/* --priority-medium-border: oklch(0.8 0.13 75); */
+
+	--priority-low-bg: oklch(0.87 0.08 230); /* Clear Punchy Blue Fill */
+	--priority-low-fg: oklch(0.35 0.14 230); /* Deep Sky Blue Text */
+	/* --priority-low-border: oklch(0.78 0.1 230); */
+
+	--priority-none-bg: oklch(0.89 0.01 285); /* Clear Punchy Slate Fill */
+	--priority-none-fg: oklch(0.3 0.01 285); /* Dark Slate Text */
+	/* --priority-none-border: oklch(0.82 0.01 285); */
 }
 
 .dark {
@@ -146,6 +180,22 @@
 	--color-sidebar-gradient: linear-gradient(180deg, #090a15 0%, #06060e 40%, #120e28 100%);
 
 	--card-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.8), 0 20px 40px -10px rgba(45, 35, 110, 0.4);
+
+	/* High */
+	--priority-high-bg: oklch(0.38 0.18 24);
+	--priority-high-fg: oklch(0.99 0.005 20);
+
+	/* Medium */
+	--priority-medium-bg: oklch(0.7 0.18 85);
+	--priority-medium-fg: oklch(0.18 0.12 85);
+
+	/* Low */
+	--priority-low-bg: var(--primary);
+	--priority-low-fg: oklch(0.96 0.015 277);
+
+	/* None */
+	--priority-none-bg: oklch(0.88 0.012 285);
+	--priority-none-fg: oklch(0.28 0.015 285);
 }
 
 @layer base {
@@ -172,5 +222,9 @@
 	button:not(:disabled),
 	[role='button']:not(:disabled) {
 		cursor: pointer;
+	}
+
+	.rdp {
+		--rdp-cell-size: 40px !important;
 	}
 }

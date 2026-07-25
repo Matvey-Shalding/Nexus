@@ -44,7 +44,7 @@ export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIs
 					sideOffset={4}
 				>
 					<DropdownMenuLabel className="p-0 font-normal">
-						{/* <UserInfo className="px-1" open={open} /> */}
+						<UserInfo className="px-1" open={open} />
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>
