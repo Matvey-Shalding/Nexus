@@ -1,5 +1,6 @@
 import React from 'react';
 import { ITask } from '../../types/Task';
+import { AddTask } from './task/AddTask';
 import { Task } from './task/Task';
 interface Props {
 	className?: string;
@@ -17,6 +18,7 @@ export const TaskListRow: React.FC<Props> = ({ title, tasks }) => {
 						task={task}
 					/>
 				))}
+				<AddTask />
 			</div>
 		</div>
 	);

@@ -10,7 +10,7 @@ interface Props {
 }
 export const Task: React.FC<Props> = ({ task }) => {
 	return (
-		<div className="border-border grid w-full grid-cols-[8fr_2fr_2fr_0.5fr] gap-3.5 border-y pl-2.5">
+		<div className="border-border grid w-full grid-cols-[8fr_2fr_2fr_0.5fr] gap-3.5 border-y pl-2.5 min-h-14">
 			<TaskTitle title={task.title} />
 			<TaskDate dateStr={task.due_date} />
 			<TaskPriority priorityNumber={task.priority} />
