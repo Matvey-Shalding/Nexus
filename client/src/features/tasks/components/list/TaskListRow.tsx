@@ -1,7 +1,7 @@
 import React from 'react';
 import { ITask } from '../../types/Task';
-import { AddTask } from './task/AddTask';
-import { Task } from './task/Task';
+import { Task } from './Task'
+import { AddTask } from './AddTask'
 interface Props {
 	className?: string;
 	title: string;

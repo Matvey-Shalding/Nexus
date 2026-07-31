@@ -1,4 +1,6 @@
-export const formatPriority = (priority: number) => {
+import { TPriority } from '../types/Priority';
+
+export const formatPriority = (priority: TPriority) => {
 	switch (priority) {
 		case 1:
 			return 'Low';
@@ -12,4 +14,4 @@ export const formatPriority = (priority: number) => {
 		default:
 			return 'Invalid priority';
 	}
-}
+};
