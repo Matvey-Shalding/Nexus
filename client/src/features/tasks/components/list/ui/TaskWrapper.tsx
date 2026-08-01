@@ -1,5 +1,4 @@
 import { TPriority } from '@/features/tasks/types/Priority';
-import { UpdateTaskRequest } from '@/features/tasks/types/Task';
 import React from 'react';
 import { TaskDateField } from './TaskDateField';
 import { TaskDeleteButton } from './TaskDeleteButton';
@@ -9,43 +8,39 @@ import { TaskTitleField } from './TaskTitleField';
 
 interface Props {
 	title: string;
-	setTitle: React.Dispatch<React.SetStateAction<string>>;
+	handleTitleUpdate: (value: string) => void;
 	inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 	selectedDate: Date | undefined;
-	setSelectedDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+	handleDateUpdate: (date: Date | undefined) => void;
 	selectedPriority: TPriority;
-	setSelectedPriority: React.Dispatch<React.SetStateAction<TPriority>>;
+	handlePriorityUpdate: (priority: TPriority) => void;
 	deleteTask: () => void;
-	updateTask: (data: UpdateTaskRequest) => void;
 }
 
 export const TaskWrapper: React.FC<Props> = ({
 	title,
-	setTitle,
+	handleTitleUpdate,
 	inputProps,
 	selectedDate,
-	setSelectedDate,
+	handleDateUpdate,
 	selectedPriority,
-	setSelectedPriority,
+	handlePriorityUpdate,
 	deleteTask,
-	updateTask,
 }) => {
 	return (
 		<TaskLayout>
 			<TaskTitleField
 				title={title}
-				setTitle={setTitle}
+				handleTitleUpdate={handleTitleUpdate}
 				inputProps={inputProps}
 			/>
 			<TaskDateField
-				updateTask={updateTask}
 				selectedDate={selectedDate}
-				setSelectedDate={setSelectedDate}
+				handleDateUpdate={handleDateUpdate}
 			/>
 			<TaskPriorityField
-				updateTask={updateTask}
 				selectedPriority={selectedPriority}
-				setSelectedPriority={setSelectedPriority}
+				handlePriorityUpdate={handlePriorityUpdate}
 			/>
 			<TaskDeleteButton onDelete={deleteTask} />
 		</TaskLayout>

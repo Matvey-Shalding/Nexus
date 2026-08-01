@@ -13,13 +13,6 @@ export const useAddTaskDraft = () => {
 	const calendarRef = useRef<HTMLDivElement>(null);
 	const priorityRef = useRef<HTMLDivElement>(null);
 
-	const reset = () => {
-		setTitle('');
-		setDate(undefined);
-		setPriority(0);
-		setMode('default');
-	};
-
 	return {
 		mode,
 		setMode,
@@ -32,6 +25,5 @@ export const useAddTaskDraft = () => {
 		priorityRef,
 		priority,
 		setPriority,
-		reset,
 	};
 };

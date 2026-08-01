@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useDeleteTask } from '../../hooks/useDeleteTask';
+import { useTaskActions } from '../../hooks/useTaskActions';
 import { useTaskDraft } from '../../hooks/useTaskDraft';
-import { useUpdateTask } from '../../hooks/useUpdateTask';
-import { useUpdateTaskTitle } from '../../hooks/useUpdateTaskTitle';
 import { ITask } from '../../types/Task';
 import { TaskWrapper } from './ui/TaskWrapper';
 interface Props {
@@ -18,22 +16,24 @@ export const Task: React.FC<Props> = ({ task }) => {
 		task.priority,
 	);
 
-	const { deleteTask } = useDeleteTask(task.id);
-
-	const { updateTask } = useUpdateTask(task.id);
-
-	useUpdateTaskTitle(title, updateTask);
-
+	const { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, deleteTask } = useTaskActions(
+		task.id,
+		title,
+		setTitle,
+		date,
+		setDate,
+		priority,
+		setPriority,
+	);
 	return (
 		<TaskWrapper
 			title={title}
-			setTitle={setTitle}
+			handleTitleUpdate={handleTitleUpdate}
 			selectedDate={date}
-			setSelectedDate={setDate}
+			handleDateUpdate={handleDateUpdate}
 			selectedPriority={priority}
-			setSelectedPriority={setPriority}
+			handlePriorityUpdate={handlePriorityUpdate}
 			deleteTask={deleteTask}
-			updateTask={updateTask}
 		/>
 	);
 };

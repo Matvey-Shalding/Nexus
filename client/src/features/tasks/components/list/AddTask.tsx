@@ -2,8 +2,8 @@
 
 import { useAddTaskDraft } from '@/features/tasks/hooks/useAddTaskDraft';
 import { useAddTaskInteractions } from '@/features/tasks/hooks/useAddTaskInteractions';
-import { useCreateTask } from '@/features/tasks/hooks/useCreateTask';
 import React from 'react';
+import { useAddTaskActions } from '../../hooks/useAddTaskActions';
 import { AddTaskButton } from './ui/AddTaskButton';
 import { AddTaskWrapper } from './ui/AddTaskWrapper';
 
@@ -12,22 +12,15 @@ interface Props {
 }
 
 export const AddTask: React.FC<Props> = ({}) => {
-	const {
-		mode,
-		setMode,
-		title,
-		setTitle,
-		date,
-		setDate,
-		taskRef,
-		calendarRef,
-		priorityRef,
-		priority,
-		setPriority,
-		reset,
-	} = useAddTaskDraft();
+	const { mode, setMode, title, setTitle, date, setDate, taskRef, calendarRef, priorityRef, priority, setPriority } =
+		useAddTaskDraft();
 
-	const { createTask } = useCreateTask(setMode);
+	const { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, reset, createTask } = useAddTaskActions(
+		setTitle,
+		setPriority,
+		setDate,
+		setMode,
+	);
 
 	useAddTaskInteractions(taskRef, title, mode, date, priority, createTask, calendarRef, priorityRef, reset);
 
@@ -36,14 +29,14 @@ export const AddTask: React.FC<Props> = ({}) => {
 	} else {
 		return (
 			<AddTaskWrapper
+				handleTitleUpdate={handleTitleUpdate}
+				handlePriorityUpdate={handlePriorityUpdate}
+				handleDateUpdate={handleDateUpdate}
 				taskRef={taskRef}
 				title={title}
-				setTitle={setTitle}
 				selectedDate={date}
-				setSelectedDate={setDate}
 				calendarRef={calendarRef}
 				selectedPriority={priority}
-				setSelectedPriority={setPriority}
 				priorityRef={priorityRef}
 				onDelete={reset}
 				inputProps={{ autoFocus: true }}

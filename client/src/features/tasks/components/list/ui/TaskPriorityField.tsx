@@ -12,16 +12,14 @@ import { formatPriority } from '../../../utils/formatPriority';
 
 interface Props {
 	selectedPriority: TPriority;
-	setSelectedPriority: Dispatch<SetStateAction<TPriority>>;
 	priorityRef?: React.RefObject<HTMLDivElement | null>;
-	updateTask: (data: UpdateTaskRequest) => void;
+	handlePriorityUpdate: (priority: TPriority) => void;
 }
 
 export const TaskPriorityField: React.FC<Props> = ({
 	selectedPriority,
-	setSelectedPriority,
 	priorityRef,
-	updateTask,
+	handlePriorityUpdate,
 }) => {
 	const priorityLabel = formatPriority(selectedPriority);
 	const styleClass = getPriorityStyles(selectedPriority);
@@ -30,11 +28,8 @@ export const TaskPriorityField: React.FC<Props> = ({
 
 	const handleSelect = (priority: TPriority) => {
 		setOpen(false);
-
-		setSelectedPriority(priority);
-
-		updateTask({ priority });
-	};
+		handlePriorityUpdate(priority);
+	};;
 
 	return (
 		<DropdownMenu
