@@ -1,6 +1,7 @@
 'use client';
 
 import { TPriority } from '@/features/tasks/types/Priority';
+import { UpdateTaskRequest } from '@/features/tasks/types/Task';
 import { getPriorityStyles, priorityStyles } from '@/features/tasks/utils/getPriorityStyles';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
@@ -13,17 +14,27 @@ interface Props {
 	selectedPriority: TPriority;
 	setSelectedPriority: Dispatch<SetStateAction<TPriority>>;
 	priorityRef?: React.RefObject<HTMLDivElement | null>;
+	updateTask: (data: UpdateTaskRequest) => void;
 }
 
-export const TaskPriorityField: React.FC<Props> = ({ selectedPriority, setSelectedPriority, priorityRef }) => {
+export const TaskPriorityField: React.FC<Props> = ({
+	selectedPriority,
+	setSelectedPriority,
+	priorityRef,
+	updateTask,
+}) => {
 	const priorityLabel = formatPriority(selectedPriority);
 	const styleClass = getPriorityStyles(selectedPriority);
 
 	const [open, setOpen] = React.useState(false);
 
-	React.useEffect(() => {
+	const handleSelect = (priority: TPriority) => {
 		setOpen(false);
-	}, [selectedPriority]);
+
+		setSelectedPriority(priority);
+
+		updateTask({ priority });
+	};
 
 	return (
 		<DropdownMenu
@@ -51,7 +62,7 @@ export const TaskPriorityField: React.FC<Props> = ({ selectedPriority, setSelect
 						<Button
 							key={key}
 							size="sm"
-							onClick={() => setSelectedPriority(priority)}
+							onClick={() => handleSelect(priority)}
 							className={cn(
 								'relative justify-start rounded-lg px-3 pr-9 text-base transition-colors',
 								getPriorityStyles(priority),

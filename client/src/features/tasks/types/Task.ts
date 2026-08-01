@@ -26,3 +26,9 @@ export interface CreateTaskDraft {
 	date: Date | undefined;
 	priority: TPriority;
 }
+
+export interface UpdateTaskRequest extends Partial<CreateTaskRequest> {}
+
+export interface UpdateTaskRequestDTO extends UpdateTaskRequest {
+	id: number;
+}

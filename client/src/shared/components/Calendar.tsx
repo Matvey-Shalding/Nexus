@@ -1,8 +1,9 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
+import { OnSelectHandler } from 'react-day-picker';
 import { Calendar as CalendarBase } from '../ui/calendar';
 interface Props {
 	selected: Date | undefined;
-	onSelect: Dispatch<SetStateAction<Date | undefined>>;
+	onSelect: OnSelectHandler<Date | undefined>;
 }
 export const Calendar: React.FC<Props> = ({ selected, onSelect }) => {
 	return (

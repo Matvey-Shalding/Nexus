@@ -1,11 +1,11 @@
 import { queryClient } from '@/lib/reactQueryClient';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { deleteTask } from '../api/deleteTask';
+import { deleteTask as removeTask } from '../api/deleteTask';
 
-export const useDeleteTask = () => {
-	const { mutate: handleDelete } = useMutation({
-		mutationFn: (taskId: number) => deleteTask(taskId),
+export const useDeleteTask = (id: number) => {
+	const { mutate: deleteTask } = useMutation({
+		mutationFn: () => removeTask(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['tasks'] });
 			toast.success('Task deleted successfully');
@@ -15,5 +15,5 @@ export const useDeleteTask = () => {
 		},
 	});
 
-	return { handleDelete };
+	return { deleteTask };
 };

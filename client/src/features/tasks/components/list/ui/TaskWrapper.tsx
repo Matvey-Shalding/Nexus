@@ -1,4 +1,5 @@
 import { TPriority } from '@/features/tasks/types/Priority';
+import { UpdateTaskRequest } from '@/features/tasks/types/Task';
 import React from 'react';
 import { TaskDateField } from './TaskDateField';
 import { TaskDeleteButton } from './TaskDeleteButton';
@@ -14,7 +15,8 @@ interface Props {
 	setSelectedDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
 	selectedPriority: TPriority;
 	setSelectedPriority: React.Dispatch<React.SetStateAction<TPriority>>;
-	handleDelete: () => void;
+	deleteTask: () => void;
+	updateTask: (data: UpdateTaskRequest) => void;
 }
 
 export const TaskWrapper: React.FC<Props> = ({
@@ -25,7 +27,8 @@ export const TaskWrapper: React.FC<Props> = ({
 	setSelectedDate,
 	selectedPriority,
 	setSelectedPriority,
-	handleDelete,
+	deleteTask,
+	updateTask,
 }) => {
 	return (
 		<TaskLayout>
@@ -35,14 +38,16 @@ export const TaskWrapper: React.FC<Props> = ({
 				inputProps={inputProps}
 			/>
 			<TaskDateField
+				updateTask={updateTask}
 				selectedDate={selectedDate}
 				setSelectedDate={setSelectedDate}
 			/>
 			<TaskPriorityField
+				updateTask={updateTask}
 				selectedPriority={selectedPriority}
 				setSelectedPriority={setSelectedPriority}
 			/>
-			<TaskDeleteButton onDelete={handleDelete} />
+			<TaskDeleteButton onDelete={deleteTask} />
 		</TaskLayout>
 	);
 };
