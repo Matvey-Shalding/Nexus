@@ -2,10 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+
 import { getTasks } from '../api/getTasks';
 import { useTaskView } from '../store/task.store';
+
 import { TaskBoardView } from './board/TaskBoardView';
 import { TaskListView } from './list/TaskListView';
+
 interface Props {
 	className?: string;
 }

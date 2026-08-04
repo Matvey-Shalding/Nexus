@@ -1,12 +1,13 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { ChevronsLeft } from 'lucide-react';
+import React from 'react';
+
 import { Button } from '../../../shared/ui/button';
 import { Logo } from '../../../shared/ui/logo';
 import { SidebarHeader as Header, SidebarMenuButton, useSidebar } from '../../../shared/ui/sidebar';
 
-import { ChevronsLeft } from 'lucide-react';
-import React from 'react';
 interface Props {
 	className?: string;
 }

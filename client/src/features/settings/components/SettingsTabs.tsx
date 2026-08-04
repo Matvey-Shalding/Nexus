@@ -1,6 +1,8 @@
 import { TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import React from 'react';
+
 import { tabs } from '../config/settingsTabs';
+
 interface Props {
 	className?: string;
 }

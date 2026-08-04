@@ -1,6 +1,7 @@
 import { useDebounce } from '@/shared/hooks/useDebounce';
+import { useEffect } from 'react';
+
 import { UpdateTaskRequest } from '../types/Task';
-import { useEffect } from 'react'
 
 export const useUpdateTaskTitle = (title: string, updateTask: (data: UpdateTaskRequest) => void) => {
 	const debouncedTitle = useDebounce(title);

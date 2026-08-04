@@ -1,6 +1,8 @@
 import React from 'react';
 import { OnSelectHandler } from 'react-day-picker';
+
 import { Calendar as CalendarBase } from '../ui/calendar';
+
 interface Props {
 	selected: Date | undefined;
 	onSelect: OnSelectHandler<Date | undefined>;

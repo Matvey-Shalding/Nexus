@@ -1,6 +1,7 @@
 import { TPriority } from '../types/Priority';
-import { AddTaskMode } from './useAddTaskDraft'
-import { useCreateTask } from './useCreateTask'
+
+import { AddTaskMode } from './useAddTaskDraft';
+import { useCreateTask } from './useCreateTask';
 
 export const useAddTaskActions = (
 	setTitle: React.Dispatch<React.SetStateAction<string>>,
@@ -8,7 +9,7 @@ export const useAddTaskActions = (
 	setDate: React.Dispatch<React.SetStateAction<Date | undefined>>,
 	setMode: React.Dispatch<React.SetStateAction<AddTaskMode>>,
 ) => {
-	const handleTitleUpdate = (title:string) => {
+	const handleTitleUpdate = (title: string) => {
 		setTitle(title);
 	};
 

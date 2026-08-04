@@ -5,7 +5,9 @@ import { getQueryClient } from '@/lib/getQueryClient';
 import { Hydrate } from '@/shared/components/Hydrate';
 import { Sidebar as CoreSidebar } from '@/shared/ui/sidebar';
 import { dehydrate } from '@tanstack/react-query';
+
 import { Separator } from '../../../shared/ui/separator';
+
 import { SidebarContent } from './SidebarContent';
 import { SidebarFooter } from './SidebarFooter';
 import { SidebarHeader } from './SidebarHeader';

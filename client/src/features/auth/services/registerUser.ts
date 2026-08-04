@@ -1,4 +1,5 @@
 import { IRegisterRequest, register } from '..';
+
 import { loginUser } from './loginUser';
 
 export const registerUser = async (data: IRegisterRequest) => {

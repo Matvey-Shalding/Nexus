@@ -1,10 +1,13 @@
 'use client';
 
 import React from 'react';
+
 import { useTaskActions } from '../../hooks/useTaskActions';
 import { useTaskDraft } from '../../hooks/useTaskDraft';
 import { ITask } from '../../types/Task';
+
 import { TaskWrapper } from './ui/TaskWrapper';
+
 interface Props {
 	className?: string;
 	task: ITask;

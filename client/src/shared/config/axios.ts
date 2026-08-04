@@ -1,5 +1,6 @@
 import { refresh, useAuthStore } from '@/features/auth';
 import axios from 'axios';
+
 import { Routes } from './routes';
 
 export const axiosInstance = axios.create({

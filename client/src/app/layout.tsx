@@ -4,6 +4,7 @@ import { Toaster } from '@/shared/ui/sonner';
 import { Metadata } from 'next';
 import { ThemeProvider } from 'next-themes';
 import { DM_Sans, Geist, Geist_Mono, Noto_Sans } from 'next/font/google';
+
 import './globals.css';
 
 const notoSansHeading = Noto_Sans({ subsets: ['latin'], variable: '--font-heading' });

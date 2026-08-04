@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Skeleton } from '@/shared/ui/skeleton';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+
 import { Avatar } from '../../../shared/ui/avatar';
 
 interface Props {

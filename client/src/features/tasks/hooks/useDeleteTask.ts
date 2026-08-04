@@ -1,6 +1,7 @@
 import { queryClient } from '@/lib/reactQueryClient';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+
 import { deleteTask as removeTask } from '../api/deleteTask';
 
 export const useDeleteTask = (id: number) => {

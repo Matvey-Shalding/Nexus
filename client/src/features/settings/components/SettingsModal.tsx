@@ -3,14 +3,14 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
 import { Separator } from '@/shared/ui/separator';
 import { Tabs, TabsContent } from '@/shared/ui/tabs';
-
 import React from 'react';
+
 import { SettingsTabs } from './SettingsTabs';
-import { ProfileTab } from './tabs/ProfileTab';
-import { GeneralTab } from './tabs/GeneralTab';
+import { AITab } from './tabs/AITab';
 import { AppearanceTab } from './tabs/AppearanceTab';
 import { EditorTab } from './tabs/EditorTab';
-import { AITab } from './tabs/AITab';
+import { GeneralTab } from './tabs/GeneralTab';
+import { ProfileTab } from './tabs/ProfileTab';
 import { SecurityTab } from './tabs/SecurityTab';
 
 interface Props {

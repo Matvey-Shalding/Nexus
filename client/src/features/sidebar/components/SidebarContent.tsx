@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { SidebarContent as Content, SidebarGroup, SidebarGroupLabel } from '../../../shared/ui/sidebar';
+
 import { SidebarNavigation } from './SidebarNavigation';
+
 interface Props {
 	className?: string;
 }

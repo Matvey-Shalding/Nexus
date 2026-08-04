@@ -1,1 +1,1 @@
-export {Kanban} from "./components/Kanban"
+export { Kanban } from './components/Kanban';

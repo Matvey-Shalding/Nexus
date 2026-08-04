@@ -1,23 +1,22 @@
 'use client';
 
+import { TLoginSchema, VisibilityToggle, useLoginForm } from '..';
 import { cn } from '@/lib/utils';
+import { FormInput } from '@/shared/components/FormInput';
+import { Routes } from '@/shared/config/routes';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Field, FieldDescription, FieldError, FieldGroup } from '@/shared/ui/field';
-
-import { Loader, Lock, Mail } from 'lucide-react';
-
-import { Routes } from '@/shared/config/routes';
 import { InputGroupAddon } from '@/shared/ui/input-group';
 import { Logo } from '@/shared/ui/logo';
 import { AxiosError } from 'axios';
+import { Loader, Lock, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { toast } from 'sonner';
-import { TLoginSchema, useLoginForm, VisibilityToggle } from '..';
+
 import { loginUser } from '../services/loginUser';
-import { FormInput } from '@/shared/components/FormInput';
 
 interface Props {
 	className?: string;

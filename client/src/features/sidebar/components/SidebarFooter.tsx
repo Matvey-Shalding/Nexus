@@ -1,20 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
-
+import { useAuthStore } from '@/features/auth';
+import { SettingsModal } from '@/features/settings';
 import { SidebarFooter as Footer, SidebarMenu, useSidebar } from '@/shared/ui/sidebar';
+import React, { useState } from 'react';
 
 import { LogoutDialog } from './LogoutDialog';
 import { UserDropdown } from './UserDropdown';
-import { SettingsModal } from '@/features/settings';
-import { useAuthStore } from '@/features/auth'
 
 export const SidebarFooter: React.FC = () => {
-	const { isMobile,open } = useSidebar();
+	const { isMobile, open } = useSidebar();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	
+
 	return (
 		<Footer>
 			<SidebarMenu>

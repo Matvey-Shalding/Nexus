@@ -1,4 +1,4 @@
-import { CalendarDays, Timer, KanbanSquare, LayoutDashboard, NotebookPen, Settings, UserRound } from 'lucide-react';
+import { CalendarDays, KanbanSquare, LayoutDashboard, NotebookPen, Settings, Timer, UserRound } from 'lucide-react';
 
 import { Routes } from '../../../shared/config/routes';
 

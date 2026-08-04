@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+
 import { TPriority } from '../types/Priority';
 
 export type AddTaskMode = 'default' | 'focused';

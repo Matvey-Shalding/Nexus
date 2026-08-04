@@ -11,7 +11,9 @@ import {
 import { SidebarMenuButton } from '@/shared/ui/sidebar';
 import { Bell, ChevronsUpDown, LogOut, Settings, Sparkles } from 'lucide-react';
 import React from 'react';
-import { UserInfo } from './UserInfo'
+
+import { UserInfo } from './UserInfo';
+
 ('lucide-react');
 
 interface Props {
@@ -44,7 +46,10 @@ export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIs
 					sideOffset={4}
 				>
 					<DropdownMenuLabel className="p-0 font-normal">
-						<UserInfo className="px-1" open={open} />
+						<UserInfo
+							className="px-1"
+							open={open}
+						/>
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>

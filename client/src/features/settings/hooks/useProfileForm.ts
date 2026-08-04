@@ -1,8 +1,9 @@
-import { useForm } from 'react-hook-form';
-import { editProfileSchema, TEditProfileSchema } from '../schemas/editProfileSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { IUser } from '@/features/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { TEditProfileSchema, editProfileSchema } from '../schemas/editProfileSchema';
 
 export const useProfileForm = (user: IUser | undefined, isPending: boolean) => {
 	const {

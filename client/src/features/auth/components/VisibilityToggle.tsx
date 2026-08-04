@@ -1,6 +1,5 @@
-import React, { Dispatch, SetStateAction } from 'react';
-
 import { Eye, EyeOff } from 'lucide-react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 interface Props {
 	className?: string;

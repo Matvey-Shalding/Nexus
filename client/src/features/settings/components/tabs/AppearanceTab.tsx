@@ -5,7 +5,9 @@ import { Switch } from '@/shared/ui/switch';
 import { TabsContent } from '@/shared/ui/tabs';
 import { useTheme } from 'next-themes';
 import React from 'react';
+
 import { SettingsTabTitle } from '../SettingsTabTitle';
+
 interface Props {
 	className?: string;
 }

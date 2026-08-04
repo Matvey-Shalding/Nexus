@@ -11,6 +11,7 @@ import {
 	AlertDialogTitle,
 } from '@/shared/ui/alert-dialog';
 import React from 'react';
+
 import { useLogout } from '../hooks/useLogout';
 
 interface Props {

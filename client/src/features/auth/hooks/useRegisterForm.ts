@@ -1,11 +1,9 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-
-import { useForm } from 'react-hook-form';
-
-import { useState } from 'react';
 import { TRegisterSchema, registerSchema } from '..';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 // TODO: refresh logic + login
 

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { PublicRoutes, Routes } from './shared/config/routes';
 
 export function proxy(request: NextRequest) {

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+
 import { TaskGroupBy, TaskSortBy, TaskSortOrder } from '../types/TaskView';
 
 type TaskView = 'list' | 'board';

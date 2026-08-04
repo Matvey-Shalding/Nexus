@@ -1,5 +1,5 @@
-import { axiosInstance } from '@/shared/config/axios';
 import { IUpdateUserRequest, IUser } from '..';
+import { axiosInstance } from '@/shared/config/axios';
 import { updateTag } from 'next/cache';
 
 export const updateCurrentUser = async (data: IUpdateUserRequest) => {

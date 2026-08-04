@@ -1,4 +1,5 @@
 import z from 'zod';
+
 import { EMAIL_REGEXP } from './config';
 
 export const loginSchema = z.object({

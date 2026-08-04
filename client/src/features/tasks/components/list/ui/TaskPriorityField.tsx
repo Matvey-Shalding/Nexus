@@ -7,6 +7,7 @@ import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 import { CheckCheck, ChevronsUpDown } from 'lucide-react';
 import React from 'react';
+
 import { formatPriority } from '../../../utils/formatPriority';
 
 interface Props {

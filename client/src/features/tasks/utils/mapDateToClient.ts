@@ -1,4 +1,4 @@
-export const mapDateToClient = (date: string | Date | null | undefined):string => {
+export const mapDateToClient = (date: string | Date | null | undefined): string => {
 	if (!date) {
 		return 'No date';
 	}
