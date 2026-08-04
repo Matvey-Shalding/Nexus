@@ -36,6 +36,7 @@ export const AddTaskWrapper: React.FC<Props> = ({
 	return (
 		<TaskLayout taskRef={taskRef}>
 			<TaskTitleField
+				disableCheckbox
 				title={title}
 				inputProps={inputProps}
 				handleTitleUpdate={handleTitleUpdate}

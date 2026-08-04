@@ -24,9 +24,10 @@ function DropdownMenuPortal({ ...props }: MenuPrimitive.Portal.Props) {
 	);
 }
 
-function DropdownMenuTrigger({ ...props }: MenuPrimitive.Trigger.Props) {
+function DropdownMenuTrigger({ disabled = false, ...props }: MenuPrimitive.Trigger.Props) {
 	return (
 		<MenuPrimitive.Trigger
+			disabled={disabled}
 			data-slot="dropdown-menu-trigger"
 			{...props}
 		/>

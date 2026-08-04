@@ -10,23 +10,19 @@ interface Props {
 	task: ITask;
 }
 export const Task: React.FC<Props> = ({ task }) => {
-	const { title, setTitle, date, setDate, priority, setPriority } = useTaskDraft(
+	const { title, setTitle, date, setDate, priority, setPriority, isCompleted, setIsCompleted } = useTaskDraft(
 		task.title,
 		task.due_date,
 		task.priority,
+		task.completed,
 	);
 
-	const { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, deleteTask } = useTaskActions(
-		task.id,
-		title,
-		setTitle,
-		date,
-		setDate,
-		priority,
-		setPriority,
-	);
+	const { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, deleteTask, handleCompletedUpdate } =
+		useTaskActions(task.id, title, setTitle, date, setDate, priority, setPriority, setIsCompleted);
 	return (
 		<TaskWrapper
+			isCompleted={isCompleted}
+			handleCompletedUpdate={handleCompletedUpdate}
 			title={title}
 			handleTitleUpdate={handleTitleUpdate}
 			selectedDate={date}

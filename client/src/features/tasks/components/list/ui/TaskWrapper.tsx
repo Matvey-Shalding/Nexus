@@ -15,6 +15,8 @@ interface Props {
 	selectedPriority: TPriority;
 	handlePriorityUpdate: (priority: TPriority) => void;
 	deleteTask: () => void;
+	isCompleted?: boolean;
+	handleCompletedUpdate?: (value: boolean) => void;
 }
 
 export const TaskWrapper: React.FC<Props> = ({
@@ -26,19 +28,25 @@ export const TaskWrapper: React.FC<Props> = ({
 	selectedPriority,
 	handlePriorityUpdate,
 	deleteTask,
+	isCompleted,
+	handleCompletedUpdate,
 }) => {
 	return (
-		<TaskLayout>
+		<TaskLayout isCompleted={isCompleted}>
 			<TaskTitleField
+				isCompleted={isCompleted}
+				handleCompletedUpdate={handleCompletedUpdate}
 				title={title}
 				handleTitleUpdate={handleTitleUpdate}
 				inputProps={inputProps}
 			/>
 			<TaskDateField
+				isCompleted={isCompleted}
 				selectedDate={selectedDate}
 				handleDateUpdate={handleDateUpdate}
 			/>
 			<TaskPriorityField
+				isCompleted={isCompleted}
 				selectedPriority={selectedPriority}
 				handlePriorityUpdate={handlePriorityUpdate}
 			/>

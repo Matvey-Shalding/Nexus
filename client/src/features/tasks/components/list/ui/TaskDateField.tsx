@@ -9,8 +9,14 @@ interface Props {
 	selectedDate: Date | undefined;
 	handleDateUpdate: (date: Date | undefined) => void;
 	calendarRef?: RefObject<HTMLDivElement | null>;
+	isCompleted?: boolean;
 }
-export const TaskDateField: React.FC<Props> = ({ selectedDate, calendarRef, handleDateUpdate }) => {
+export const TaskDateField: React.FC<Props> = ({
+	selectedDate,
+	calendarRef,
+	handleDateUpdate,
+	isCompleted = false,
+}) => {
 	const date = mapDateToClient(selectedDate);
 
 	const [open, setOpen] = useState(false);
@@ -25,9 +31,14 @@ export const TaskDateField: React.FC<Props> = ({ selectedDate, calendarRef, hand
 			open={open}
 			onOpenChange={setOpen}
 		>
-			<DropdownMenuTrigger className="border-border flex w-full items-center justify-between border-r py-2 pr-3 text-lg font-medium transition-colors">
-				<span className="font-heading text-lg font-medium">{date}</span>
-				<ChevronsUpDown className="text-muted-foreground size-4.5" />
+			<DropdownMenuTrigger className="border-border w-full border-r">
+				<button
+					disabled={isCompleted}
+					className="flex min-h-full w-full items-center justify-between py-2 pr-3"
+				>
+					<span className="font-heading text-lg font-medium">{date}</span>
+					<ChevronsUpDown className="text-muted-foreground size-4.5" />
+				</button>
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent

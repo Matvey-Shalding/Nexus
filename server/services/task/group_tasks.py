@@ -27,9 +27,14 @@ def _group_by_default(tasks: list[Task]) -> GroupedTasks:
         "On this week": [],
         "On next week": [],
         "Later": [],
+        "Completed": [],
     }
 
     for task in tasks:
+
+        if task.completed:
+            result["Completed"].append(task)
+            continue
 
         date = task.due_date
 

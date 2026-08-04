@@ -1,25 +1,26 @@
 'use client';
 
 import { TPriority } from '@/features/tasks/types/Priority';
-import { UpdateTaskRequest } from '@/features/tasks/types/Task';
 import { getPriorityStyles, priorityStyles } from '@/features/tasks/utils/getPriorityStyles';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 import { CheckCheck, ChevronsUpDown } from 'lucide-react';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { formatPriority } from '../../../utils/formatPriority';
 
 interface Props {
 	selectedPriority: TPriority;
 	priorityRef?: React.RefObject<HTMLDivElement | null>;
 	handlePriorityUpdate: (priority: TPriority) => void;
+	isCompleted?: boolean;
 }
 
 export const TaskPriorityField: React.FC<Props> = ({
 	selectedPriority,
 	priorityRef,
 	handlePriorityUpdate,
+	isCompleted = false,
 }) => {
 	const priorityLabel = formatPriority(selectedPriority);
 	const styleClass = getPriorityStyles(selectedPriority);
@@ -29,17 +30,24 @@ export const TaskPriorityField: React.FC<Props> = ({
 	const handleSelect = (priority: TPriority) => {
 		setOpen(false);
 		handlePriorityUpdate(priority);
-	};;
+	};
 
 	return (
 		<DropdownMenu
 			open={open}
 			onOpenChange={setOpen}
 		>
-			<DropdownMenuTrigger className="border-border flex items-center justify-center gap-x-4 border-r py-1.5 pr-2">
+			<DropdownMenuTrigger
+				disabled={isCompleted}
+				className="border-border flex items-center justify-center gap-x-4 border-r py-1.5 pr-2"
+			>
 				<Button
 					size="sm"
-					className={cn('h-full shrink basis-full rounded-lg text-lg transition-colors', styleClass)}
+					className={cn(
+						'h-full shrink basis-full rounded-lg text-lg transition-colors',
+						styleClass,
+						isCompleted && 'pointer-events-none cursor-not-allowed opacity-60',
+					)}
 				>
 					{priorityLabel}
 				</Button>

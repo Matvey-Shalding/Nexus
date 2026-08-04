@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import { TPriority } from '../types/Priority';
 import { mapDateToServer } from '../utils/mapDateToServer';
 import { useDeleteTask } from './useDeleteTask';
@@ -12,6 +13,7 @@ export const useTaskActions = (
 	setDate: React.Dispatch<React.SetStateAction<Date | undefined>>,
 	priority: TPriority,
 	setPriority: React.Dispatch<React.SetStateAction<TPriority>>,
+	setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
 	const { updateTask } = useUpdateTask(id);
 
@@ -33,7 +35,12 @@ export const useTaskActions = (
 		updateTask({ due_date: formattedDate });
 	};
 
+	const handleCompletedUpdate = (isCompleted: boolean) => {
+		setIsCompleted(isCompleted);
+		updateTask({ completed: isCompleted });
+	};
+
 	const { deleteTask } = useDeleteTask(id);
 
-	return { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate,deleteTask };
+	return { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, deleteTask, handleCompletedUpdate };
 };
