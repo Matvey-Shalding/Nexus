@@ -16,15 +16,11 @@ export const useLoginForm = () => {
 		mode: 'onChange',
 	});
 
-	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
 	return {
 		handleSubmit,
 		control,
-		isPasswordVisible,
-		setIsPasswordVisible,
 		isSubmitting,
 		isValid,
 		setError,

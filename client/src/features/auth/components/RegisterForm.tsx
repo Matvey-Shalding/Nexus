@@ -1,6 +1,6 @@
 'use client';
 
-import { TRegisterSchema, VisibilityToggle, registerUser, useRegisterForm } from '..';
+import { TRegisterSchema, registerUser, useRegisterForm } from '..';
 import { cn } from '@/lib/utils';
 import { FormInput } from '@/shared/components/FormInput';
 import { Routes } from '@/shared/config/routes';
@@ -20,16 +20,10 @@ interface Props {
 	className?: string;
 }
 
-//TODO: test register
-
 export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: string }) => {
 	const {
 		handleSubmit,
 		control,
-		isPasswordVisible,
-		setIsPasswordVisible,
-		isConfirmPasswordVisible,
-		setIsConfirmPasswordVisible,
 		isSubmitting,
 		isValid,
 		setError,
@@ -76,6 +70,7 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
 							<FormInput
+								autoFocus
 								fieldName="name"
 								control={control}
 								label="Name"
@@ -103,18 +98,12 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 										fieldName="password"
 										control={control}
 										label="Password"
-										type={isPasswordVisible ? 'text' : 'password'}
+										showVisibilityToggle
 										placeholder="•••••••••••••••••••••••"
 									>
 										<>
 											<InputGroupAddon>
 												<Lock className="size-4.5" />
-											</InputGroupAddon>
-											<InputGroupAddon align="inline-end">
-												<VisibilityToggle
-													isVisible={isPasswordVisible}
-													setIsVisible={setIsPasswordVisible}
-												/>
 											</InputGroupAddon>
 										</>
 									</FormInput>
@@ -122,19 +111,14 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 										fieldName="confirmPassword"
 										control={control}
 										label="Confirm Password"
-										type={isConfirmPasswordVisible ? 'text' : 'password'}
+										showVisibilityToggle
 										placeholder="•••••••••••••••••••••••"
 									>
 										<>
 											<InputGroupAddon>
 												<Lock className="size-4.5" />
 											</InputGroupAddon>
-											<InputGroupAddon align="inline-end">
-												<VisibilityToggle
-													isVisible={isConfirmPasswordVisible}
-													setIsVisible={setIsConfirmPasswordVisible}
-												/>
-											</InputGroupAddon>
+											<InputGroupAddon align="inline-end"></InputGroupAddon>
 										</>
 									</FormInput>
 								</Field>

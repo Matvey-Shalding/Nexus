@@ -1,7 +1,7 @@
 import { IUpdateUserRequest, IUser } from '..';
 import { axiosInstance } from '@/shared/config/axios';
-import { updateTag } from 'next/cache';
+import { ApiRoutes } from '@/shared/config/routes';
 
 export const updateCurrentUser = async (data: IUpdateUserRequest) => {
-	await axiosInstance.patch<IUser>('/users/me', data);
+	await axiosInstance.patch<IUser>(ApiRoutes.USER, data);
 };

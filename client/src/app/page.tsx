@@ -1,3 +1,8 @@
+import { Routes } from '@/shared/config'
+import { redirect } from 'next/navigation'
+
 export default function Home() {
-	return <div className="grid h-screen w-screen place-content-center"></div>;
+	redirect(Routes.DASHBOARD);
+
+	return null
 }

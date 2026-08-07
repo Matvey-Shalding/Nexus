@@ -1,27 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { PublicRoutes, Routes } from './shared/config/routes';
+import { APP_PREFIX, AUTH_PREFIX, Routes } from './shared/config/routes';
 
 export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
-	const refreshToken = request.cookies.get('refresh_token')?.value;
+	const { cookies, url } = request;
 
-	const isPublicRoute = PublicRoutes.includes(pathname as (typeof PublicRoutes)[number]);
+	const refreshToken = cookies.get('refresh_token')?.value;
 
-	if (isPublicRoute && refreshToken) {
-		return NextResponse.redirect(new URL(Routes.DEFAULT, request.url));
+	const isAuthPage = pathname.startsWith(AUTH_PREFIX);
+
+	const isDashboardPage = pathname.startsWith(APP_PREFIX);
+
+	// authenticated users can't access auth routes
+
+	if (isAuthPage && refreshToken) {
+		return NextResponse.redirect(new URL(Routes.DASHBOARD, url));
 	}
 
-	if (!isPublicRoute && !refreshToken) {
-		return NextResponse.redirect(new URL(Routes.LOGIN, request.url));
+	if (isAuthPage) {
+		return NextResponse.next();
+	}
+
+	// unauthenticated users can't access dashboard routes
+
+	if (isDashboardPage && !refreshToken) {
+		return NextResponse.redirect(new URL(Routes.LOGIN, url));
 	}
 
 	return NextResponse.next();
 }
 
 export const config = {
-	matcher: [
-		'/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)).*)',
-	],
+	matcher: ['/app/:path*', '/auth/:path*'],
 };

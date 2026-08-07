@@ -1,7 +1,8 @@
 import { refresh, useAuthStore } from '@/features/auth';
 import axios from 'axios';
 
-import { Routes } from './routes';
+import { ApiRoutes, Routes } from './routes';
+
 
 export const axiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -27,14 +28,14 @@ axiosInstance.interceptors.response.use(
 	async error => {
 		if (error.response?.status === 401) {
 			// ignore responses coming from refresh
-			if (error.config.url === '/auth/refresh') {
+			if (error.config.url === ApiRoutes.REFRESH) {
 				useAuthStore.getState().clearAccessToken();
 				return Promise.reject(error);
 			}
 
 			// ignore auth routes
 
-			if (error.config.url === '/auth/register' || error.config.url === '/auth/login') {
+			if (error.config.url === ApiRoutes.REGISTER || error.config.url === ApiRoutes.LOGIN) {
 				return Promise.reject(error);
 			}
 

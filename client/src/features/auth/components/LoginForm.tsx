@@ -1,6 +1,6 @@
 'use client';
 
-import { TLoginSchema, VisibilityToggle, useLoginForm } from '..';
+import { TLoginSchema, useLoginForm } from '..';
 import { cn } from '@/lib/utils';
 import { FormInput } from '@/shared/components/FormInput';
 import { Routes } from '@/shared/config/routes';
@@ -23,17 +23,7 @@ interface Props {
 }
 
 export const LoginForm: React.FC<Props> = memo(({ className }: { className?: string }) => {
-	const {
-		handleSubmit,
-		control,
-		isPasswordVisible,
-		setIsPasswordVisible,
-		isSubmitting,
-		isValid,
-		setError,
-		errors,
-		setIsSubmitting,
-	} = useLoginForm();
+	const { handleSubmit, control, isSubmitting, isValid, setError, errors, setIsSubmitting } = useLoginForm();
 
 	const router = useRouter();
 
@@ -75,6 +65,7 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<FieldGroup>
 							<FormInput
+								autoFocus
 								fieldName="email"
 								control={control}
 								label="Email"
@@ -90,19 +81,14 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 								fieldName="password"
 								control={control}
 								label="Password"
-								type={isPasswordVisible ? 'text' : 'password'}
+								showVisibilityToggle
 								placeholder="•••••••••••••••••••••••"
 							>
 								<>
 									<InputGroupAddon>
 										<Lock className="size-4.5" />
 									</InputGroupAddon>
-									<InputGroupAddon align="inline-end">
-										<VisibilityToggle
-											isVisible={isPasswordVisible}
-											setIsVisible={setIsPasswordVisible}
-										/>
-									</InputGroupAddon>
+									<InputGroupAddon align="inline-end"></InputGroupAddon>
 								</>
 							</FormInput>
 
