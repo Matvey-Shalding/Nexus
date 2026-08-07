@@ -1,16 +1,19 @@
 import React from 'react';
 
-import { ITask } from '../../types/Task';
+import { ITask, ITaskGroupDefaultValues } from '../../types/Task';
 
 import { AddTask } from './AddTask';
 import { Task } from './Task';
 
 interface Props {
 	className?: string;
+	id: string;
 	title: string;
 	tasks: ITask[];
+	creationEnabled: boolean;
+	defaultValues: ITaskGroupDefaultValues | null;
 }
-export const TaskListRow: React.FC<Props> = ({ title, tasks }) => {
+export const TaskListRow: React.FC<Props> = ({ title, tasks, creationEnabled, defaultValues }) => {
 	return (
 		<div className="flex w-full flex-col gap-y-2">
 			<span className="font-heading pl-2.5 text-xl font-semibold">{title}</span>
@@ -21,7 +24,7 @@ export const TaskListRow: React.FC<Props> = ({ title, tasks }) => {
 						task={task}
 					/>
 				))}
-				<AddTask />
+				{creationEnabled && <AddTask defaultValues={defaultValues} />}
 			</div>
 		</div>
 	);

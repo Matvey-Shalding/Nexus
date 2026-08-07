@@ -1,24 +1,27 @@
 import React from 'react';
 
-import { IGroupedTasks } from '../../types/Task';
+import { ITaskGroup } from '../../types/Task';
 
 import { TaskListRow } from './TaskListRow';
 import { TaskListViewTitle } from './TaskListViewTitle';
 
 interface Props {
-	tasks: IGroupedTasks;
+	taskGroups: ITaskGroup[];
 }
 
-export const TaskListView: React.FC<Props> = ({ tasks }) => {
+export const TaskListView: React.FC<Props> = ({ taskGroups }) => {
 	return (
 		<div className="flex flex-col gap-y-2">
 			<TaskListViewTitle />
 			<div className="flex w-full flex-col gap-y-5">
-				{Object.keys(tasks).map(key => (
+				{taskGroups.map(taskGroup => (
 					<TaskListRow
-						key={key}
-						title={key}
-						tasks={tasks[key]}
+						key={taskGroup.id}
+						id={taskGroup.id}
+						title={taskGroup.title}
+						tasks={taskGroup.tasks}
+						creationEnabled={taskGroup.creation.enabled}
+						defaultValues={taskGroup.creation.defaults}
 					/>
 				))}
 			</div>

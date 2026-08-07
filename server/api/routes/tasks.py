@@ -10,6 +10,7 @@ from dependencies.user import get_current_user
 from app.models.user import User
 
 from app.deps import db_dependency
+from app.schemas.task import TaskGroup
 from services.task.task_service import TaskService
 
 from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
@@ -56,15 +57,13 @@ async def delete_task(task_id: int, current_user: user_dependency, db: db_depend
     )
 
 
-@tasks_router.get(
-    "/", status_code=status.HTTP_200_OK, response_model=dict[str, list[TaskResponse]]
-)
+@tasks_router.get("/", status_code=status.HTTP_200_OK, response_model=list[TaskGroup])
 async def get_tasks(
     current_user: user_dependency,
     db: db_dependency,
     group_by: TaskGroupBy = TaskGroupBy.DEFAULT,
     sort_by: TaskSortBy = TaskSortBy.DEFAULT,
     sort_order: TaskSortOrder = TaskSortOrder.ASC,
-):
+) -> list[TaskGroup]:
 
     return await task_service.get_tasks(db=db, current_user=current_user)

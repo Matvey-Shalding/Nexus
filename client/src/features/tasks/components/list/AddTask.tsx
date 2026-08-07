@@ -5,17 +5,19 @@ import { useAddTaskInteractions } from '@/features/tasks/hooks/useAddTaskInterac
 import React from 'react';
 
 import { useAddTaskActions } from '../../hooks/useAddTaskActions';
+import { ITaskGroupDefaultValues } from '../../types/Task';
 
 import { AddTaskButton } from './ui/AddTaskButton';
 import { AddTaskWrapper } from './ui/AddTaskWrapper';
 
 interface Props {
 	className?: string;
+	defaultValues: ITaskGroupDefaultValues | null;
 }
 
-export const AddTask: React.FC<Props> = ({}) => {
+export const AddTask: React.FC<Props> = ({ defaultValues }) => {
 	const { mode, setMode, title, setTitle, date, setDate, taskRef, calendarRef, priorityRef, priority, setPriority } =
-		useAddTaskDraft();
+		useAddTaskDraft(defaultValues);
 
 	const { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, reset, createTask } = useAddTaskActions(
 		setTitle,

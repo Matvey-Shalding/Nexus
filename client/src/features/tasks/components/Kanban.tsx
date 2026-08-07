@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import { getTasks } from '../api/getTasks';
+import { getTaskGroups } from '../api/getTaskGroups';
 import { useTaskView } from '../store/task.store';
 
 import { TaskBoardView } from './board/TaskBoardView';
@@ -13,18 +13,18 @@ interface Props {
 	className?: string;
 }
 export const Kanban: React.FC<Props> = ({}) => {
-	const { data: tasks } = useQuery({
+	const { data: taskGroups } = useQuery({
 		queryKey: ['tasks'],
-		queryFn: getTasks,
+		queryFn: getTaskGroups,
 	});
 
 	const { taskView } = useTaskView();
 
-	if (!tasks) return 'Loading...';
+	if (!taskGroups) return 'Loading...';
 
 	if (taskView === 'board') {
-		return <TaskBoardView tasks={tasks} />;
+		return <TaskBoardView taskGroups={taskGroups} />;
 	} else {
-		return <TaskListView tasks={tasks} />;
+		return <TaskListView taskGroups={taskGroups} />;
 	}
 };

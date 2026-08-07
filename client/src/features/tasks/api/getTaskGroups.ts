@@ -1,12 +1,12 @@
 import { axiosInstance } from '@/shared/config/axios';
 
 import { useTaskView } from '../store/task.store';
-import { IGroupedTasks } from '../types/Task';
+import { ITaskGroup } from '../types/Task';
 
-export const getTasks = async () => {
+export const getTaskGroups = async () => {
 	const { groupBy, sortBy, sortOrder } = useTaskView.getState();
 
-	const response = await axiosInstance.get<IGroupedTasks>('/tasks', {
+	const response = await axiosInstance.get<ITaskGroup[]>('/tasks', {
 		params: {
 			group_by: groupBy,
 			sort_by: sortBy,

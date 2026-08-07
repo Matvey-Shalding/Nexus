@@ -1,10 +1,11 @@
-from datetime import datetime, timezone, date
-import re
-import time
-from typing import Any
+from datetime import date
 
 
-from app.schemas.task import CreateTaskRequest, UpdateTaskRequest
+from app.schemas.task import (
+    CreateTaskRequest,
+    TaskGroup as TaskGroupDTO,
+    UpdateTaskRequest,
+)
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,9 +19,13 @@ from datetime import date
 
 from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
 
-from services.task.group_tasks import GroupedTasks, group_tasks
+from services.task.task_mapper.task_mapping_service import map_tasks
+from services.task.task_grouping.service import group_tasks
 
-from services.task.sort_tasks import sort_tasks
+from services.task.task_sorting.sort_tasks_service import sort_tasks
+
+from app.types.task import TaskGroup
+
 
 class TaskService:
 
@@ -76,16 +81,14 @@ class TaskService:
         group_by: TaskGroupBy = TaskGroupBy.DEFAULT,
         sort_by: TaskSortBy = TaskSortBy.DEFAULT,
         sort_order: TaskSortOrder = TaskSortOrder.ASC,
-    ) -> GroupedTasks:
+    ) -> list[TaskGroupDTO]:
 
         task_repository = TaskRepository()
 
-        fetched_tasks = await task_repository.get_tasks(db, current_user.id)
+        tasks: list[Task] = list(await task_repository.get_tasks(db, current_user.id))
 
-        tasks = list(fetched_tasks)
+        task_groups: list[TaskGroup] = group_tasks(tasks, group_by)
 
-        grouped_tasks: GroupedTasks = group_tasks(tasks, group_by)
+        sort_tasks(task_groups, sort_by, order_by=sort_order)
 
-        sort_tasks(grouped_tasks,sort_by,order_by=sort_order)
-
-        return grouped_tasks
+        return map_tasks(task_groups)

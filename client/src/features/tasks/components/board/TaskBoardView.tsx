@@ -1,9 +1,8 @@
 import React from 'react';
-
-import { IGroupedTasks } from '../../types/Task';
+import { ITaskGroup } from '../../types/Task'
 
 interface Props {
-	tasks: IGroupedTasks;
+	taskGroups: ITaskGroup[];
 }
 export const TaskBoardView: React.FC<Props> = ({}) => {
 	return <div>TaskBoardView</div>;

@@ -12,15 +12,10 @@ from datetime import date, datetime
 
 from typing import TYPE_CHECKING
 
+from app.enums.priority import PriorityEnum
+
 if TYPE_CHECKING:
     from app.models.user import User
-
-
-class PriorityEnum(enum.IntEnum):
-    DEFAULT = 0
-    LOW = 1
-    MEDIUM = 2
-    HIGH = 3
 
 
 class Task(Base):

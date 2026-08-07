@@ -1,5 +1,5 @@
 import { Kanban } from '@/features/tasks';
-import { getTasks } from '@/features/tasks/api/getTasks';
+import { getTaskGroups } from '@/features/tasks/api/getTaskGroups';
 import { getQueryClient } from '@/lib/getQueryClient';
 import { Hydrate, Title } from '@/shared/components';
 import { dehydrate } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ export default async function Page() {
 
 	await queryClient.prefetchQuery({
 		queryKey: ['tasks'],
-		queryFn: getTasks,
+		queryFn: getTaskGroups,
 	});
 
 	return (

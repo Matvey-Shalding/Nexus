@@ -2,15 +2,18 @@ from datetime import datetime
 
 from app.enums.task import TaskSortBy, TaskSortOrder
 from app.models.task import Task
-from services.task.group_tasks import GroupedTasks
+from app.types.task import TaskGroup
 
 
 def sort_tasks(
-    tasks: GroupedTasks, sort_by: TaskSortBy, order_by: TaskSortOrder
+    task_groups: list[TaskGroup], sort_by: TaskSortBy, order_by: TaskSortOrder
 ) -> None:
     is_desc = order_by == TaskSortOrder.DESC
 
-    for column in tasks.values():
+    for task_group in task_groups:
+
+        column: list[Task] = task_group["tasks"]
+
         match sort_by:
             case TaskSortBy.DEFAULT:
                 _sort_by_default(column)
@@ -51,6 +54,7 @@ def _sort_by_priority(tasks: list[Task], is_desc: bool) -> None:
 
 
 def _sort_by_due_date(tasks: list[Task], is_desc: bool) -> None:
+
     def sort_key(task: Task):
         has_no_date = task.due_date is None
 

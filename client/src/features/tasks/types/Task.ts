@@ -9,8 +9,19 @@ export interface ITask {
 	position: number | null;
 }
 
-export interface IGroupedTasks {
-	[key: string]: ITask[];
+export interface ITaskGroupDefaultValues {
+	due_date: string | null;
+	priority: TPriority | null;
+}
+
+export interface ITaskGroup {
+	id: string;
+	title: string;
+	tasks: ITask[];
+	creation: {
+		enabled: boolean;
+		defaults: ITaskGroupDefaultValues | null;
+	};
 }
 
 export interface CreateTaskRequest {
