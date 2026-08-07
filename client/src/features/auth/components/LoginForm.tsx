@@ -1,6 +1,6 @@
 'use client';
 
-import { TLoginSchema, useLoginForm } from '..';
+import { useLoginForm } from '..';
 import { cn } from '@/lib/utils';
 import { FormInput } from '@/shared/components/FormInput';
 import { Routes } from '@/shared/config/routes';
@@ -9,47 +9,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/sha
 import { Field, FieldDescription, FieldError, FieldGroup } from '@/shared/ui/field';
 import { InputGroupAddon } from '@/shared/ui/input-group';
 import { Logo } from '@/shared/ui/logo';
-import { AxiosError } from 'axios';
 import { Loader, Lock, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { memo } from 'react';
-import { toast } from 'sonner';
 
-import { loginUser } from '../services/loginUser';
+import { useLogIn } from '../hooks/useLogIn';
 
 interface Props {
 	className?: string;
 }
 
 export const LoginForm: React.FC<Props> = memo(({ className }: { className?: string }) => {
-	const { handleSubmit, control, isSubmitting, isValid, setError, errors, setIsSubmitting } = useLoginForm();
+	const { handleSubmit, control, isSubmitting, isValid, setError, errors } = useLoginForm();
 
-	const router = useRouter();
-
-	const onSubmit = async (data: TLoginSchema) => {
-		// Swap with TLoginSchema when ready
-		setIsSubmitting(true);
-
-		await toast.promise(loginUser(data), {
-			loading: 'Signing you in...',
-			success: () => {
-				router.push(Routes.DEFAULT);
-				return 'Welcome back to Nexus';
-			},
-			error: (error: AxiosError) => {
-				if (error.response?.status === 401) {
-					setError('root', { message: 'Invalid email or password' });
-					return 'Invalid credentials';
-				} else {
-					return 'Something went wrong. Please try again.';
-				}
-			},
-			finally: () => {
-				setIsSubmitting(false);
-			},
-		});
-	};
+	const { onSubmit } = useLogIn(setError);
 
 	return (
 		<div className={cn('flex w-120 flex-col gap-6', className)}>

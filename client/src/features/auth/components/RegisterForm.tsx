@@ -1,6 +1,6 @@
 'use client';
 
-import { TRegisterSchema, registerUser, useRegisterForm } from '..';
+import { useRegisterForm } from '..';
 import { cn } from '@/lib/utils';
 import { FormInput } from '@/shared/components/FormInput';
 import { Routes } from '@/shared/config/routes';
@@ -9,52 +9,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/sha
 import { Field, FieldDescription, FieldError, FieldGroup } from '@/shared/ui/field';
 import { InputGroupAddon } from '@/shared/ui/input-group';
 import { Logo } from '@/shared/ui/logo';
-import { AxiosError } from 'axios';
 import { Loader, Lock, Mail, User } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { memo } from 'react';
-import { toast } from 'sonner';
+
+import { useRegister } from '../hooks/useRegister';
 
 interface Props {
 	className?: string;
 }
 
 export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: string }) => {
-	const {
-		handleSubmit,
-		control,
-		isSubmitting,
-		isValid,
-		setError,
-		errors,
-		setIsSubmitting,
-	} = useRegisterForm();
+	const { handleSubmit, control, isSubmitting, isValid, setError, errors } = useRegisterForm();
 
-	const router = useRouter();
-
-	const onSubmit = async (data: TRegisterSchema) => {
-		setIsSubmitting(true);
-
-		await toast.promise(registerUser(data), {
-			loading: 'Creating your account...',
-			success: () => {
-				router.push(Routes.DEFAULT);
-				return 'Welcome to Nexus';
-			},
-			error: (error: AxiosError) => {
-				if (error.response?.status === 409) {
-					setError('email', { message: 'User already exists' });
-					return 'User already exists';
-				} else {
-					return 'Something went wrong. Please try again.';
-				}
-			},
-			finally: () => {
-				setIsSubmitting(false);
-			},
-		});
-	};
+	const { onSubmit } = useRegister(setError);
 
 	return (
 		<div className={cn('flex w-120 flex-col gap-6', className)}>
