@@ -18,7 +18,7 @@ class RefreshToken(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True,autoincrement=True)
 
-    user : Mapped["User"] = relationship(back_populates="refresh_token")
+    user : Mapped["User"] = relationship(back_populates="refresh_token",cascade="all, delete")
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"),unique=True)
 

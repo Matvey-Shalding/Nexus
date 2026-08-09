@@ -32,10 +32,12 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
 
     refresh_token: Mapped["RefreshToken"] = relationship(
-        back_populates="user", uselist=False
+        back_populates="user", uselist=False, cascade="all, delete"
     )
 
-    tasks: Mapped[list["Task"]] = relationship("Task", back_populates="user",cascade="all, delete-orphan")
+    tasks: Mapped[list["Task"]] = relationship(
+        "Task", back_populates="user", cascade="all, delete"
+    )
 
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
 

@@ -48,9 +48,9 @@ class Task(Base):
         nullable=False,
     )
 
-    position: Mapped[float | None] = mapped_column(
+    position: Mapped[float] = mapped_column(
         Float,
-        nullable=True,
+        nullable=False,
     )
 
     user_id: Mapped[int] = mapped_column(
@@ -58,7 +58,7 @@ class Task(Base):
         nullable=False,
     )
 
-    user: Mapped["User"] = relationship(back_populates="tasks")
+    user: Mapped["User"] = relationship(back_populates="tasks", cascade="all, delete")
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
