@@ -13,7 +13,7 @@ export const TaskListView: React.FC<Props> = ({ taskGroups }) => {
 	return (
 		<div className="flex flex-col gap-y-2">
 			<TaskListViewTitle />
-			<div className="flex w-full flex-col gap-y-5">
+			<div className="flex w-full flex-col gap-y-3">
 				{taskGroups.map(taskGroup => (
 					<TaskListRow
 						key={taskGroup.id}

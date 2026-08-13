@@ -40,7 +40,7 @@ export const TaskPriorityField: React.FC<Props> = ({
 		>
 			<DropdownMenuTrigger
 				disabled={isCompleted}
-				className="border-border flex items-center justify-center gap-x-4 border-r py-1.5 pr-2"
+				className="border-border flex items-center group justify-center hover:bg-muted/40  gap-x-4 border-r py-1.5 pl-3.5 pr-2"
 			>
 				<Button
 					size="sm"
@@ -52,12 +52,17 @@ export const TaskPriorityField: React.FC<Props> = ({
 				>
 					{priorityLabel}
 				</Button>
-				<ChevronsUpDown className="text-muted-foreground size-4.5 min-w-4.5" />
+				<ChevronsUpDown
+					className={cn(
+						'text-muted-foreground size-4.5 min-w-4.5 transition-[transform_color] duration-300 group-hover:text-foreground',
+						open ? 'rotate-180' : 'rotate-0',
+					)}
+				/>
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent
 				ref={priorityRef}
-				className="bg-popover flex min-w-44 flex-col gap-2 p-3"
+				className="bg-popover/90 flex min-w-44 flex-col gap-2 p-3"
 			>
 				{Object.keys(priorityStyles).map(key => {
 					const priority = Number(key) as TPriority;

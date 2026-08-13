@@ -29,10 +29,12 @@ export const TaskTitleField: React.FC<Props> = ({
 
 	return (
 		<div className="border-border flex items-center gap-x-1 border-r py-2 pr-1">
-			<div className="cursor-grab p-1 hover:bg-muted rounded-lg transition-colors duration-150">
-				{' '}
+			<div className="cursor-grab p-1 rounded-lg transition-colors duration-150">
 				<GripVertical
-					className={cn('size-6 transition-opacity hover:bg-muted', isCompleted && 'text-muted-foreground opacity-60')}
+					className={cn(
+						'size-6 text-muted-foreground hover:scale-105 hover:text-white transition-[opacity_color_transform]',
+						isCompleted && 'text-muted-foreground opacity-60',
+					)}
 				/>
 			</div>
 

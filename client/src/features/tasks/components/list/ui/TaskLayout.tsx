@@ -12,16 +12,16 @@ interface Props {
 }
 
 export const TaskLayout = forwardRef<HTMLDivElement, Props>(
-	({ children, taskRef, isCompleted = false, isDragging }, ref) => {
+	({ children, taskRef, isCompleted = false, isDragging = false }, ref) => {
 		const mergedRef = useMergedRefs(taskRef, ref);
 
 		return (
 			<div
 				ref={mergedRef}
 				className={cn(
-					'border-border grid min-h-14 w-full grid-cols-[8fr_2.75fr_2.25fr_0.5fr] gap-3.5 border-y pl-2.5 transition-all duration-200',
-					isCompleted && 'opacity-80',
-					isDragging && ['opacity-40', 'bg-muted/30'],
+					['grid min-h-14 w-full grid-cols-[8fr_2.75fr_2.5fr_0.6fr]', 'border-b border-border pl-2.5', ,],
+					isCompleted && ['bg-muted/20'],
+					isDragging && ['bg-muted/30', 'opacity-40', 'shadow-none'],
 				)}
 			>
 				{children}
@@ -29,3 +29,5 @@ export const TaskLayout = forwardRef<HTMLDivElement, Props>(
 		);
 	},
 );
+
+TaskLayout.displayName = 'TaskLayout';
