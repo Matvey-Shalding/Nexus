@@ -18,9 +18,13 @@ export const handleDragEnd = (event: any, moveTask: (data: MoveTaskRequest) => v
 
 	const draggedTaskData: ITaskDragData = source.data satisfies ITaskDragData;
 
+	const sourceGroupId = draggedTaskData.groupId;
+
+	if (targetGroupId === sourceGroupId) return;
+
 	const defaults: ITaskGroupDefaultValues | null = target.data.defaults satisfies ITaskGroupDefaultValues | null;
 
-	const updateData = handleCreateMoveTaskRequest(taskId, targetGroupId, defaults);
+	const updateData = handleCreateMoveTaskRequest(taskId, targetGroupId, sourceGroupId, defaults);
 
 	moveTask({ updateData, targetGroupId, draggedTaskData });
 };

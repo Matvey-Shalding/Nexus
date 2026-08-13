@@ -3,11 +3,16 @@ import { ITaskGroupDefaultValues, UpdateTaskRequest } from '../types/Task';
 export const handleCreateMoveTaskRequest = (
 	taskId: number,
 	targetGroupId: string,
+	sourceGroupId: string,
 	defaults: ITaskGroupDefaultValues | null,
 ): UpdateTaskRequest => {
 	const request: UpdateTaskRequest = {
 		id: taskId,
 	};
+
+	if (sourceGroupId === 'completed') {
+		request.completed = false;
+	}
 
 	if (targetGroupId === 'completed') {
 		request.completed = true;
