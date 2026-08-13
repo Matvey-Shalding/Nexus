@@ -1,13 +1,14 @@
-import { queryClient } from '@/lib/reactQueryClient';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { updateTask as patchTask } from '../api/updateTask';
 import { UpdateTaskRequest } from '../types/Task';
 
-export const useUpdateTask = (id: number) => {
+export const useUpdateTask = () => {
+	const queryClient = useQueryClient();
+
 	const { mutate: updateTask } = useMutation({
-		mutationFn: (data: UpdateTaskRequest) => patchTask({ ...data, id }),
+		mutationFn: (data: UpdateTaskRequest) => patchTask(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['tasks'] });
 		},

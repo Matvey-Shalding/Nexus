@@ -20,7 +20,7 @@ export const useTaskView = create<TaskViewState>()(
 	persist(
 		set => ({
 			groupBy: TaskGroupBy.DEFAULT,
-			sortBy: TaskSortBy.DEFAULT,
+			sortBy: TaskSortBy.AUTO,
 			sortOrder: TaskSortOrder.ASC,
 			taskView: 'list',
 

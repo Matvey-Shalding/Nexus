@@ -49,7 +49,6 @@ class TaskService:
         task_id: int,
         request: UpdateTaskRequest,
         db: AsyncSession,
-        current_user: User,
     ):
 
         task_repository = TaskRepository()
@@ -79,7 +78,7 @@ class TaskService:
         db: AsyncSession,
         current_user: User,
         group_by: TaskGroupBy = TaskGroupBy.DEFAULT,
-        sort_by: TaskSortBy = TaskSortBy.DEFAULT,
+        sort_by: TaskSortBy = TaskSortBy.AUTO,
         sort_order: TaskSortOrder = TaskSortOrder.ASC,
     ) -> list[TaskGroupDTO]:
 

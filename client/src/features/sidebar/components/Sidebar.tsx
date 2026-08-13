@@ -2,9 +2,8 @@
 
 import { getCurrentUser } from '@/features/auth';
 import { getQueryClient } from '@/lib/getQueryClient';
-import { Hydrate } from '@/shared/components/Hydrate';
 import { Sidebar as CoreSidebar } from '@/shared/ui/sidebar';
-import { dehydrate } from '@tanstack/react-query';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { Separator } from '../../../shared/ui/separator';
 
@@ -23,12 +22,12 @@ export async function Sidebar() {
 	return (
 		<CoreSidebar collapsible="icon">
 			<SidebarHeader />
-			<Separator className="my-2 h-0.5" />
+			<Separator className="h-0.5" />
 			<SidebarContent />
 			<Separator className="my-2 h-0.5" />
-			<Hydrate state={dehydrate(queryClient)}>
+			<HydrationBoundary state={dehydrate(queryClient)}>
 				<SidebarFooter />
-			</Hydrate>
+			</HydrationBoundary>
 		</CoreSidebar>
 	);
 }

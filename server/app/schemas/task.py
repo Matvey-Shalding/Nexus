@@ -15,7 +15,6 @@ class CreateTaskRequest(BaseModel):
 
     completed: bool
 
-    position: float | None = None
 
 
 class UpdateTaskRequest(BaseModel):
@@ -28,7 +27,6 @@ class UpdateTaskRequest(BaseModel):
 
     completed: bool | None = None
 
-    position: float | None = None
 
 
 class TaskResponse(BaseModel):
@@ -45,7 +43,6 @@ class TaskResponse(BaseModel):
 
     completed: bool
 
-    position: float | None = None
 
 
 class TaskGroupCreationDefaults(BaseModel):

@@ -45,7 +45,9 @@ async def update_task(
 ):
 
     return await task_service.update_task(
-        task_id=task_id, request=request, db=db, current_user=current_user
+        task_id=task_id,
+        request=request,
+        db=db,
     )
 
 
@@ -62,7 +64,7 @@ async def get_tasks(
     current_user: user_dependency,
     db: db_dependency,
     group_by: TaskGroupBy = TaskGroupBy.DEFAULT,
-    sort_by: TaskSortBy = TaskSortBy.DEFAULT,
+    sort_by: TaskSortBy = TaskSortBy.AUTO,
     sort_order: TaskSortOrder = TaskSortOrder.ASC,
 ) -> list[TaskGroup]:
 

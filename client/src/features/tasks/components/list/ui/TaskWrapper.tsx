@@ -1,5 +1,5 @@
 import { TPriority } from '@/features/tasks/types/Priority';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { TaskDateField } from './TaskDateField';
 import { TaskDeleteButton } from './TaskDeleteButton';
@@ -18,40 +18,54 @@ interface Props {
 	deleteTask: () => void;
 	isCompleted?: boolean;
 	handleCompletedUpdate?: (value: boolean) => void;
+	handleRef: (element: Element | null) => void;
+	isDragging: boolean;
 }
 
-export const TaskWrapper: React.FC<Props> = ({
-	title,
-	handleTitleUpdate,
-	inputProps,
-	selectedDate,
-	handleDateUpdate,
-	selectedPriority,
-	handlePriorityUpdate,
-	deleteTask,
-	isCompleted,
-	handleCompletedUpdate,
-}) => {
-	return (
-		<TaskLayout isCompleted={isCompleted}>
-			<TaskTitleField
+export const TaskWrapper = forwardRef<HTMLDivElement, Props>(
+	(
+		{
+			title,
+			handleTitleUpdate,
+			inputProps,
+			selectedDate,
+			handleDateUpdate,
+			selectedPriority,
+			handlePriorityUpdate,
+			deleteTask,
+			isCompleted,
+			handleCompletedUpdate,
+			handleRef,
+			isDragging,
+		},
+		ref,
+	) => {
+		return (
+			<TaskLayout
+				isDragging={isDragging}
+				ref={ref}
 				isCompleted={isCompleted}
-				handleCompletedUpdate={handleCompletedUpdate}
-				title={title}
-				handleTitleUpdate={handleTitleUpdate}
-				inputProps={inputProps}
-			/>
-			<TaskDateField
-				isCompleted={isCompleted}
-				selectedDate={selectedDate}
-				handleDateUpdate={handleDateUpdate}
-			/>
-			<TaskPriorityField
-				isCompleted={isCompleted}
-				selectedPriority={selectedPriority}
-				handlePriorityUpdate={handlePriorityUpdate}
-			/>
-			<TaskDeleteButton onDelete={deleteTask} />
-		</TaskLayout>
-	);
-};
+			>
+				<TaskTitleField
+					handleRef={handleRef}
+					isCompleted={isCompleted}
+					handleCompletedUpdate={handleCompletedUpdate}
+					title={title}
+					handleTitleUpdate={handleTitleUpdate}
+					inputProps={inputProps}
+				/>
+				<TaskDateField
+					isCompleted={isCompleted}
+					selectedDate={selectedDate}
+					handleDateUpdate={handleDateUpdate}
+				/>
+				<TaskPriorityField
+					isCompleted={isCompleted}
+					selectedPriority={selectedPriority}
+					handlePriorityUpdate={handlePriorityUpdate}
+				/>
+				<TaskDeleteButton onDelete={deleteTask} />
+			</TaskLayout>
+		);
+	},
+);

@@ -2,6 +2,7 @@
 
 import { useAddTaskDraft } from '@/features/tasks/hooks/useAddTaskDraft';
 import { useAddTaskInteractions } from '@/features/tasks/hooks/useAddTaskInteractions';
+import { useMergedRefs } from '@/shared/hooks/useMergedRefs';
 import React from 'react';
 
 import { useAddTaskActions } from '../../hooks/useAddTaskActions';
@@ -27,6 +28,8 @@ export const AddTask: React.FC<Props> = ({ defaultValues }) => {
 	);
 
 	useAddTaskInteractions(taskRef, title, mode, date, priority, createTask, calendarRef, priorityRef, reset);
+
+	const ref = useMergedRefs(taskRef);
 
 	if (mode === 'default') {
 		return <AddTaskButton handleClick={() => setMode('focused')} />;

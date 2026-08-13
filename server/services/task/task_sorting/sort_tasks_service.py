@@ -1,12 +1,18 @@
 from datetime import datetime
+from typing import Callable
 
 from app.enums.task import TaskSortBy, TaskSortOrder
 from app.models.task import Task
 from app.types.task import TaskGroup
+from app.schemas.task import UpdateTaskRequest
+
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def sort_tasks(
-    task_groups: list[TaskGroup], sort_by: TaskSortBy, order_by: TaskSortOrder
+    task_groups: list[TaskGroup],
+    sort_by: TaskSortBy,
+    order_by: TaskSortOrder,
 ) -> None:
     is_desc = order_by == TaskSortOrder.DESC
 
@@ -15,8 +21,6 @@ def sort_tasks(
         column: list[Task] = task_group["tasks"]
 
         match sort_by:
-            case TaskSortBy.DEFAULT:
-                _sort_by_default(column)
             case TaskSortBy.AUTO:
                 _sort_by_auto(column)
             case TaskSortBy.TITLE:
@@ -29,13 +33,7 @@ def sort_tasks(
                 _sort_by_created_at(column, is_desc)
 
 
-def _sort_by_default(tasks: list[Task]) -> None:
-    # TODO: implement sort with position
-    pass
-
-
 def _sort_by_auto(tasks: list[Task]) -> None:
-    # TODO: implement auto sort
     pass
 
 

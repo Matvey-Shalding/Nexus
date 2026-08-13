@@ -7,7 +7,6 @@ export const TaskGroupBy = {
 export type TaskGroupBy = (typeof TaskGroupBy)[keyof typeof TaskGroupBy];
 
 export const TaskSortBy = {
-	DEFAULT: 'default',
 	AUTO: 'auto',
 	TITLE: 'title',
 	PRIORITY: 'priority',

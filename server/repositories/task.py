@@ -18,7 +18,6 @@ class TaskRepository:
             due_date=create_task_request.due_date,
             priority=create_task_request.priority,
             completed=create_task_request.completed,
-            position=create_task_request.position,
             user_id=user_id,
         )
 

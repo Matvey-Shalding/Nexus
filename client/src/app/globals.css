@@ -203,7 +203,7 @@
 		@apply border-border outline-ring/50;
 	}
 	body {
-		background: var(--color-app-gradient);
+		background: var(--background	);
 	}
 	html {
 		@apply font-sans;

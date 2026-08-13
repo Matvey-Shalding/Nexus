@@ -1,5 +1,4 @@
-import { queryClient } from '@/lib/reactQueryClient';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
 import { toast } from 'sonner';
 
@@ -9,6 +8,9 @@ import { CreateTaskDraft } from '../types/Task';
 import { AddTaskMode } from './useAddTaskDraft';
 
 export const useCreateTask = (setMode: Dispatch<SetStateAction<AddTaskMode>>) => {
+
+	const queryClient = useQueryClient();
+
 	const { mutate: createTask } = useMutation({
 		mutationFn: (data: CreateTaskDraft) => handleCreateTask(data),
 		onSuccess: () => {

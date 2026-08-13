@@ -10,7 +10,6 @@ export const handleCreateTask = async ({ title, date, priority }: CreateTaskDraf
 		due_date,
 		priority: priority,
 		completed: false,
-		position: null,
 	};
 
 	await createTask(request);

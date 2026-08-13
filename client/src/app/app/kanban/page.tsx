@@ -1,8 +1,8 @@
 import { Kanban } from '@/features/tasks';
 import { getTaskGroups } from '@/features/tasks/api/getTaskGroups';
 import { getQueryClient } from '@/lib/getQueryClient';
-import { Hydrate, Title } from '@/shared/components';
-import { dehydrate } from '@tanstack/react-query';
+import { Title } from '@/shared/components';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 export default async function Page() {
 	const queryClient = getQueryClient();
@@ -15,9 +15,9 @@ export default async function Page() {
 	return (
 		<div className="flex h-full flex-col p-6">
 			<Title title="Tasks" />
-			<Hydrate state={dehydrate(queryClient)}>
+			<HydrationBoundary state={dehydrate(queryClient)}>
 				<Kanban />
-			</Hydrate>
+			</HydrationBoundary>
 		</div>
 	);
 }

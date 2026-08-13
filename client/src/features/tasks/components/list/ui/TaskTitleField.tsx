@@ -11,6 +11,7 @@ interface Props {
 	disableCheckbox?: boolean;
 	isCompleted?: boolean;
 	handleCompletedUpdate?: (value: boolean) => void;
+	handleRef: (element: Element | null) => void;
 }
 
 export const TaskTitleField: React.FC<Props> = ({
@@ -20,20 +21,26 @@ export const TaskTitleField: React.FC<Props> = ({
 	disableCheckbox,
 	isCompleted = false,
 	handleCompletedUpdate,
+	handleRef,
 }) => {
 	const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		handleTitleUpdate(e.target.value);
 	};
 
 	return (
-		<div className="border-border flex items-center gap-x-3 border-r py-2 pr-1">
-			<GripVertical className={cn('size-6 transition-opacity', isCompleted && 'text-muted-foreground opacity-60')} />
+		<div className="border-border flex items-center gap-x-1 border-r py-2 pr-1">
+			<div className="cursor-grab p-1 hover:bg-muted rounded-lg transition-colors duration-150">
+				{' '}
+				<GripVertical
+					className={cn('size-6 transition-opacity hover:bg-muted', isCompleted && 'text-muted-foreground opacity-60')}
+				/>
+			</div>
 
 			<Checkbox
 				checked={isCompleted}
 				onCheckedChange={checked => handleCompletedUpdate?.(!!checked)}
 				disabled={disableCheckbox}
-				className="size-6"
+				className="size-6 mr-2"
 			/>
 
 			<Input

@@ -3,7 +3,7 @@
 import { getCurrentUser } from '@/features/auth';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/shared/ui/skeleton';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import { Avatar } from '../../../shared/ui/avatar';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const UserInfo: React.FC<Props> = ({ className, open }) => {
-	const { data: user, isPending } = useQuery({
+	const { data: user, isPending } = useSuspenseQuery({
 		queryKey: ['user'],
 		queryFn: getCurrentUser,
 		select: data => data.data,

@@ -8,7 +8,6 @@ class TaskGroupBy(StrEnum):
 
 
 class TaskSortBy(StrEnum):
-    DEFAULT = "default" # manual sorting
     AUTO = "auto"
     TITLE = "title"
     PRIORITY = "priority"

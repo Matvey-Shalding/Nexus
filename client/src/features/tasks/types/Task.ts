@@ -6,7 +6,17 @@ export interface ITask {
 	due_date: string | null;
 	priority: TPriority;
 	completed: boolean;
-	position: number | null;
+}
+
+export interface ITaskDragData {
+	task: ITask;
+	groupId: string;
+}
+
+export interface MoveTaskRequest {
+	updateData: UpdateTaskRequest;
+	targetGroupId: string;
+	draggedTaskData: ITaskDragData;
 }
 
 export interface ITaskGroupDefaultValues {
@@ -29,7 +39,6 @@ export interface CreateTaskRequest {
 	due_date: string | null;
 	priority: TPriority;
 	completed: boolean;
-	position: number | null;
 }
 
 export interface CreateTaskDraft {
@@ -38,8 +47,6 @@ export interface CreateTaskDraft {
 	priority: TPriority;
 }
 
-export interface UpdateTaskRequest extends Partial<CreateTaskRequest> {}
-
-export interface UpdateTaskRequestDTO extends UpdateTaskRequest {
+export interface UpdateTaskRequest extends Partial<CreateTaskRequest> {
 	id: number;
 }

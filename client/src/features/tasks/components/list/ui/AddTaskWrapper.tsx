@@ -1,5 +1,5 @@
 import { TPriority } from '@/features/tasks/types/Priority';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { TaskDateField } from './TaskDateField';
 import { TaskDeleteButton } from './TaskDeleteButton';
@@ -21,38 +21,46 @@ interface Props {
 	onDelete: () => void;
 }
 
-export const AddTaskWrapper: React.FC<Props> = ({
-	taskRef,
-	title,
-	inputProps,
-	selectedDate,
-	calendarRef,
-	selectedPriority,
-	onDelete,
-	priorityRef,
-	handlePriorityUpdate,
-	handleDateUpdate,
-	handleTitleUpdate,
-}) => {
-	return (
-		<TaskLayout taskRef={taskRef}>
-			<TaskTitleField
-				disableCheckbox
-				title={title}
-				inputProps={inputProps}
-				handleTitleUpdate={handleTitleUpdate}
-			/>
-			<TaskDateField
-				selectedDate={selectedDate}
-				calendarRef={calendarRef}
-				handleDateUpdate={handleDateUpdate}
-			/>
-			<TaskPriorityField
-				selectedPriority={selectedPriority}
-				handlePriorityUpdate={handlePriorityUpdate}
-				priorityRef={priorityRef}
-			/>
-			<TaskDeleteButton onDelete={onDelete} />
-		</TaskLayout>
-	);
-};
+export const AddTaskWrapper = forwardRef<HTMLDivElement, Props>(
+	(
+		{
+			taskRef,
+			title,
+			inputProps,
+			selectedDate,
+			calendarRef,
+			selectedPriority,
+			onDelete,
+			priorityRef,
+			handlePriorityUpdate,
+			handleDateUpdate,
+			handleTitleUpdate,
+		},
+		ref,
+	) => {
+		return (
+			<TaskLayout
+				taskRef={taskRef}
+				ref={ref}
+			>
+				<TaskTitleField
+					disableCheckbox
+					title={title}
+					inputProps={inputProps}
+					handleTitleUpdate={handleTitleUpdate}
+				/>
+				<TaskDateField
+					selectedDate={selectedDate}
+					calendarRef={calendarRef}
+					handleDateUpdate={handleDateUpdate}
+				/>
+				<TaskPriorityField
+					selectedPriority={selectedPriority}
+					handlePriorityUpdate={handlePriorityUpdate}
+					priorityRef={priorityRef}
+				/>
+				<TaskDeleteButton onDelete={onDelete} />
+			</TaskLayout>
+		);
+	},
+);
