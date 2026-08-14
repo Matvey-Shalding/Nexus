@@ -3,9 +3,11 @@ import { Title } from '@/shared/components';
 
 function Loading({}) {
 	return (
-		<div className="flex h-full flex-col p-6">
-			<Title title="Tasks" />
-			<TaskListLoader />
+		<div className="h-full p-6 flex justify-center">
+			<div className="flex flex-col max-w-4xl basis-full">
+				<Title title="Tasks" />
+				<TaskListLoader />
+			</div>
 		</div>
 	);
 }

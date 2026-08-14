@@ -36,20 +36,18 @@ export const Task: React.FC<Props> = ({ task, groupId }) => {
 	});
 
 	return (
-		<>
-			<TaskWrapper
-				isDragging={isDragging}
-				ref={ref}
-				isCompleted={isCompleted}
-				handleCompletedUpdate={handleCompletedUpdate}
-				title={title}
-				handleTitleUpdate={handleTitleUpdate}
-				selectedDate={date}
-				handleDateUpdate={handleDateUpdate}
-				selectedPriority={priority}
-				handlePriorityUpdate={handlePriorityUpdate}
-				deleteTask={deleteTask}
-			/>
-		</>
+		<TaskWrapper
+			isDragging={isDragging}
+			ref={ref}
+			isCompleted={isCompleted}
+			handleCompletedUpdate={handleCompletedUpdate}
+			title={title}
+			handleTitleUpdate={handleTitleUpdate}
+			selectedDate={date}
+			handleDateUpdate={handleDateUpdate}
+			selectedPriority={priority}
+			handlePriorityUpdate={handlePriorityUpdate}
+			deleteTask={deleteTask}
+		/>
 	);
 };
