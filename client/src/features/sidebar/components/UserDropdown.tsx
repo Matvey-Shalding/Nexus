@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import {
 	DropdownMenu,
@@ -8,9 +10,8 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
-import { SidebarMenuButton } from '@/shared/ui/sidebar';
 import { Bell, ChevronsUpDown, LogOut, Settings, Sparkles } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { UserInfo } from './UserInfo';
 
@@ -24,19 +25,18 @@ interface Props {
 }
 
 export const UserDropdown: React.FC<Props> = ({ isMobile, setIsDialogOpen, setIsModalOpen, open }) => {
+	const [dropdownOpen, setDropdownOpen] = useState(false);
+
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger className="w-full">
-				<SidebarMenuButton
-					data-hover="none"
-					size="lg"
-					className={cn(
-						'hover:bg-accent! min-w-full group-data-[collapsible=icon]:pl-1.5! group-data-[collapsible=icon]:hover:bg-transparent!',
-					)}
-				>
-					<UserInfo open={open} />
-					<ChevronsUpDown className="ml-auto size-4" />
-				</SidebarMenuButton>
+		<DropdownMenu
+			open={dropdownOpen}
+			onOpenChange={setDropdownOpen}
+		>
+			<DropdownMenuTrigger className="w-full flex items-center p-2 hover:bg-muted transition-colors">
+				<UserInfo open={open} />
+				<ChevronsUpDown
+					className={cn('ml-auto size-4 transition-transform duration-300', dropdownOpen ? 'rotate-180' : 'rotate-0')}
+				/>
 			</DropdownMenuTrigger>
 			<DropdownMenuGroup>
 				<DropdownMenuContent

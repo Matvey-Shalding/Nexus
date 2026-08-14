@@ -24,7 +24,7 @@ export async function Sidebar() {
 			<SidebarHeader />
 			<Separator className="h-0.5" />
 			<SidebarContent />
-			<Separator className="my-2 h-0.5" />
+			<Separator className="h-0.5" />
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<SidebarFooter />
 			</HydrationBoundary>

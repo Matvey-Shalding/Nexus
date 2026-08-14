@@ -1,6 +1,5 @@
 'use client';
 
-import { useAuthStore } from '@/features/auth';
 import { SettingsModal } from '@/features/settings';
 import { SidebarFooter as Footer, SidebarMenu, useSidebar } from '@/shared/ui/sidebar';
 import React, { useState } from 'react';

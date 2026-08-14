@@ -219,7 +219,7 @@ function Sidebar({
 					// Adjust the padding for floating and inset variants.
 					variant === 'floating' || variant === 'inset'
 						? 'p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]'
-						: 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r-2 group-data-[side=right]:border-l-2',
+						: 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l-2',
 					className,
 				)}
 				{...props}
@@ -312,7 +312,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<'div'>) {
 		<div
 			data-slot="sidebar-header"
 			data-sidebar="header"
-			className={cn('flex flex-col gap-2 p-2', className)}
+			className={cn('p-3!', className)}
 			{...props}
 		/>
 	);
@@ -323,7 +323,7 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<'div'>) {
 		<div
 			data-slot="sidebar-footer"
 			data-sidebar="footer"
-			className={cn('flex flex-col gap-2 p-2', className)}
+			className={className}
 			{...props}
 		/>
 	);

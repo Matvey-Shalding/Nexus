@@ -21,8 +21,8 @@ export const UserInfo: React.FC<Props> = ({ className, open }) => {
 	});
 
 	return (
-		<div className={cn('flex items-center gap-2 py-1.5 text-left text-sm', className)}>
-			<Avatar className={cn(!open && 'relative -left-0.5')} />
+		<div className={cn('flex items-center gap-2 py-1.5 text-left text-sm', className,!open && "gap-x-3")}>
+			<Avatar className={cn(!open && "translate-x-1.5")}/>
 			<div className="grid flex-1 text-left text-sm leading-tight">
 				{isPending ? (
 					<div className="flex flex-col gap-y-1">
