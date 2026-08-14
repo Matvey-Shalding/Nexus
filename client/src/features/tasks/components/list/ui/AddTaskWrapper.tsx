@@ -40,11 +40,12 @@ export const AddTaskWrapper = forwardRef<HTMLDivElement, Props>(
 	) => {
 		return (
 			<TaskLayout
+				disableAnimation
 				taskRef={taskRef}
 				ref={ref}
 			>
 				<TaskTitleField
-					disableCheckbox
+					addTaskMode
 					title={title}
 					inputProps={inputProps}
 					handleTitleUpdate={handleTitleUpdate}

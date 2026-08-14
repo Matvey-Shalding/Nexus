@@ -18,7 +18,6 @@ interface Props {
 	deleteTask: () => void;
 	isCompleted?: boolean;
 	handleCompletedUpdate?: (value: boolean) => void;
-	handleRef: (element: Element | null) => void;
 	isDragging: boolean;
 }
 
@@ -35,7 +34,6 @@ export const TaskWrapper = forwardRef<HTMLDivElement, Props>(
 			deleteTask,
 			isCompleted,
 			handleCompletedUpdate,
-			handleRef,
 			isDragging,
 		},
 		ref,
@@ -47,7 +45,6 @@ export const TaskWrapper = forwardRef<HTMLDivElement, Props>(
 				isCompleted={isCompleted}
 			>
 				<TaskTitleField
-					handleRef={handleRef}
 					isCompleted={isCompleted}
 					handleCompletedUpdate={handleCompletedUpdate}
 					title={title}

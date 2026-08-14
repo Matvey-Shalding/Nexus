@@ -8,6 +8,8 @@ import React, { useEffect } from 'react';
 import { DND_KIT_TYPES } from '../../config/dnd-kit';
 import { ITask, ITaskGroupDefaultValues } from '../../types/Task';
 
+import { AnimatePresence } from 'motion/react';
+
 import { AddTask } from './AddTask';
 import { Task } from './Task';
 
@@ -40,13 +42,13 @@ export const TaskListRow: React.FC<Props> = ({ title, tasks, creationEnabled, de
 		<div
 			ref={ref}
 			className={cn(
-				'flex w-full flex-col rounded-xl transition-colors duration-150 pt-2',
+				'flex w-full flex-col transition-colors duration-150',
 				isDropTarget && ['bg-primary/15'],
 			)}
 		>
-			<span className={cn('border-border border-b pb-2 pl-2.5 font-heading text-xl font-semibold')}>{title}</span>
+			<span className={cn('border-border border-b py-3 pl-2.5 font-heading text-xl font-medium')}>{title}</span>
 
-			<div className="flex flex-col">
+			<AnimatePresence initial={false}>
 				{tasks.map(task => (
 					<Task
 						groupId={id}
@@ -56,7 +58,7 @@ export const TaskListRow: React.FC<Props> = ({ title, tasks, creationEnabled, de
 				))}
 
 				{creationEnabled && <AddTask defaultValues={defaultValues} />}
-			</div>
+			</AnimatePresence>
 		</div>
 	);
 };

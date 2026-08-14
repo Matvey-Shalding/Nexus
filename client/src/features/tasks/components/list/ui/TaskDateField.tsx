@@ -33,25 +33,25 @@ export const TaskDateField: React.FC<Props> = ({
 			open={open}
 			onOpenChange={setOpen}
 		>
-			<DropdownMenuTrigger className="border-border w-full border-r hover:bg-muted/40 pl-3.5 group">
-				<button
-					disabled={isCompleted}
-					className="flex min-h-full w-full items-center justify-between py-2 pr-3"
-				>
-					<span className="font-heading text-lg font-medium">{date}</span>
-					<ChevronsUpDown
-						className={cn(
-							'text-muted-foreground group-hover:text-foreground size-4.5 transition-[transform_color] duration-300',
-							open ? 'rotate-180' : 'rotate-0',
-						)}
-					/>
-				</button>
+			<DropdownMenuTrigger
+				disabled={isCompleted}
+				className={cn(
+					'border-border w-full border-r flex items-center justify-between p-2.5 group',
+					isCompleted ? 'opacity-60' : 'hover:bg-muted/40 transition-colors',
+				)}
+			>
+				<span className="font-heading text-lg font-medium">{date}</span>
+				<ChevronsUpDown
+					className={cn(
+						'text-muted-foreground size-4.5 transition-[transform_color] duration-300',
+						open ? 'rotate-180' : 'rotate-0',
+						!isCompleted && 'group-hover:text-foreground ',
+					)}
+				/>
 			</DropdownMenuTrigger>
-
 			<DropdownMenuContent
 				ref={calendarRef}
 				className="w-auto p-0"
-				// className="bg-popover/95 w-auto rounded-2xl border p-0 shadow-xl backdrop-blur-md"
 				align="start"
 			>
 				<Calendar

@@ -40,22 +40,25 @@ export const TaskPriorityField: React.FC<Props> = ({
 		>
 			<DropdownMenuTrigger
 				disabled={isCompleted}
-				className="border-border flex items-center group justify-center hover:bg-muted/40  gap-x-4 border-r py-1.5 pl-3.5 pr-2"
+				className={cn(
+					'border-border flex items-center group justify-center gap-x-4 border-r py-2 px-2.5',
+					isCompleted ? 'opacity-60' : ' hover:bg-muted/40 transition-colors',
+				)}
 			>
-				<Button
-					size="sm"
+				<span
 					className={cn(
-						'h-full shrink basis-full rounded-lg text-lg transition-colors',
+						'h-full shrink basis-full rounded-lg text-lg transition-colors flex items-center justify-center',
 						styleClass,
-						isCompleted && 'pointer-events-none cursor-not-allowed opacity-60',
+						isCompleted && "pointer-events-none"
 					)}
 				>
 					{priorityLabel}
-				</Button>
+				</span>
 				<ChevronsUpDown
 					className={cn(
-						'text-muted-foreground size-4.5 min-w-4.5 transition-[transform_color] duration-300 group-hover:text-foreground',
+						'text-muted-foreground size-4.5 min-w-4.5 transition-[transform_color] duration-300',
 						open ? 'rotate-180' : 'rotate-0',
+						!isCompleted && 'group-hover:text-foreground',
 					)}
 				/>
 			</DropdownMenuTrigger>

@@ -26,7 +26,7 @@ export const Task: React.FC<Props> = ({ task, groupId }) => {
 	const { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, deleteTask, handleCompletedUpdate } =
 		useTaskActions(task.id, title, setTitle, date, setDate, priority, setPriority, setIsCompleted);
 
-	const { ref, handleRef, isDragging } = useDraggable({
+	const { ref, isDragging } = useDraggable({
 		id: task.id,
 		type: DND_KIT_TYPES.TASK,
 		data: {
@@ -39,7 +39,6 @@ export const Task: React.FC<Props> = ({ task, groupId }) => {
 		<>
 			<TaskWrapper
 				isDragging={isDragging}
-				handleRef={handleRef}
 				ref={ref}
 				isCompleted={isCompleted}
 				handleCompletedUpdate={handleCompletedUpdate}

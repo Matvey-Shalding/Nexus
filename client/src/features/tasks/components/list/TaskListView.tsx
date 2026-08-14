@@ -11,9 +11,9 @@ interface Props {
 
 export const TaskListView: React.FC<Props> = ({ taskGroups }) => {
 	return (
-		<div className="flex flex-col gap-y-2">
+		<div className="flex flex-col">
 			<TaskListViewTitle />
-			<div className="flex w-full flex-col gap-y-3">
+			<div className="flex w-full flex-col">
 				{taskGroups.map(taskGroup => (
 					<TaskListRow
 						key={taskGroup.id}

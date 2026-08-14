@@ -47,11 +47,6 @@ export const SidebarNavigation: React.FC<Props> = ({}) => {
 								'text-lg font-medium transition-colors duration-150 overflow-hidden',
 								isActive ? 'text-white' : 'text-muted-foreground group-hover/nav:text-foreground whitespace-nowrap',
 							)}
-							// className={`
-							//   text-lg font-medium
-							//   transition-colors duration-150
-							//   ${isActive ? 'text-white' : 'text-muted-foreground group-hover/nav:text-foreground'}
-							// `}
 						>
 							{item.title}
 						</span>

@@ -20,7 +20,7 @@ export const TaskListLoader = () => {
 							{Array.from({ length: 3 }).map((_, taskIndex) => (
 								<div
 									key={taskIndex}
-									className="grid min-h-14 w-full grid-cols-[8fr_2.75fr_2.5fr_0.6fr] border-b border-border pl-2.5"
+									className="grid min-h-14 w-full grid-cols-[6fr_3fr_2.5fr_0.6fr] border-b border-border pl-2.5"
 								>
 									<div className="flex items-center gap-x-4 border-r border-border py-2 pr-1">
 										<Skeleton className="size-6 rounded-md" />

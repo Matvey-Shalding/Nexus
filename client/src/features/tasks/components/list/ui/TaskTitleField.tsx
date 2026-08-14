@@ -8,20 +8,18 @@ interface Props {
 	title: string;
 	inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 	handleTitleUpdate: (value: string) => void;
-	disableCheckbox?: boolean;
+	addTaskMode?: boolean;
 	isCompleted?: boolean;
 	handleCompletedUpdate?: (value: boolean) => void;
-	handleRef: (element: Element | null) => void;
 }
 
 export const TaskTitleField: React.FC<Props> = ({
 	title,
 	handleTitleUpdate,
 	inputProps,
-	disableCheckbox,
+	addTaskMode = false,
 	isCompleted = false,
 	handleCompletedUpdate,
-	handleRef,
 }) => {
 	const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		handleTitleUpdate(e.target.value);
@@ -29,23 +27,29 @@ export const TaskTitleField: React.FC<Props> = ({
 
 	return (
 		<div className="border-border flex items-center gap-x-1 border-r py-2 pr-1">
-			<div className="cursor-grab p-1 rounded-lg transition-colors duration-150">
+			<button
+				type="button"
+				disabled={addTaskMode}
+				className="cursor-grab disabled:cursor-not-allowed p-1 rounded-lg transition-colors duration-150"
+			>
 				<GripVertical
 					className={cn(
-						'size-6 text-muted-foreground hover:scale-105 hover:text-white transition-[opacity_color_transform]',
-						isCompleted && 'text-muted-foreground opacity-60',
+						'size-6 text-muted-foreground',
+						isCompleted && 'opacity-60',
+						addTaskMode ? 'opacity-50' : 'hover:scale-105 hover:text-white transition-[color_transform]',
 					)}
 				/>
-			</div>
+			</button>
 
 			<Checkbox
 				checked={isCompleted}
 				onCheckedChange={checked => handleCompletedUpdate?.(!!checked)}
-				disabled={disableCheckbox}
+				disabled={addTaskMode}
 				className="size-6 mr-2"
 			/>
 
 			<Input
+				autoCapitalize="on"
 				value={title}
 				onChange={onTitleChange}
 				{...inputProps}

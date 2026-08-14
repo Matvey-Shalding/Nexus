@@ -2,7 +2,7 @@
 
 import { useAddTaskDraft } from '@/features/tasks/hooks/useAddTaskDraft';
 import { useAddTaskInteractions } from '@/features/tasks/hooks/useAddTaskInteractions';
-import { useMergedRefs } from '@/shared/hooks/useMergedRefs';
+import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 
 import { useAddTaskActions } from '../../hooks/useAddTaskActions';
@@ -29,25 +29,36 @@ export const AddTask: React.FC<Props> = ({ defaultValues }) => {
 
 	useAddTaskInteractions(taskRef, title, mode, date, priority, createTask, calendarRef, priorityRef, reset);
 
-	const ref = useMergedRefs(taskRef);
-
-	if (mode === 'default') {
-		return <AddTaskButton handleClick={() => setMode('focused')} />;
-	} else {
-		return (
-			<AddTaskWrapper
-				handleTitleUpdate={handleTitleUpdate}
-				handlePriorityUpdate={handlePriorityUpdate}
-				handleDateUpdate={handleDateUpdate}
-				taskRef={taskRef}
-				title={title}
-				selectedDate={date}
-				calendarRef={calendarRef}
-				selectedPriority={priority}
-				priorityRef={priorityRef}
-				onDelete={reset}
-				inputProps={{ autoFocus: true }}
-			/>
-		);
-	}
+	return (
+		<AnimatePresence
+			mode="wait"
+			initial={false}
+		>
+			{mode === 'default' ? (
+				<AddTaskButton handleClick={() => setMode('focused')} />
+			) : (
+				<motion.div
+					key="add-task-wrapper"
+					initial={{ opacity: 0, y: -4, scale: 0.99 }}
+					animate={{ opacity: 1, y: 0, scale: 1 }}
+					exit={{ opacity: 0, y: -4, scale: 0.99 }}
+					transition={{ duration: 0.15, ease: 'easeOut' }}
+				>
+					<AddTaskWrapper
+						handleTitleUpdate={handleTitleUpdate}
+						handlePriorityUpdate={handlePriorityUpdate}
+						handleDateUpdate={handleDateUpdate}
+						taskRef={taskRef}
+						title={title}
+						selectedDate={date}
+						calendarRef={calendarRef}
+						selectedPriority={priority}
+						priorityRef={priorityRef}
+						onDelete={reset}
+						inputProps={{ autoFocus: true }}
+					/>
+				</motion.div>
+			)}
+		</AnimatePresence>
+	);
 };
