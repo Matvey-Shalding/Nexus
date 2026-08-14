@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 import { deleteTask as removeTask } from '../api/deleteTask';
 
 export const useDeleteTask = (id: number) => {
-
 	const queryClient = useQueryClient();
 
 	const { mutate: deleteTask } = useMutation({

@@ -49,7 +49,7 @@ export const TaskPriorityField: React.FC<Props> = ({
 					className={cn(
 						'h-full shrink basis-full rounded-lg text-lg transition-colors flex items-center justify-center',
 						styleClass,
-						isCompleted && "pointer-events-none"
+						isCompleted && 'pointer-events-none',
 					)}
 				>
 					{priorityLabel}

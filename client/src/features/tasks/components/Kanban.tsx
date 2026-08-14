@@ -34,9 +34,7 @@ export const Kanban: React.FC<Props> = ({}) => {
 	} else {
 		return (
 			<DragDropProvider onDragEnd={event => handleDragEnd(event, moveTask)}>
-				<DragOverlay>
-					{source => <TaskOverlay task={(source.data as ITaskDragData).task} />}
-				</DragOverlay>
+				<DragOverlay>{source => <TaskOverlay task={(source.data as ITaskDragData).task} />}</DragOverlay>
 				<TaskListView taskGroups={taskGroups} />
 			</DragDropProvider>
 		);

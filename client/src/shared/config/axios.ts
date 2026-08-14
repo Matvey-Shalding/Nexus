@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import { ApiRoutes, Routes } from './routes';
 
-
 export const axiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	withCredentials: true,

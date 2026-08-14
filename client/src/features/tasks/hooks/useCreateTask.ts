@@ -8,7 +8,6 @@ import { CreateTaskDraft } from '../types/Task';
 import { AddTaskMode } from './useAddTaskDraft';
 
 export const useCreateTask = (setMode: Dispatch<SetStateAction<AddTaskMode>>) => {
-
 	const queryClient = useQueryClient();
 
 	const { mutate: createTask } = useMutation({
