@@ -49,11 +49,11 @@ class Task(Base):
     )
 
     user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"),
+        ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
     )
 
-    user: Mapped["User"] = relationship(back_populates="tasks", cascade="all, delete")
+    user: Mapped["User"] = relationship(back_populates="tasks")
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
