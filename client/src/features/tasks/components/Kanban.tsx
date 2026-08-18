@@ -2,7 +2,7 @@
 
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { getTaskGroups } from '../api/getTaskGroups';
 import { useMoveTask } from '../hooks/useMoveTask';
@@ -18,8 +18,10 @@ interface Props {
 	className?: string;
 }
 export const Kanban: React.FC<Props> = ({}) => {
+	const { groupBy, sortBy, sortOrder } = useTaskView();
+
 	const { data: taskGroups } = useSuspenseQuery({
-		queryKey: ['tasks'],
+		queryKey: ['tasks', { groupBy, sortBy, sortOrder }],
 		queryFn: getTaskGroups,
 	});
 
@@ -27,13 +29,20 @@ export const Kanban: React.FC<Props> = ({}) => {
 
 	const { taskView } = useTaskView();
 
+	const onDragEnd = useCallback(
+		(event: any) => {
+			handleDragEnd(event, moveTask);
+		},
+		[moveTask],
+	);
+
 	if (!taskGroups) return 'Loading...';
 
 	if (taskView === 'board') {
 		return <TaskBoardView taskGroups={taskGroups} />;
 	} else {
 		return (
-			<DragDropProvider onDragEnd={event => handleDragEnd(event, moveTask)}>
+			<DragDropProvider onDragEnd={onDragEnd}>
 				<DragOverlay>{source => <TaskOverlay task={(source.data as ITaskDragData).task} />}</DragOverlay>
 				<TaskListView taskGroups={taskGroups} />
 			</DragDropProvider>

@@ -9,12 +9,11 @@ export const useTaskActions = (
 	id: number,
 	title: string,
 	setTitle: React.Dispatch<React.SetStateAction<string>>,
-	date: Date | undefined,
 	setDate: React.Dispatch<React.SetStateAction<Date | undefined>>,
-	priority: TPriority,
 	setPriority: React.Dispatch<React.SetStateAction<TPriority>>,
 	setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
+
 	const { updateTask } = useUpdateTask();
 
 	useUpdateTaskTitle(title, updateTask, id);

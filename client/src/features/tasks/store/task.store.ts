@@ -1,9 +1,15 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { TaskGroupBy, TaskSortBy, TaskSortOrder } from '../types/TaskView';
-
-type TaskView = 'list' | 'board';
+import {
+	TASK_GROUP_BY,
+	TASK_SORT_BY,
+	TASK_SORT_ORDER,
+	TaskGroupBy,
+	TaskSortBy,
+	TaskSortOrder,
+	TaskView,
+} from '../types/TaskView';
 
 interface TaskViewState {
 	groupBy: TaskGroupBy;
@@ -19,9 +25,9 @@ interface TaskViewState {
 export const useTaskView = create<TaskViewState>()(
 	persist(
 		set => ({
-			groupBy: TaskGroupBy.DEFAULT,
-			sortBy: TaskSortBy.AUTO,
-			sortOrder: TaskSortOrder.ASC,
+			groupBy: TASK_GROUP_BY.DEFAULT,
+			sortBy: TASK_SORT_BY.AUTO,
+			sortOrder: TASK_SORT_ORDER.ASC,
 			taskView: 'list',
 
 			setGroupBy: groupBy => set({ groupBy }),

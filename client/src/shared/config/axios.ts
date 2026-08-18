@@ -1,17 +1,50 @@
 import { refresh, useAuthStore } from '@/features/auth';
 import axios from 'axios';
 
-import { ApiRoutes, Routes } from './routes';
+import { ApiRoutes } from './routes';
 
 export const axiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	withCredentials: true,
 });
 
-// automatically attach access token
+let initializationPromise: Promise<string | null> | null = null;
 
-axiosInstance.interceptors.request.use(config => {
+const initializeAccessToken = async (): Promise<string | null> => {
 	const accessToken = useAuthStore.getState().accessToken;
+
+	if (accessToken) {
+		return accessToken;
+	}
+
+	if (!initializationPromise) {
+		initializationPromise = refresh()
+			.then(response => {
+				const accessToken = response.data.access_token;
+
+				useAuthStore.getState().setAccessToken(accessToken);
+
+				return accessToken;
+			})
+			.catch(() => {
+				useAuthStore.getState().clearAccessToken();
+
+				return null;
+			})
+			.finally(() => {
+				initializationPromise = null;
+			});
+	}
+
+	return initializationPromise;
+};
+
+axiosInstance.interceptors.request.use(async config => {
+	let accessToken = useAuthStore.getState().accessToken;
+
+	if (!accessToken) {
+		accessToken = await initializeAccessToken();
+	}
 
 	if (accessToken) {
 		config.headers.Authorization = `Bearer ${accessToken}`;
@@ -20,49 +53,40 @@ axiosInstance.interceptors.request.use(config => {
 	return config;
 });
 
-// automatically refresh access token
-
 axiosInstance.interceptors.response.use(
 	response => response,
 	async error => {
-		if (error.response?.status === 401) {
-			// ignore responses coming from refresh
-			if (error.config.url === ApiRoutes.REFRESH) {
-				useAuthStore.getState().clearAccessToken();
-				return Promise.reject(error);
-			}
-
-			// ignore auth routes
-
-			if (error.config.url === ApiRoutes.REGISTER || error.config.url === ApiRoutes.LOGIN) {
-				return Promise.reject(error);
-			}
-
-			// ignore already retried requests
-			if (error.config._retry) {
-				return Promise.reject(error);
-			}
-
-			try {
-				const newAccessToken = (await refresh()).data.access_token;
-
-				if (newAccessToken) {
-					useAuthStore.getState().setAccessToken(newAccessToken);
-
-					// mark the request as retried in order to avoid an infinite loop
-					error.config._retry = true;
-
-					return axiosInstance(error.config);
-				}
-			} catch (error) {
-				useAuthStore.getState().clearAccessToken();
-
-				window.location.replace(Routes.LOGIN);
-
-				return Promise.reject(error);
-			}
+		if (error.response?.status !== 401) {
+			return Promise.reject(error);
 		}
 
-		return Promise.reject(error);
+		const url = error.config?.url;
+
+		if (url === ApiRoutes.REFRESH) {
+			useAuthStore.getState().clearAccessToken();
+			return Promise.reject(error);
+		}
+
+		if (url === ApiRoutes.REGISTER || url === ApiRoutes.LOGIN) {
+			return Promise.reject(error);
+		}
+
+		if (error.config._retry) {
+			return Promise.reject(error);
+		}
+
+		try {
+			const newAccessToken = (await refresh()).data.access_token;
+
+			useAuthStore.getState().setAccessToken(newAccessToken);
+
+			error.config._retry = true;
+
+			return axiosInstance(error.config);
+		} catch {
+			useAuthStore.getState().clearAccessToken();
+
+			return Promise.reject(error);
+		}
 	},
 );

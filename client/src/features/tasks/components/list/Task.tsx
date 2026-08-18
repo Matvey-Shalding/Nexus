@@ -24,7 +24,7 @@ export const Task: React.FC<Props> = ({ task, groupId }) => {
 	);
 
 	const { handleTitleUpdate, handlePriorityUpdate, handleDateUpdate, deleteTask, handleCompletedUpdate } =
-		useTaskActions(task.id, title, setTitle, date, setDate, priority, setPriority, setIsCompleted);
+		useTaskActions(task.id, title, setTitle, setDate, setPriority, setIsCompleted);
 
 	const { ref, isDragging } = useDraggable({
 		id: task.id,

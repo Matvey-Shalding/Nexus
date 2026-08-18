@@ -22,5 +22,5 @@ export const ApiRoutes = {
 	LOGOUT: `${AUTH_PREFIX}/logout`,
 	REFRESH: `${AUTH_PREFIX}/refresh`,
 	USER: '/users/me',
-	TASKS: '/tasks',
+	TASKS: '/tasks/',
 } as const;

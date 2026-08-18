@@ -3,10 +3,10 @@
 import { Label } from '@/shared/ui/label';
 import { Switch } from '@/shared/ui/switch';
 import { TabsContent } from '@/shared/ui/tabs';
-import { useTheme } from 'next-themes';
 import React from 'react';
 
 import { SettingsTabTitle } from '../SettingsTabTitle';
+import { useTheme } from '@teispace/next-themes'
 
 interface Props {
 	className?: string;

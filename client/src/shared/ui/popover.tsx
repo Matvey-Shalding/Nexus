@@ -43,7 +43,21 @@ function PopoverContent({
 				<PopoverPrimitive.Popup
 					data-slot="popover-content"
 					className={cn(
-						'z-50 flex w-72 origin-(--transform-origin) flex-col gap-4 rounded-3xl bg-popover p-4 text-sm text-popover-foreground shadow-lg ring-1 ring-foreground/5 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 dark:ring-foreground/10 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+						'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-85 duration-300',
+						'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-90 duration-300',
+						'data-closed:overflow-hidden',
+						'data-[side=bottom]:slide-in-from-top-4',
+						'data-[side=top]:slide-in-from-bottom-4',
+						'data-[side=left]:slide-in-from-right-4',
+						'data-[side=right]:slide-in-from-left-4',
+						'data-[side=inline-end]:slide-in-from-left-4',
+						'data-[side=inline-start]:slide-in-from-right-4',
+						'relative z-50 origin-(--transform-origin)',
+						'rounded-3xl p-4 shadow-lg outline-none',
+						'bg-popover/90 text-popover-foreground',
+						'before:pointer-events-none before:absolute before:inset-0',
+						'before:-z-1 before:rounded-[inherit]',
+						'before:backdrop-blur-2xl before:backdrop-saturate-150',
 						className,
 					)}
 					{...props}

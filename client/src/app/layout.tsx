@@ -2,7 +2,6 @@ import { cn } from '@/lib/utils';
 import { appConfig } from '@/shared/config/app';
 import { Toaster } from '@/shared/ui/sonner';
 import { Metadata } from 'next';
-import { ThemeProvider } from 'next-themes';
 import { DM_Sans, Geist, Geist_Mono, Noto_Sans } from 'next/font/google';
 
 import { Providers } from './Providers';
@@ -24,7 +23,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = appConfig;
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
@@ -35,7 +34,7 @@ export default function RootLayout({
 			lang="en"
 			className={cn(
 				'h-full',
-				'antialiased',
+				'antialiased dark',
 				geistSans.variable,
 				geistMono.variable,
 				'font-sans',
@@ -45,15 +44,8 @@ export default function RootLayout({
 		>
 			<body>
 				<Providers>
-					<ThemeProvider
-						attribute="class"
-						defaultTheme="system"
-						enableSystem
-						disableTransitionOnChange
-					>
-						{children}
-						<Toaster />
-					</ThemeProvider>
+					{children}
+					<Toaster />
 				</Providers>
 			</body>
 		</html>

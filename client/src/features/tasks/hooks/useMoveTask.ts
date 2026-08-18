@@ -1,22 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { updateTask as patchTask } from '../api/updateTask';
+import { useTaskView } from '../store/task.store';
 import { ITask, ITaskGroup, MoveTaskRequest } from '../types/Task';
 
 export function useMoveTask() {
 	const queryClient = useQueryClient();
+
+	const { groupBy, sortBy, sortOrder } = useTaskView();
 
 	const { mutate: moveTask } = useMutation({
 		mutationFn: (request: MoveTaskRequest) => patchTask(request.updateData),
 
 		onMutate: async request => {
 			await queryClient.cancelQueries({
-				queryKey: ['tasks'],
+				queryKey: ['tasks', { groupBy, sortBy, sortOrder }],
 			});
 
-			const prevData = queryClient.getQueryData<ITaskGroup[]>(['tasks']);
+			const prevData = queryClient.getQueryData<ITaskGroup[]>(['tasks', { groupBy, sortBy, sortOrder }]);
 
-			queryClient.setQueryData<ITaskGroup[]>(['tasks'], oldData => {
+			queryClient.setQueryData<ITaskGroup[]>(['tasks', { groupBy, sortBy, sortOrder }], oldData => {
 				if (!oldData) return oldData;
 
 				const task: ITask = {
@@ -47,12 +50,12 @@ export function useMoveTask() {
 		},
 
 		onError: (_, __, context) => {
-			queryClient.setQueryData(['tasks'], context?.prevData);
+			queryClient.setQueryData(['tasks', { groupBy, sortBy, sortOrder }], context?.prevData);
 		},
 
 		onSettled: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['tasks'],
+				queryKey: ['tasks', { groupBy, sortBy, sortOrder }],
 			});
 		},
 	});
