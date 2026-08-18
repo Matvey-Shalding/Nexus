@@ -58,7 +58,7 @@ export const TaskViewSelector: React.FC = () => {
 			<PopoverContent
 				align="end"
 				sideOffset={8}
-				className="w-70 rounded-xl p-3"
+				className="w-70 rounded-xl p-3 bg-yellow-400!"
 			>
 				<div className="flex flex-col gap-y-4">
 					<div className="flex flex-col gap-y-2.5">

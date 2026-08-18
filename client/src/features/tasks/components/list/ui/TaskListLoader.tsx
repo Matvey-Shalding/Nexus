@@ -13,8 +13,9 @@ export const TaskListLoader = () => {
 						key={groupIndex}
 						className="flex w-full flex-col"
 					>
-						<div className="border-b border-border pb-2 pl-2.5">
+						<div className="border-b border-border pb-2 pl-2.5 flex items-center justify-between">
 							<Skeleton className="h-7 w-30 rounded-md" />
+							<Skeleton className="size-5 rounded-lg" />
 						</div>
 						<div className="flex flex-col">
 							{Array.from({ length: 3 }).map((_, taskIndex) => (

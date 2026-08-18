@@ -1,21 +1,8 @@
 import { Kanban } from '@/features/tasks';
-import { getTaskGroups } from '@/features/tasks/api/getTaskGroups';
 import { TaskViewSelector } from '@/features/tasks/components/list/TaskViewSelector';
-import { useTaskView } from '@/features/tasks/store/task.store';
-import { getQueryClient } from '@/lib/getQueryClient';
 import { Title } from '@/shared/components';
-import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
-export default async function Page() {
-	const queryClient = getQueryClient();
-
-	const { groupBy, sortBy, sortOrder } = useTaskView.getState();
-
-	await queryClient.prefetchQuery({
-		queryKey: ['tasks', { groupBy, sortBy, sortOrder }],
-		queryFn: getTaskGroups,
-	});
-
+export default function Page() {
 	return (
 		<div className="h-full p-6 flex justify-center">
 			<div className="flex flex-col max-w-4xl basis-full">
@@ -24,9 +11,7 @@ export default async function Page() {
 						<TaskViewSelector />
 					</Title>
 				</div>
-				<HydrationBoundary state={dehydrate(queryClient)}>
-					<Kanban />
-				</HydrationBoundary>
+				<Kanban />
 			</div>
 		</div>
 	);

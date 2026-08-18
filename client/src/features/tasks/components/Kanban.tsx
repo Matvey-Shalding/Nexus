@@ -1,7 +1,7 @@
 'use client';
 
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import { getTaskGroups } from '../api/getTaskGroups';
@@ -12,6 +12,7 @@ import { ITaskDragData } from '../types/Task';
 
 import { TaskBoardView } from './board/TaskBoardView';
 import { TaskListView } from './list/TaskListView';
+import { TaskListLoader } from './list/ui/TaskListLoader';
 import { TaskOverlay } from './list/ui/TaskOverlay';
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
 export const Kanban: React.FC<Props> = ({}) => {
 	const { groupBy, sortBy, sortOrder } = useTaskView();
 
-	const { data: taskGroups } = useSuspenseQuery({
+	const { data: taskGroups, isLoading } = useQuery({
 		queryKey: ['tasks', { groupBy, sortBy, sortOrder }],
 		queryFn: getTaskGroups,
 	});
@@ -36,7 +37,7 @@ export const Kanban: React.FC<Props> = ({}) => {
 		[moveTask],
 	);
 
-	if (!taskGroups) return 'Loading...';
+	if (isLoading || !taskGroups) return <TaskListLoader />;
 
 	if (taskView === 'board') {
 		return <TaskBoardView taskGroups={taskGroups} />;
