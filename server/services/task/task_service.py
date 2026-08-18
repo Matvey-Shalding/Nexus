@@ -82,6 +82,8 @@ class TaskService:
         sort_order: TaskSortOrder = TaskSortOrder.ASC,
     ) -> list[TaskGroupDTO]:
 
+        print("GROUP BY", group_by)
+
         task_repository = TaskRepository()
 
         tasks: list[Task] = list(await task_repository.get_tasks(db, current_user.id))

@@ -68,4 +68,4 @@ async def get_tasks(
     sort_order: TaskSortOrder = TaskSortOrder.ASC,
 ) -> list[TaskGroup]:
 
-    return await task_service.get_tasks(db=db, current_user=current_user)
+    return await task_service.get_tasks(db=db, current_user=current_user,group_by=group_by,sort_by=sort_by,sort_order=sort_order)

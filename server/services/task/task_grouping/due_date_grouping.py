@@ -27,8 +27,9 @@ class DueDateTaskGrouping:
             create_expired_group(),
             create_today_group(today),
             create_tomorrow_group(tomorrow),
-            create_completed_group(),
         ]
+
+        completed_group = create_completed_group()
 
         dynamic_groups: dict[str, TaskGroup] = {}
         lookup = {group["id"]: group for group in fixed_groups}
@@ -36,7 +37,7 @@ class DueDateTaskGrouping:
         for task in tasks:
 
             if task.completed:
-                lookup[TaskDefaultGroup.COMPLETED]["tasks"].append(task)
+                completed_group["tasks"].append(task)
                 continue
 
             due = task.due_date
@@ -69,4 +70,5 @@ class DueDateTaskGrouping:
         return [
             *fixed_groups,
             *[dynamic_groups[key] for key in sorted(dynamic_groups.keys())],
+            completed_group,
         ]
