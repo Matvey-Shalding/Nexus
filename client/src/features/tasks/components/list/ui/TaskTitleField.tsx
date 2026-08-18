@@ -27,10 +27,8 @@ export const TaskTitleField: React.FC<Props> = ({
 
 	return (
 		<div className="border-border flex items-center gap-x-1 border-r py-2 pr-1">
-			<button
-				type="button"
-				disabled={addTaskMode}
-				className="cursor-grab disabled:cursor-not-allowed p-1 rounded-lg transition-colors duration-150"
+			<div
+				className={cn('cursor-grab p-1 rounded-lg transition-colors duration-150', addTaskMode && 'cursor-not-allowed')}
 			>
 				<GripVertical
 					className={cn(
@@ -39,7 +37,7 @@ export const TaskTitleField: React.FC<Props> = ({
 						addTaskMode ? 'opacity-50' : 'hover:scale-105 hover:text-white transition-[color_transform]',
 					)}
 				/>
-			</button>
+			</div>
 
 			<Checkbox
 				checked={isCompleted}
