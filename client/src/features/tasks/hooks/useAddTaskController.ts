@@ -1,4 +1,5 @@
-import { ITaskGroupDefaultValues } from '../types/Task'
+import { ITaskGroupDefaultValues } from '../types/Task';
+
 import { useAddTaskActions } from './useAddTaskActions';
 import { useAddTaskDraft } from './useAddTaskDraft';
 import { useAddTaskInteractions } from './useAddTaskInteractions';
@@ -26,6 +27,6 @@ export const useAddTaskController = (defaultValues: ITaskGroupDefaultValues | nu
 		handleTitleUpdate,
 		handlePriorityUpdate,
 		handleDateUpdate,
-		reset
-	}
+		reset,
+	};
 };

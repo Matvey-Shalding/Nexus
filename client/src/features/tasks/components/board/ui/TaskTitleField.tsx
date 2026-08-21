@@ -1,8 +1,8 @@
-import { cn } from '@/lib/utils'
-import { Checkbox } from '@/shared/ui/checkbox'
-import { Textarea } from '@/shared/ui/textarea'
-import { GripVertical } from 'lucide-react'
-import React from 'react'
+import { cn } from '@/lib/utils';
+import { Checkbox } from '@/shared/ui/checkbox';
+import { Textarea } from '@/shared/ui/textarea';
+import { GripVertical } from 'lucide-react';
+import React from 'react';
 
 interface Props {
 	title: string;

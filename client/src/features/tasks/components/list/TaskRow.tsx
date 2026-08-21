@@ -10,7 +10,7 @@ import React, { useMemo } from 'react';
 import { DND_KIT_TYPES } from '../../config/dnd-kit';
 import { ITask, ITaskGroupDefaultValues } from '../../types/Task';
 
-import {List} from './List';
+import { List } from './List';
 
 interface Props {
 	className?: string;

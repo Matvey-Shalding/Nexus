@@ -37,6 +37,6 @@ export const useTaskController = (task: ITask, groupId: string) => {
 		handleDateUpdate,
 		selectedPriority: priority,
 		handlePriorityUpdate,
-		deleteTask,	
-	}
+		deleteTask,
+	};
 };

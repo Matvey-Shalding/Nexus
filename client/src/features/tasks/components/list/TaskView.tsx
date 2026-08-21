@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { ITaskGroup } from '../../types/Task';
-import { List } from './List'
+
+import { List } from './List';
 
 interface Props {
 	taskGroups: ITaskGroup[];

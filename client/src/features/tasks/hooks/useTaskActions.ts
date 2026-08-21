@@ -13,7 +13,6 @@ export const useTaskActions = (
 	setPriority: React.Dispatch<React.SetStateAction<TPriority>>,
 	setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-
 	const { updateTask } = useUpdateTask();
 
 	useUpdateTaskTitle(title, updateTask, id);

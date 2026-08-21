@@ -1,6 +1,6 @@
 'use client';
 
-import { useTheme } from '@teispace/next-themes'
+import { useTheme } from '@teispace/next-themes';
 import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon } from 'lucide-react';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 

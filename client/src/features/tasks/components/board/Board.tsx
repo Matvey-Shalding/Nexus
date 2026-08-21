@@ -1,10 +1,10 @@
-import { AddTask } from './AddTask'
-import { Task } from './Task'
-import { TaskLoader } from './TaskLoader'
-import { TaskOverlay } from './TaskOverlay'
-import { TaskColumn } from './TaskColumn'
-import { TaskView } from './TaskView'
-import { TaskViewTitle } from './TaskViewTitle'
+import { AddTask } from './AddTask';
+import { Task } from './Task';
+import { TaskColumn } from './TaskColumn';
+import { TaskLoader } from './TaskLoader';
+import { TaskOverlay } from './TaskOverlay';
+import { TaskView } from './TaskView';
+import { TaskViewTitle } from './TaskViewTitle';
 
 export const Board = {
 	TaskView,
@@ -13,5 +13,5 @@ export const Board = {
 	TaskLoader,
 	TaskColumn,
 	Task,
-	AddTask
-}
+	AddTask,
+};

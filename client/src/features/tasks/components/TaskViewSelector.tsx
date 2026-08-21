@@ -6,11 +6,12 @@ import { Separator } from '@/shared/ui/separator';
 import { ChevronDown, Layers3, ListOrdered, MonitorCog, SortAsc } from 'lucide-react';
 import { motion } from 'motion/react';
 import React from 'react';
-import { useTaskView } from '../store/task.store'
-import { TASK_VIEW } from '../types/TaskView'
-import { taskGroupByOptions, taskSortByOptions, taskSortOrderOptions, taskViewOptions } from '../config/taskViewConfig'
-import { TaskViewSelectorFilter } from './TaskViewSelectorFilter'
 
+import { taskGroupByOptions, taskSortByOptions, taskSortOrderOptions, taskViewOptions } from '../config/taskViewConfig';
+import { useTaskView } from '../store/task.store';
+import { TASK_VIEW } from '../types/TaskView';
+
+import { TaskViewSelectorFilter } from './TaskViewSelectorFilter';
 
 export const TaskViewSelector: React.FC = () => {
 	const [open, setOpen] = React.useState(false);

@@ -7,7 +7,7 @@ import { List } from '../components/list';
 import { useMoveTask } from '../hooks/useMoveTask';
 import { handleDragEnd } from '../services/handleDragEnd';
 import { useTaskView } from '../store/task.store';
-import { TASK_VIEW } from '../types/TaskView'
+import { TASK_VIEW } from '../types/TaskView';
 
 export const useKanbanController = () => {
 	const { groupBy, sortBy, sortOrder } = useTaskView();

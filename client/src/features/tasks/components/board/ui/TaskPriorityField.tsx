@@ -16,11 +16,7 @@ interface Props {
 	isCompleted?: boolean;
 }
 
-export const TaskPriorityField: React.FC<Props> = ({
-	selectedPriority,
-	handlePriorityUpdate,
-	isCompleted = false,
-}) => {
+export const TaskPriorityField: React.FC<Props> = ({ selectedPriority, handlePriorityUpdate, isCompleted = false }) => {
 	const priorityLabel = formatPriority(selectedPriority);
 	const styleClass = getPriorityStyles(selectedPriority);
 
