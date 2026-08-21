@@ -39,35 +39,43 @@ function DropdownMenuContent({
 	side = 'bottom',
 	sideOffset = 4,
 	className,
+	onPointerDown,
 	...props
-}: MenuPrimitive.Popup.Props & Pick<MenuPrimitive.Positioner.Props, 'align' | 'alignOffset' | 'side' | 'sideOffset'>) {
+}: MenuPrimitive.Popup.Props &
+	Pick<MenuPrimitive.Positioner.Props, 'align' | 'alignOffset' | 'side' | 'sideOffset' | 'onPointerDown'>) {
 	return (
 		<MenuPrimitive.Portal>
-			<MenuPrimitive.Positioner
-				className="isolate z-50 outline-none"
-				align={align}
-				alignOffset={alignOffset}
-				side={side}
-				sideOffset={sideOffset}
+			<MenuPrimitive.Backdrop
+				className="w-screen h-screen fixed top-0 left-0 pointer-events-auto!"
+				onPointerDown={e => onPointerDown?.(e)}
 			>
-				<MenuPrimitive.Popup
-					data-slot="dropdown-menu-content"
-					className={cn(
-						'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-85 duration-300',
-						'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-90 duration-300',
-						'data-closed:overflow-hidden',
-						'data-[side=bottom]:slide-in-from-top-4 data-[side=top]:slide-in-from-bottom-4',
-						'data-[side=left]:slide-in-from-right-4 data-[side=right]:slide-in-from-left-4',
-						'data-[side=inline-end]:slide-in-from-left-4 data-[side=inline-start]:slide-in-from-right-4',
-						'relative z-50 max-h-(--available-height) w-(--anchor-width) min-w-48 origin-(--transform-origin)',
-						'overflow-x-hidden overflow-y-auto rounded-3xl p-1.5 shadow-lg ring-1 outline-none',
-						'bg-popover/90 text-popover-foreground ring-foreground/5 dark:ring-foreground/10',
-						'before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150',
-						className,
-					)}
-					{...props}
-				/>
-			</MenuPrimitive.Positioner>
+				<MenuPrimitive.Positioner
+					onClick={() => console.log('Positioner click')}
+					className="isolate z-50 outline-none pointer-events-auto!"
+					align={align}
+					alignOffset={alignOffset}
+					side={side}
+					sideOffset={sideOffset}
+				>
+					<MenuPrimitive.Popup
+						data-slot="dropdown-menu-content"
+						className={cn(
+							'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-85 duration-300',
+							'data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-90 duration-300',
+							'data-closed:overflow-hidden',
+							'data-[side=bottom]:slide-in-from-top-4 data-[side=top]:slide-in-from-bottom-4',
+							'data-[side=left]:slide-in-from-right-4 data-[side=right]:slide-in-from-left-4',
+							'data-[side=inline-end]:slide-in-from-left-4 data-[side=inline-start]:slide-in-from-right-4',
+							'relative z-50 max-h-(--available-height) w-(--anchor-width) min-w-48 origin-(--transform-origin)',
+							'overflow-x-hidden overflow-y-auto rounded-3xl p-1.5 shadow-lg ring-1 outline-none',
+							'bg-popover/90 text-popover-foreground ring-foreground/5 dark:ring-foreground/10',
+							'before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150',
+							className,
+						)}
+						{...props}
+					/>
+				</MenuPrimitive.Positioner>
+			</MenuPrimitive.Backdrop>
 		</MenuPrimitive.Portal>
 	);
 }

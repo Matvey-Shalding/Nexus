@@ -5,7 +5,7 @@ import { getPriorityStyles, priorityStyles } from '@/features/tasks/utils/getPri
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
-import { CheckCheck, ChevronsUpDown } from 'lucide-react';
+import { CheckCheck } from 'lucide-react';
 import React from 'react';
 
 import { formatPriority } from '../../../utils/formatPriority';
@@ -16,45 +16,40 @@ interface Props {
 	isCompleted?: boolean;
 }
 
-export const TaskPriorityField: React.FC<Props> = ({ selectedPriority, handlePriorityUpdate, isCompleted = false }) => {
+export const TaskPriorityField: React.FC<Props> = ({
+	selectedPriority,
+	handlePriorityUpdate,
+	isCompleted = false,
+}) => {
 	const priorityLabel = formatPriority(selectedPriority);
 	const styleClass = getPriorityStyles(selectedPriority);
 
-	const [isOpen, setIsOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
 
 	const handleSelect = (priority: TPriority) => {
-		setIsOpen(false);
+		setOpen(false);
 		handlePriorityUpdate(priority);
 	};
 
 	return (
 		<DropdownMenu
-			open={isOpen}
-			onOpenChange={setIsOpen}
+			open={open}
+			onOpenChange={setOpen}
 		>
 			<DropdownMenuTrigger
 				disabled={isCompleted}
 				className={cn(
-					'border-border flex items-center group justify-center gap-x-4 border-r py-2 px-2.5',
-					isCompleted ? 'opacity-60' : ' hover:bg-muted/40 transition-colors',
+					'flex items-center justify-center rounded-md px-3 py-0.5 text-lg',
+					'transition-[background-color,transform,opacity] duration-150',
+					'hover:bg-muted/40',
+					'active:scale-[0.98]',
+					'data-[state=open]:bg-muted/60',
+					'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40',
+					isCompleted && 'cursor-not-allowed opacity-60',
+					styleClass,
 				)}
 			>
-				<span
-					className={cn(
-						'h-full shrink basis-full rounded-lg text-lg transition-colors flex items-center justify-center',
-						styleClass,
-						isCompleted && 'pointer-events-none',
-					)}
-				>
-					{priorityLabel}
-				</span>
-				<ChevronsUpDown
-					className={cn(
-						'text-muted-foreground size-4.5 min-w-4.5 transition-[transform_color] duration-300',
-						isOpen ? 'rotate-180' : 'rotate-0',
-						!isCompleted && 'group-hover:text-foreground',
-					)}
-				/>
+				<span>{priorityLabel}</span>
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent

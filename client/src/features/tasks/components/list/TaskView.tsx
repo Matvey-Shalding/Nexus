@@ -1,21 +1,19 @@
 import React from 'react';
 
 import { ITaskGroup } from '../../types/Task';
-
-import { TaskListRow } from './TaskListRow';
-import { TaskListViewTitle } from './TaskListViewTitle';
+import { List } from './List'
 
 interface Props {
 	taskGroups: ITaskGroup[];
 }
 
-export const TaskListView: React.FC<Props> = ({ taskGroups }) => {
+export const TaskView: React.FC<Props> = ({ taskGroups }) => {
 	return (
 		<div className="flex flex-col">
-			<TaskListViewTitle />
+			<List.TaskViewTitle />
 			<div className="flex w-full flex-col">
 				{taskGroups.map(taskGroup => (
-					<TaskListRow
+					<List.TaskRow
 						key={taskGroup.id}
 						id={taskGroup.id}
 						title={taskGroup.title}

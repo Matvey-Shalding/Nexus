@@ -14,8 +14,6 @@ export const useAddTaskDraft = (defaultValues: ITaskGroupDefaultValues | null) =
 	const [priority, setPriority] = useState<TPriority>(defaultValues?.priority || 0);
 
 	const taskRef = useRef<HTMLDivElement>(null);
-	const calendarRef = useRef<HTMLDivElement>(null);
-	const priorityRef = useRef<HTMLDivElement>(null);
 
 	return {
 		mode,
@@ -25,8 +23,6 @@ export const useAddTaskDraft = (defaultValues: ITaskGroupDefaultValues | null) =
 		date,
 		setDate,
 		taskRef,
-		calendarRef,
-		priorityRef,
 		priority,
 		setPriority,
 	};

@@ -1,14 +1,14 @@
 import { Skeleton } from '@/shared/ui/skeleton';
 
-import { TaskListViewTitle } from '../TaskListViewTitle';
+import { TaskViewTitle } from './TaskViewTitle';
 
-export const TaskListLoader = () => {
+export const TaskLoader = () => {
 	return (
 		<div className="flex flex-col gap-y-2">
-			<TaskListViewTitle />
+			<TaskViewTitle />
 
 			<div className="flex w-full flex-col gap-y-5">
-				{Array.from({ length: 3 }).map((_, groupIndex) => (
+				{Array.from({ length: 4 }).map((_, groupIndex) => (
 					<div
 						key={groupIndex}
 						className="flex w-full flex-col"

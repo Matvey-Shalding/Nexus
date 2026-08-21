@@ -10,8 +10,7 @@ import React, { useMemo } from 'react';
 import { DND_KIT_TYPES } from '../../config/dnd-kit';
 import { ITask, ITaskGroupDefaultValues } from '../../types/Task';
 
-import { AddTask } from './AddTask';
-import { Task } from './Task';
+import {List} from './List';
 
 interface Props {
 	className?: string;
@@ -22,7 +21,7 @@ interface Props {
 	defaultValues: ITaskGroupDefaultValues | null;
 }
 
-export const TaskListRow: React.FC<Props> = ({ title, tasks, creationEnabled, defaultValues, id }) => {
+export const TaskRow: React.FC<Props> = ({ title, tasks, creationEnabled, defaultValues, id }) => {
 	const { ref, isDropTarget } = useDroppable({
 		id,
 		type: DND_KIT_TYPES.COLUMN,
@@ -34,9 +33,7 @@ export const TaskListRow: React.FC<Props> = ({ title, tasks, creationEnabled, de
 		disabled: id === 'expired',
 	});
 
-	const [open, setOpen] = React.useState(true);
-
-	const tasksLength = useMemo(() => tasks.length, [tasks]);
+	const [isGroupOpen, setIsGroupOpen] = React.useState(true);
 
 	return (
 		<div
@@ -44,23 +41,23 @@ export const TaskListRow: React.FC<Props> = ({ title, tasks, creationEnabled, de
 			className={cn('flex w-full flex-col transition-colors duration-150', isDropTarget && ['bg-primary/15'])}
 		>
 			<div
-				onClick={() => setOpen(prev => !prev)}
+				onClick={() => setIsGroupOpen(prev => !prev)}
 				className="flex items-center justify-between border-border border-b py-3 pl-2.5 "
 			>
 				<div className="flex items-end gap-x-2">
 					<span className={cn('font-heading text-xl font-medium')}>{title}</span>
-					<span className="text-muted-foreground text">{tasksLength}</span>
+					<span className="text-muted-foreground text">{tasks.length}</span>
 				</div>
 				<ChevronDown
 					className={cn(
 						'transition-transform duration-300 size-5 text-muted-foreground',
-						open ? 'rotate-180' : 'rotate-0',
+						isGroupOpen ? 'rotate-180' : 'rotate-0',
 					)}
 				/>
 			</div>
 
 			<AnimatePresence initial={false}>
-				{open && (
+				{isGroupOpen && (
 					<motion.div
 						style={{ overflow: 'hidden' }}
 						initial={{ height: 0 }}
@@ -71,14 +68,14 @@ export const TaskListRow: React.FC<Props> = ({ title, tasks, creationEnabled, de
 					>
 						<AnimatePresence initial={false}>
 							{tasks.map(task => (
-								<Task
+								<List.Task
 									groupId={id}
 									key={task.id}
 									task={task}
 								/>
 							))}
 
-							{creationEnabled && <AddTask defaultValues={defaultValues} />}
+							{creationEnabled && <List.AddTask defaultValues={defaultValues} />}
 						</AnimatePresence>
 					</motion.div>
 				)}

@@ -43,17 +43,21 @@ export const Task: React.FC<Props> = ({ task, groupId }) => {
 				title={title}
 				handleTitleUpdate={handleTitleUpdate}
 			/>
-			<TaskDateField
-				isCompleted={isCompleted}
-				selectedDate={date}
-				handleDateUpdate={handleDateUpdate}
-			/>
-			<TaskPriorityField
-				isCompleted={isCompleted}
-				selectedPriority={priority}
-				handlePriorityUpdate={handlePriorityUpdate}
-			/>
-			<TaskDeleteButton onDelete={deleteTask} />
+			<div className="flex items-center justify-between basis-full">
+				<div className="flex items-center gap-x-2.5">
+					<TaskDateField
+						isCompleted={isCompleted}
+						selectedDate={date}
+						handleDateUpdate={handleDateUpdate}
+					/>
+					<TaskPriorityField
+						isCompleted={isCompleted}
+						selectedPriority={priority}
+						handlePriorityUpdate={handlePriorityUpdate}
+					/>
+				</div>
+				<TaskDeleteButton onDelete={deleteTask} />
+			</div>
 		</TaskLayout>
 	);
 };

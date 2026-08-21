@@ -10,7 +10,7 @@ interface FilterSelectProps<T extends string> {
 	options: readonly { label: string; value: T }[];
 }
 
-export const TaskViewFilterSelect = <T extends string>({
+export const TaskViewSelectorFilter = <T extends string>({
 	title,
 	icon: Icon,
 	value,

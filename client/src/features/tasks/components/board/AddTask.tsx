@@ -59,15 +59,19 @@ export const AddTask: React.FC<Props> = ({ defaultValues }) => {
 							}}
 							handleTitleUpdate={handleTitleUpdate}
 						/>
-						<TaskDateField
-							selectedDate={date}
-							handleDateUpdate={handleDateUpdate}
-						/>
-						<TaskPriorityField
-							selectedPriority={priority}
-							handlePriorityUpdate={handlePriorityUpdate}
-						/>
-						<TaskDeleteButton onDelete={reset} />
+						<div className="flex items-center justify-between basis-full">
+							<div className="flex items-center gap-x-2.5">
+								<TaskDateField
+									selectedDate={date}
+									handleDateUpdate={handleDateUpdate}
+								/>
+								<TaskPriorityField
+									selectedPriority={priority}
+									handlePriorityUpdate={handlePriorityUpdate}
+								/>
+							</div>
+							<TaskDeleteButton onDelete={reset} />
+						</div>
 					</TaskLayout>
 				</motion.div>
 			)}

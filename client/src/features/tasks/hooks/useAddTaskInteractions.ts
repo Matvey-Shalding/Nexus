@@ -12,16 +12,10 @@ export const useAddTaskInteractions = (
 	date: Date | undefined,
 	priority: TPriority,
 	createTask: (data: CreateTaskDraft) => void,
-	calendarRef: React.RefObject<HTMLDivElement | null>,
-	priorityRef: React.RefObject<HTMLDivElement | null>,
 	reset: () => void,
 ) => {
 	const isInsideTask = (target: Node) => {
-		return (
-			taskRef?.current?.contains(target) ||
-			calendarRef?.current?.contains(target) ||
-			priorityRef?.current?.contains(target)
-		);
+		return taskRef?.current?.contains(target);
 	};
 
 	useEffect(() => {
@@ -43,12 +37,12 @@ export const useAddTaskInteractions = (
 			}
 		};
 
-		document.addEventListener('click', handleClick);
+		document.addEventListener('mousedown', handleClick);
 
 		document.addEventListener('keydown', handleKeyDown);
 
 		return () => {
-			document.removeEventListener('click', handleClick);
+			document.removeEventListener('mousedown', handleClick);
 			document.removeEventListener('keydown', handleKeyDown);
 		};
 	}, [title, priority, date, mode]);
