@@ -47,7 +47,9 @@ export function FormInput<T extends FieldValues>({
 						{showVisibilityToggle && (
 							<button
 								type="button"
+								aria-label={isVisible ? 'Hide password' : 'Show password'}
 								onClick={() => setIsVisible(!isVisible)}
+								className="mr-1.5 flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 							>
 								{isVisible ? <Eye className="size-4.5" /> : <EyeOff className="size-4.5" />}
 							</button>

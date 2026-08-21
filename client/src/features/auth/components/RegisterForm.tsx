@@ -86,7 +86,6 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 											<InputGroupAddon>
 												<Lock className="size-4.5" />
 											</InputGroupAddon>
-											<InputGroupAddon align="inline-end"></InputGroupAddon>
 										</>
 									</FormInput>
 								</Field>

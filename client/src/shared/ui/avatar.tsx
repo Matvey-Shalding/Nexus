@@ -8,7 +8,7 @@ interface Props {
 }
 export const Avatar: React.FC<Props> = ({ className, iconClassName }) => {
 	return (
-		<div className={cn('size-8 rounded-xl', className)}>
+		<div className={cn('size-8 rounded-lg bg-primary grid place-content-center', className)}>
 			<CircleUserRoundIcon className={cn('text-foreground! size-5', iconClassName)} />
 		</div>
 	);
