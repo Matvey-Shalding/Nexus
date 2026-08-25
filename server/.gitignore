@@ -9,11 +9,6 @@ node_modules/
 build/
 dist/
 .next/
-
-# Environment / Secrets
-.env
-.env.*.local
-
 # OS / IDE
 .DS_Store
 .vscode/
