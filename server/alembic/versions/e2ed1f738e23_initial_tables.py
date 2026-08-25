@@ -1,8 +1,8 @@
-"""Create tables
+"""Initial tables
 
-Revision ID: 51bdec63bd03
-Revises: cfbd7cb36be7
-Create Date: 2026-08-09 21:17:07.174335
+Revision ID: e2ed1f738e23
+Revises: 
+Create Date: 2026-08-25 12:06:34.579405
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '51bdec63bd03'
-down_revision: Union[str, Sequence[str], None] = 'cfbd7cb36be7'
+revision: str = 'e2ed1f738e23'
+down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -37,7 +37,7 @@ def upgrade() -> None:
     sa.Column('expires_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('token_hash', sa.String(length=255), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('user_id')
     )
@@ -47,12 +47,11 @@ def upgrade() -> None:
     sa.Column('due_date', sa.Date(), nullable=True),
     sa.Column('priority', sa.Integer(), nullable=False),
     sa.Column('completed', sa.Boolean(), nullable=False),
-    sa.Column('position', sa.Float(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.CheckConstraint('priority IN (0,1,2,3)', name='ck_task_priority'),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

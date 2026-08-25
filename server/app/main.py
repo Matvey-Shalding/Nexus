@@ -16,7 +16,7 @@ from api.routes.tasks import tasks_router
 
 # enable .env configuration
 
-load_dotenv()
+# load_dotenv()
 
 
 app = FastAPI()

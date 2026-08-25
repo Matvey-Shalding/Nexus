@@ -16,7 +16,7 @@ from app.models.refresh_token import RefreshToken
 
 from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 from alembic import context
 
