@@ -8,7 +8,7 @@ from tests.database import override_get_db
 
 from httpx import AsyncClient,ASGITransport
 
-from api.main import app
+from server.app.main import app
 
 app.dependency_overrides[get_db] = override_get_db
 

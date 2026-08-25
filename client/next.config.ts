@@ -1,6 +1,7 @@
 const nextConfig = {
 	reactCompiler: true,
-	reactStrictMode: false,
+	reactStrictMode: true,
+	output: 'standalone',
 };
 
 export default nextConfig;

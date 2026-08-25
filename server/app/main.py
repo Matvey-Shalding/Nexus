@@ -21,6 +21,12 @@ load_dotenv()
 
 app = FastAPI()
 
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
 origins = [
     "http://localhost:3000",  # Your Next.js local address
     "https://yourdomain.com",  # Your production frontend domain
@@ -34,16 +40,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all custom request headers (like Authorization)
 )
 
-
-async def create_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-
 app.include_router(router=auth_router)
 app.include_router(router=users_router)
 app.include_router(router=tasks_router)
-
-
-if __name__ == "__main__":
-    asyncio.run(create_tables())

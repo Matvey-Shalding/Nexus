@@ -5,7 +5,7 @@ from sqlalchemy.pool import NullPool
 
 from app.database import Base
 
-from api.main  import app
+from server.app.main  import app
 
 TEST_DATABASE_URL="postgresql+asyncpg://postgres:123456@localhost:5432/test_nexus"
 
