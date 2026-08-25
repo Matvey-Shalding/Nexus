@@ -29,7 +29,7 @@ async def health():
 
 origins = [
     "http://localhost:3000",  # Your Next.js local address
-    "https://45.138.25.80:3000",  # Your production frontend domain
+    "http://45.138.25.80:3000",  # Your production frontend domain
 ]
 
 app.add_middleware(
