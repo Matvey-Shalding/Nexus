@@ -14,9 +14,11 @@ from api.routes.users import users_router
 
 from api.routes.tasks import tasks_router
 
+from api.routes.telegram import telegram_router
+
 # enable .env configuration
 
-# load_dotenv()
+load_dotenv()
 
 
 app = FastAPI()
@@ -43,3 +45,4 @@ app.add_middleware(
 app.include_router(router=auth_router)
 app.include_router(router=users_router)
 app.include_router(router=tasks_router)
+app.include_router(router=telegram_router)

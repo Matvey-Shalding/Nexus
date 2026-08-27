@@ -1,0 +1,13 @@
+the flow: logged in user clicks connect telegram account -> gets redirected to the telegram bot with this token -> back authorizes him and he can use the bot
+
+-- Databases
+
+telegram_link_tokens:
+
+id
+
+token_hash(comes from front-end the hashed magic_link) user_id expires_at(10 mins) used_at(set when bot succesfully calls)
+
+telegram_accounts:
+
+id telegram_user_id user_id created_at

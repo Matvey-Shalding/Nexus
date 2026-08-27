@@ -14,9 +14,9 @@ from app.models.task import Task
 
 from app.models.refresh_token import RefreshToken
 
-from dotenv import load_dotenv
+from app.models.telegram_link import TelegramLink
 
-# load_dotenv()
+from app.models.telegram_account import TelegramAccount
 
 from alembic import context
 

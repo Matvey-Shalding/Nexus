@@ -4,8 +4,6 @@ from datetime import datetime
 
 from sqlalchemy import ForeignKey, String, DateTime, func
 
-# hack to ignore linter warnings
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:

@@ -2,15 +2,15 @@ from app.database import Base
 
 from datetime import datetime
 
-# hack to ignore linter warnings
 
-from typing import TYPE_CHECKING
+from app.models.telegram_account import TelegramAccount
 
-if TYPE_CHECKING:
 
-    from .refresh_token import RefreshToken
+from .refresh_token import RefreshToken
 
-    from .task import Task
+from .task import Task
+
+from .telegram_link import TelegramLink
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -33,6 +33,14 @@ class User(Base):
 
     refresh_token: Mapped["RefreshToken"] = relationship(
         back_populates="user", uselist=False, cascade="all, delete-orphan"
+    )
+
+    telegram_links: Mapped[list["TelegramLink"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
+
+    telegram_account: Mapped["TelegramAccount | None"] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
     )
 
     tasks: Mapped[list["Task"]] = relationship(
