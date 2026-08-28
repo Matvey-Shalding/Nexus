@@ -29,7 +29,7 @@ class UserRepository:
 
         return user_model
 
-    async def update_user(self, data: dict, db: AsyncSession, current_user: User):
+    async def update_user(self, data: dict, db: AsyncSession, current_user: User) -> User:
         for key, value in data.items():
             setattr(current_user, key, value)
 

@@ -23,5 +23,11 @@ async def get_bot_link(user: user_dependency, db: db_dependency) -> LinkResponse
 
     return LinkResponse(link=link)
 
+@telegram_router.post("/account",status_code=status.HTTP_200_OK)
+
+async def connect_account(db: db_dependency,telegram_user_id: int,link:str,bot_id: str):
+
+    await BotService().connect_account(telegram_user_id=telegram_user_id,link=link,db=db,bot_id=bot_id)
+
 
 

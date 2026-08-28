@@ -19,7 +19,7 @@ from services.auth import AuthService
 
 from app.config import REFRESH_TOKEN_EXPIRE_SECONDS, Environment
 
-from app.error import AUTH_ERROR, NO_LOGIN_ERROR
+from app.error import AuthError, NoLoginError
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -40,7 +40,7 @@ async def login(login_user_request: LoginUserRequest, db: db_dependency):
     )
 
     if not user:
-        raise AUTH_ERROR
+        raise AuthError
 
     session = await service.create_session(user=user, db=db)
 
@@ -69,7 +69,7 @@ async def refresh(db: db_dependency, refresh_token: str | None = Cookie(None)):
     try:
 
         if not refresh_token:
-            raise NO_LOGIN_ERROR
+            raise NoLoginError
 
         service = AuthService()
 

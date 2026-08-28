@@ -22,7 +22,7 @@ from app.schemas.user import CreateUserRequest
 from app.deps import db_dependency
 from app.models.user import User
 
-from app.error import AUTH_ERROR, DUPLICATE_EMAIL_ERROR
+from app.error import AuthError, DuplicateEmailError
 
 
 from app.security import bcrypt_context
@@ -71,7 +71,7 @@ class AuthService:
         )
 
         if user:
-            raise DUPLICATE_EMAIL_ERROR
+            raise DuplicateEmailError
 
     async def register(
         self,
@@ -120,9 +120,9 @@ class AuthService:
             user_id: int | None = payload.get("id")
 
             if user_id is None:
-                raise AUTH_ERROR
+                raise AuthError
         except JWTError:
-            raise AUTH_ERROR
+            raise AuthError
 
         return await UserRepository().get_user_by_id(
             db=db,
@@ -185,14 +185,14 @@ class AuthService:
         )
 
         if not db_token:
-            raise AUTH_ERROR
+            raise AuthError
 
         # prevent runtime errors and manually fetch user
 
         user = await UserRepository().get_user_by_id(db, db_token.user_id)
 
         if not user:
-            raise AUTH_ERROR
+            raise AuthError
 
         if db_token.expires_at < datetime.now(timezone.utc):
 
@@ -200,7 +200,7 @@ class AuthService:
 
             await db.commit()
 
-            raise AUTH_ERROR
+            raise AuthError
 
         access_token = self.create_access_token(user_id=user.id)
 
