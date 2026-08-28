@@ -23,4 +23,5 @@ export const ApiRoutes = {
 	REFRESH: `${AUTH_PREFIX}/refresh`,
 	USER: '/users/me',
 	TASKS: '/tasks/',
+	LINK: "/telegram/link",
 } as const;
