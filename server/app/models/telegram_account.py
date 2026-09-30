@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import BigInteger, DateTime, ForeignKey, func, null
+from sqlalchemy import BigInteger, DateTime, ForeignKey, String, func, null
 
 from app.database import Base
 
@@ -18,6 +18,8 @@ class TelegramAccount(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
     telegram_user_id: Mapped[int] = mapped_column(BigInteger,nullable=False,unique=True)
+
+    telegram_username: Mapped[str] = mapped_column(String(50),nullable=False,unique=True)
 
     user: Mapped["User"] = relationship(back_populates="telegram_account")
 

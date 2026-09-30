@@ -34,6 +34,11 @@ class ConflictError(HTTPException):
         )
 
 
+class TelegramAccountAlreadyConnected(ConflictError):
+    def __init__(self):
+        super().__init__("Telegram account already connected.")
+
+
 class DuplicateEmailError(ConflictError):
     def __init__(self):
         super().__init__("Such email already exists.")

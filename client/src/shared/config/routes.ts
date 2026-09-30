@@ -24,4 +24,5 @@ export const ApiRoutes = {
 	USER: '/users/me',
 	TASKS: '/tasks/',
 	LINK: "/telegram/link",
+	ACCOUNT: "/telegram/account"
 } as const;

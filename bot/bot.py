@@ -1,17 +1,19 @@
 import asyncio
 import os
 
-from aiogram import Bot,Dispatcher
+from aiogram import Bot, Dispatcher
 
 from router import router
 
-async def main():
+from decouple import config
 
-    token = os.getenv("BOT_TOKEN")
+
+async def main():
+    token = config("BOT_TOKEN", cast=str, default="")
 
     assert token
 
-    bot = Bot(token)
+    bot = Bot(str(token))
 
     dp = Dispatcher()
 

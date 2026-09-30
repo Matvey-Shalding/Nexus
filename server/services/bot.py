@@ -11,8 +11,11 @@ from app.error import (
     ExpiredTelegramLink,
     InvalidBotId,
     InvalidTelegramLink,
+    TelegramAccountAlreadyConnected,
     UsedTelegramLink,
 )
+from app.schemas.telegram_account import ConnectAccountRequest
+from app.models.telegram_account import TelegramAccount
 
 
 class BotService:
@@ -42,8 +45,15 @@ class BotService:
         return my_bot_id == bot_id
 
     async def connect_account(
-        self, telegram_user_id: int, link: str, db: AsyncSession, bot_id: str
+        self,
+        db: AsyncSession,
+        bot_id: str,
+        connect_account_request: ConnectAccountRequest,
     ):
+
+        telegram_user_id, link, telegram_username = (
+            connect_account_request.model_dump().values()
+        )
 
         if not self._validate_bot(bot_id=bot_id):
             raise InvalidBotId()
@@ -61,9 +71,35 @@ class BotService:
         if db_link.expires_at < datetime.now(timezone.utc):
             raise ExpiredTelegramLink()
 
+        existing_account = await self.bot_repository.get_account_by_user_id(
+            db, db_link.user_id
+        )
+
+        if existing_account:
+            raise TelegramAccountAlreadyConnected()
+
+        existing_telegram_account = (
+            await self.bot_repository.get_account_by_telegram_user_id(
+                db, telegram_user_id
+            )
+        )
+
+        if existing_telegram_account:
+            raise TelegramAccountAlreadyConnected()
+
         await self.bot_repository.connect_telegram(
             db=db,
             user_id=db_link.user_id,
             telegram_user_id=telegram_user_id,
             link=db_link,
+            telegram_username=telegram_username,
         )
+
+    async def get_account(
+        self, db: AsyncSession, current_user: User
+    ) -> TelegramAccount | None:
+
+        return await self.bot_repository.get_account_by_user_id(db, current_user.id)
+
+    async def delete_account(self, db: AsyncSession, current_user: User):
+        await self.bot_repository.delete_account_by_user_id(db, current_user.id)

@@ -1,6 +1,6 @@
 import os
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from datetime import datetime, timedelta, timezone
@@ -34,11 +34,18 @@ class BotRepository:
         return res.scalar_one_or_none()
 
     async def connect_telegram(
-        self, db: AsyncSession, user_id: int, telegram_user_id: int, link: TelegramLink
+        self,
+        db: AsyncSession,
+        user_id: int,
+        telegram_user_id: int,
+        telegram_username: str,
+        link: TelegramLink,
     ):
 
         account_model = TelegramAccount(
-            telegram_user_id=telegram_user_id, user_id=user_id
+            telegram_user_id=telegram_user_id,
+            user_id=user_id,
+            telegram_username=telegram_username,
         )
 
         db.add(account_model)
@@ -50,3 +57,31 @@ class BotRepository:
         await db.refresh(account_model)
 
         await db.refresh(link)
+
+    async def get_account_by_user_id(
+        self, db: AsyncSession, user_id: int
+    ) -> TelegramAccount | None:
+        res = await db.execute(
+            select(TelegramAccount).where(TelegramAccount.user_id == user_id)
+        )
+
+        return res.scalar_one_or_none()
+
+    async def get_account_by_telegram_user_id(
+        self, db: AsyncSession, telegram_user_id: int
+    ) -> TelegramAccount | None:
+        res = await db.execute(
+            select(TelegramAccount).where(
+                TelegramAccount.telegram_user_id == telegram_user_id
+            )
+        )
+
+        return res.scalar_one_or_none()
+
+    async def delete_account_by_user_id(self, db: AsyncSession, user_id: int):
+
+        await db.execute(
+            delete(TelegramAccount).where(TelegramAccount.user_id == user_id)
+        )
+
+        await db.commit()
