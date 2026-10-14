@@ -8,3 +8,6 @@ class ConnectAccountRequest(BaseModel):
 
 class Account(BaseModel):
     telegram_username: str
+
+class AccountExistsResponse(BaseModel):
+    is_connected: bool

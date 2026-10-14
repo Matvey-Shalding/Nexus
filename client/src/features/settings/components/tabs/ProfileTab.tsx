@@ -21,14 +21,14 @@ interface Props {
 export const ProfileTab: React.FC<Props> = ({}) => {
 	const { user, isPending } = useCurrentUser();
 
-	const updateUser = useUpdateUser();
+  const updateUser = useUpdateUser();
 
 	const { control, handleSubmit, reset, setError, disabled, setIsSubmitting } = useProfileForm(user, isPending);
 
 	const onSubmit = async (data: TEditProfileSchema) => {
 		setIsSubmitting(true);
 
-		await toast.promise(updateUser(data), {
+		toast.promise(updateUser(data), {
 			loading: 'Updating your profile...',
 			success: 'Profile updated successfully',
 			error: (error: AxiosError) => {

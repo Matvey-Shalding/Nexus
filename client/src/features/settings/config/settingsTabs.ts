@@ -31,4 +31,6 @@ export const tabs = [
 		label: 'Security',
 		icon: Shield,
 	},
-];
+] as const;
+
+export type TabValue = (typeof tabs)[number]['value']

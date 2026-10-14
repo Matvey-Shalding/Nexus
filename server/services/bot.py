@@ -12,6 +12,7 @@ from app.error import (
     InvalidBotId,
     InvalidTelegramLink,
     TelegramAccountAlreadyConnected,
+    TelegramAccountNotFound,
     UsedTelegramLink,
 )
 from app.schemas.telegram_account import ConnectAccountRequest
@@ -103,3 +104,16 @@ class BotService:
 
     async def delete_account(self, db: AsyncSession, current_user: User):
         await self.bot_repository.delete_account_by_user_id(db, current_user.id)
+
+    async def delete_account_by_telgram_id(
+        self, db: AsyncSession, telegram_user_id: int
+    ):
+        await self.bot_repository.delete_account_by_telegram_id(db, telegram_user_id)
+
+    async def get_account_by_telegram_user_id(
+        self, db: AsyncSession, telegram_user_id: int
+    ):
+
+        return await self.bot_repository.get_account_by_telegram_user_id(
+            db, telegram_user_id
+        )

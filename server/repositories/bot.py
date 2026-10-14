@@ -9,6 +9,7 @@ from app.models.telegram_link import TelegramLink
 
 from app.security import bcrypt_context
 from app.models.telegram_account import TelegramAccount
+from app.schemas.telegram_account import AccountExistsResponse
 
 
 class BotRepository:
@@ -70,18 +71,28 @@ class BotRepository:
     async def get_account_by_telegram_user_id(
         self, db: AsyncSession, telegram_user_id: int
     ) -> TelegramAccount | None:
-        res = await db.execute(
-            select(TelegramAccount).where(
-                TelegramAccount.telegram_user_id == telegram_user_id
+        res = (
+            await db.execute(
+                select(TelegramAccount).where(
+                    TelegramAccount.telegram_user_id == telegram_user_id
+                )
             )
-        )
+        ).scalar_one_or_none()
 
-        return res.scalar_one_or_none()
+        return res
 
     async def delete_account_by_user_id(self, db: AsyncSession, user_id: int):
 
         await db.execute(
             delete(TelegramAccount).where(TelegramAccount.user_id == user_id)
+        )
+
+        await db.commit()
+
+    async def delete_account_by_telegram_id(self, db: AsyncSession, telegram_id: int):
+
+        await db.execute(
+            delete(TelegramAccount).where(TelegramAccount.telegram_user_id == telegram_id)
         )
 
         await db.commit()

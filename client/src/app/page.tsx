@@ -1,8 +1,14 @@
+'use client';
+
 import { Routes } from '@/shared/config';
-import { redirect } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 
 export default function Home() {
-	redirect(Routes.DASHBOARD);
+	const searchParams = useSearchParams().toString();
+
+	// http://localhost:3000/?connect=telegram
+
+	redirect(searchParams ? Routes.DASHBOARD + '/?' + searchParams : Routes.DASHBOARD);
 
 	return null;
 }

@@ -4,6 +4,7 @@ import { Button } from '@/shared/ui/button';
 import { TabsContent } from '@/shared/ui/tabs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loader, Send } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -33,16 +34,10 @@ export const SecurityTab: React.FC<Props> = ({}) => {
 		return () => clearTimeout(timeout);
 	}, [isGeneratingLink]);
 
-	const { data } = useQuery({
+	const { data, isPending } = useQuery({
 		queryKey: ['account'],
 		queryFn: getAccount,
-		refetchInterval: _ => {
-			if (!isGeneratingLink || isConnected) {
-				return false;
-			}
-
-			return 1_000;
-		},
+		refetchInterval: 5_000,
 	});
 
 	const { mutateAsync: disconnectAccount } = useMutation({
@@ -66,6 +61,41 @@ export const SecurityTab: React.FC<Props> = ({}) => {
 		},
 	});
 
+	const telegramUsername = data?.data?.telegram_username;
+	const isConnected = Boolean(telegramUsername);
+
+	const searchParams = useSearchParams();
+
+	const router = useRouter();
+
+	const params = new URLSearchParams(searchParams.toString());
+
+	const pathname = usePathname();
+
+	useEffect(() => {
+		if (isPending) {
+			return;
+		}
+		const removeParameter = (param: string, params: URLSearchParams) => {
+			params.delete(param);
+			router.replace(`${pathname}?${params.toString()}`);
+		};
+
+		if (params.get('connect') == 'telegram') {
+			if (isConnected) {
+				removeParameter('connect', params);
+				toast.info('Your nexus account is already connected to telegram');
+				return;
+			}
+			try {
+				generateLink();
+				removeParameter('connect', params);
+			} catch {
+				toast.error('Something went wrong. Try again later');
+			}
+		}
+	}, [searchParams, generateLink, isPending]);
+
 	const handleDisconnect = () => {
 		toast.promise(disconnectAccount, {
 			loading: 'Disconnecting your account...',
@@ -73,9 +103,6 @@ export const SecurityTab: React.FC<Props> = ({}) => {
 			error: 'Something went wrong. Please try again',
 		});
 	};
-
-	const telegramUsername = data?.data?.telegram_username;
-	const isConnected = Boolean(telegramUsername);
 
 	return (
 		<TabsContent

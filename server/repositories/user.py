@@ -3,6 +3,7 @@ from app.models.user import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.user import CreateUserRequest
 from app.security import bcrypt_context
+from app.models.telegram_account import TelegramAccount
 
 
 class UserRepository:

@@ -13,16 +13,19 @@ from app.deps import db_dependency
 from app.models.user import User
 
 from repositories.user import UserRepository
-from app.schemas.user import UpdateUserRequest
+from repositories.bot import BotRepository
+from app.schemas.user import UpdateUserRequest, UserResponseForTelegram
 
 from app.config import NAME_MAX_LENGTH, NAME_MIN_LENGTH, EMAIL_REGEXP
 
 import re
 
-from app.error import InvalidName, InvalidEmail
+from app.error import AuthError, InvalidName, InvalidEmail, TelegramAccountNotFound
 
 
 class UserService:
+
+    user_repository = UserRepository()
 
     async def _validate_user(self, current_user: User, data: dict, db: AsyncSession):
 
@@ -41,7 +44,7 @@ class UserService:
             if not re.search(EMAIL_REGEXP, email):
                 raise InvalidEmail()
 
-            user = await UserRepository().get_user_by_email(db=db, email=email)
+            user = await self.user_repository.get_user_by_email(db=db, email=email)
 
             if user and user.id != current_user.id:
                 raise HTTPException(
@@ -57,4 +60,23 @@ class UserService:
 
         await self._validate_user(current_user, data, db)
 
-        return await UserRepository().update_user(data, db, current_user)
+        return await self.user_repository.update_user(data, db, current_user)
+
+    async def get_user_by_telegram_id(
+        self, telegram_user_id: int, db: AsyncSession
+    ) -> UserResponseForTelegram:
+        account = await BotRepository().get_account_by_telegram_user_id(
+            db, telegram_user_id
+        )
+
+        if not account:
+            raise TelegramAccountNotFound()
+
+        user = await UserRepository().get_user_by_id(db, account.user_id)
+
+        if not user:
+            raise AuthError()
+
+        return UserResponseForTelegram(
+            name=user.name, email=user.email, created_at=user.created_at
+        )

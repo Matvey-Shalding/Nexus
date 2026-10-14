@@ -33,6 +33,10 @@ class ConflictError(HTTPException):
             detail=detail,
         )
 
+class TelegramAccountNotFound(NotFoundError):
+    def __init__(self):
+        super().__init__("Such telegram_account does not exist")
+
 
 class TelegramAccountAlreadyConnected(ConflictError):
     def __init__(self):

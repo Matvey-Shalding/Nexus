@@ -1,19 +1,21 @@
 import asyncio
-import os
+from typing import Any
 
 from aiogram import Bot, Dispatcher
 
-from router import router
+import logging
 
-from decouple import config
+from .api import API
+from .router import router
+
+from .config import Config
 
 
 async def main():
-    token = config("BOT_TOKEN", cast=str, default="")
 
-    assert token
+    config = Config()
 
-    bot = Bot(str(token))
+    bot = Bot(str(config.BOT_TOKEN))
 
     dp = Dispatcher()
 
@@ -23,6 +25,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
