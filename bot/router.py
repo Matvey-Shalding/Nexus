@@ -168,3 +168,4 @@ async def disconnect_telegram_confirm(call: CallbackQuery):
             "Something went wrong while loading your profile. Please try again."
         )
         return
+

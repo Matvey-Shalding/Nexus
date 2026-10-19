@@ -1,19 +1,18 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
-
-from starlette import status
-
-from app.schemas.task import CreateTaskRequest, TaskResponse, UpdateTaskRequest
-
-from dependencies.user import get_current_user
-from app.models.user import User
-
 from app.deps import db_dependency
-from app.schemas.task import TaskGroup
-from services.task.task_service import TaskService
-
 from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
+from app.models.user import User
+from app.schemas.task import (
+    CreateTaskRequest,
+    TaskGroup,
+    TaskResponse,
+    UpdateTaskRequest,
+)
+from dependencies.user import get_current_user
+from fastapi import APIRouter, Depends
+from services.task.task_service import TaskService
+from starlette import status
 
 user_dependency = Annotated[User, Depends(get_current_user)]
 
@@ -45,9 +44,7 @@ async def update_task(
 ):
 
     return await task_service.update_task(
-        task_id=task_id,
-        request=request,
-        db=db,
+        task_id=task_id, request=request, db=db, current_user=current_user
     )
 
 
@@ -68,4 +65,10 @@ async def get_tasks(
     sort_order: TaskSortOrder = TaskSortOrder.ASC,
 ) -> list[TaskGroup]:
 
-    return await task_service.get_tasks(db=db, current_user=current_user,group_by=group_by,sort_by=sort_by,sort_order=sort_order)
+    return await task_service.get_tasks(
+        db=db,
+        current_user=current_user,
+        group_by=group_by,
+        sort_by=sort_by,
+        sort_order=sort_order,
+    )

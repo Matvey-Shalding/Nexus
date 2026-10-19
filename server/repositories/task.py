@@ -1,14 +1,11 @@
+from app.models.task import Task
+from app.models.user import User
+from app.schemas.task import CreateTaskRequest, UpdateTaskRequest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schemas.task import CreateTaskRequest, UpdateTaskRequest
-from app.models.task import Task
-
-
-
 
 class TaskRepository:
-
     async def add_task(
         self, db: AsyncSession, create_task_request: CreateTaskRequest, user_id: int
     ) -> Task:
@@ -29,8 +26,16 @@ class TaskRepository:
 
         return task_model
 
-    async def get_task_by_id(self, db: AsyncSession, task_id: int) -> Task | None:
-        return await db.get(Task, ident=task_id)
+    async def get_task_by_id(
+        self, db: AsyncSession, task_id: int, user_id: int
+    ) -> Task | None:
+        res = await db.execute(
+            select(Task)
+            .where(Task.id == task_id)
+            .where(Task.user_id == user_id)
+        )
+
+        return res.scalar_one_or_none()
 
     async def update_task(
         self, db: AsyncSession, task: Task, update_task_request: UpdateTaskRequest
@@ -44,13 +49,17 @@ class TaskRepository:
         await db.refresh(task)
 
         return task
-    
+
     async def delete_task(self, db: AsyncSession, task: Task):
 
         await db.delete(task)
 
         await db.commit()
-    
-    async def get_tasks(self,db: AsyncSession, user_id: int):
 
-        return(await db.execute(select(Task).where(Task.user_id == user_id))).scalars().all()
+    async def get_tasks(self, db: AsyncSession, user_id: int):
+
+        return (
+            (await db.execute(select(Task).where(Task.user_id == user_id)))
+            .scalars()
+            .all()
+        )

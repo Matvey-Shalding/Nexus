@@ -1,17 +1,22 @@
 import enum
-
-from sqlalchemy import Boolean, CheckConstraint, Date, Enum, Float, ForeignKey, Integer
-
-from sqlalchemy import DateTime, String, func
-
-from app.database import Base
-
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
 from datetime import date, datetime
-
 from typing import TYPE_CHECKING
 
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    Date,
+    DateTime,
+    Enum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    func,
+)
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.database import Base
 from app.enums.priority import PriorityEnum
 
 if TYPE_CHECKING:

@@ -1,33 +1,26 @@
 from datetime import date
 
-
+from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
+from app.error import InvalidDate, InvalidTaskId
+from app.models.task import Task
+from app.models.user import User
 from app.schemas.task import (
     CreateTaskRequest,
-    TaskGroup as TaskGroupDTO,
     UpdateTaskRequest,
 )
-
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from repositories.task import TaskRepository
-from app.models.user import User
-from app.models.task import Task
-
-from app.error import InvalidDate, InvalidTaskId
-
-from datetime import date
-
-from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
-
-from services.task.task_mapper.task_mapping_service import map_tasks
-from services.task.task_grouping.service import group_tasks
-
-from services.task.task_sorting.sort_tasks_service import sort_tasks
-
+from app.schemas.task import (
+    TaskGroup as TaskGroupDTO,
+)
 from app.types.task import TaskGroup
+from repositories.task import TaskRepository
+from services.task.task_grouping.service import group_tasks
+from services.task.task_mapper.task_mapping_service import map_tasks
+from services.task.task_sorting.sort_tasks_service import sort_tasks
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class TaskService:
+    task_repository = TaskRepository()
 
     def _validate_task(self, task_date: date | None):
 
@@ -38,40 +31,36 @@ class TaskService:
         self, request: CreateTaskRequest, db: AsyncSession, current_user: User
     ) -> Task:
 
-        task_repository = TaskRepository()
+        if request.due_date:
+            self._validate_task(request.due_date)
 
-        self._validate_task(request.due_date)
-
-        return await task_repository.add_task(db, request, current_user.id)
+        return await self.task_repository.add_task(db, request, current_user.id)
 
     async def update_task(
         self,
         task_id: int,
         request: UpdateTaskRequest,
         db: AsyncSession,
+        current_user: User,
     ):
-
-        task_repository = TaskRepository()
 
         self._validate_task(request.due_date)
 
-        task = await task_repository.get_task_by_id(db, task_id)
+        task = await self.task_repository.get_task_by_id(db, task_id, current_user.id)
 
         if task is None:
             raise InvalidTaskId()
 
-        return await task_repository.update_task(db, task, request)
+        return await self.task_repository.update_task(db, task, request)
 
     async def delete_task(self, db: AsyncSession, task_id: int, current_user: User):
 
-        task_repository = TaskRepository()
-
-        task = await task_repository.get_task_by_id(db, task_id)
+        task = await self.task_repository.get_task_by_id(db, task_id, current_user.id)
 
         if task is None:
             raise InvalidTaskId()
 
-        return await task_repository.delete_task(db, task)
+        return await self.task_repository.delete_task(db, task)
 
     async def get_tasks(
         self,
@@ -82,11 +71,9 @@ class TaskService:
         sort_order: TaskSortOrder = TaskSortOrder.ASC,
     ) -> list[TaskGroupDTO]:
 
-        print("GROUP BY", group_by)
-
-        task_repository = TaskRepository()
-
-        tasks: list[Task] = list(await task_repository.get_tasks(db, current_user.id))
+        tasks: list[Task] = list(
+            await self.task_repository.get_tasks(db, current_user.id)
+        )
 
         task_groups: list[TaskGroup] = group_tasks(tasks, group_by)
 
