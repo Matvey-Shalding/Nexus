@@ -1,11 +1,10 @@
+import asyncio
 import os
 
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-
-from sqlalchemy.orm import DeclarativeBase
-
-
 from dotenv import load_dotenv
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
 
 load_dotenv()
 
@@ -16,7 +15,14 @@ assert DATABASE_URL
 
 # database engine
 
-engine = create_async_engine(DATABASE_URL)
+engine: AsyncEngine = create_async_engine(DATABASE_URL, pool_pre_ping=True)
+
+
+# async def check_connection(engine: AsyncEngine):
+#     async with engine.connect() as conn:
+#         await conn.execute(text("SELECT 1"))
+#         await engine.dispose()
+
 
 # one connection to a conversation
 
@@ -32,13 +38,15 @@ async def get_db():
     db = SessionLocal()
 
     try:
-
         # return a connection
 
         yield db
 
-    finally:
+    except Exception:
+        await db.rollback()
+        raise
 
+    finally:
         # close a connection
 
         await db.close()

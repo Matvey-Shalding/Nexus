@@ -1,27 +1,32 @@
-from fastapi import FastAPI
-
-from fastapi.middleware.cors import CORSMiddleware
-
-import asyncio
-
-from app.database import Base, engine
-
-from dotenv import load_dotenv
+from contextlib import asynccontextmanager
 
 from api.routes.auth import auth_router
-
-from api.routes.users import users_router
-
 from api.routes.tasks import tasks_router
-
 from api.routes.telegram import telegram_router
+from api.routes.users import users_router
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+
+from app.database import engine
 
 # enable .env configuration
 
 load_dotenv()
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.connect() as conn:
+        await conn.execute(text("SELECT 1"))
+
+    yield
+
+    await engine.dispose()
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/health")
