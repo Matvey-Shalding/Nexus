@@ -1,25 +1,29 @@
 from enum import Enum
+from pathlib import Path
 
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-REFRESH_TOKEN_EXPIRE_SECONDS = 2592000  # 30 days
-
-REFRESH_TOKEN_EXPIRE_DAYS = 30
-
-ACCESS_TOKEN_EXPIRE_MINS = 20
-
-PASSWORD_MIN_LENGTH = 6
-
-PASSWORD_MAX_LENGTH = 20
-
-NAME_MIN_LENGTH = 2
-
-NAME_MAX_LENGTH = 20
-
-EMAIL_REGEXP = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
 class Environment(Enum):
-    DEVELOPMENT = 'development'
-    PRODUCTION = 'production'
+    DEVELOPMENT = "development"
+    PRODUCTION = "production"
 
-ENVIRONMENT: Environment  = Environment.DEVELOPMENT
 
+ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=ENV_PATH, extra="ignore")
+    AUTH_SECRET_KEY: str = Field(...)
+    AUTH_ALGORITHM: str = Field(...)
+    DATABASE_URL: str = Field(...)
+    ENVIRONMENT: Environment = Environment.DEVELOPMENT
+    TELEGRAM_BOT_ID: str = Field(...)
+    TELEGRAM_BOT_NAME: str = Field(...)
+    CORS_ORIGINS: list[str] = ["http://localhost:3000"]
+    REFRESH_TOKEN_EXPIRE_SECONDS: int = 2592000  # 30 days
+    ACCESS_TOKEN_EXPIRE_MINS: int = 20
+
+
+settings = Settings()  # type: ignore

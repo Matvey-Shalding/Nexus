@@ -1,26 +1,23 @@
-from datetime import datetime, timezone
 import hashlib
-import os
 import secrets
+from datetime import datetime, timezone
 
-from app.models.user import User
-from repositories.bot import BotRepository
-from sqlalchemy.ext.asyncio import AsyncSession
-
+from app.config import settings
 from app.error import (
     ExpiredTelegramLink,
     InvalidBotId,
     InvalidTelegramLink,
     TelegramAccountAlreadyConnected,
-    TelegramAccountNotFound,
     UsedTelegramLink,
 )
-from app.schemas.telegram_account import ConnectAccountRequest
 from app.models.telegram_account import TelegramAccount
+from app.models.user import User
+from app.schemas.telegram_account import ConnectAccountRequest
+from repositories.bot import BotRepository
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class BotService:
-
     bot_repository = BotRepository()
 
     def _generate_telegram_link(self) -> str:
@@ -37,13 +34,11 @@ class BotService:
 
         await self.bot_repository.create_link(db, user.id, hashed_token)
 
-        return f"https://t.me/{os.getenv('TELEGRAM_BOT_NAME')}?start={raw_token}"
+        return f"https://t.me/{settings.TELEGRAM_BOT_NAME}?start={raw_token}"
 
     def _validate_bot(self, bot_id: str):
 
-        my_bot_id = os.getenv("TELEGRAM_BOT_ID")
-
-        return my_bot_id == bot_id
+        return settings.TELEGRAM_BOT_ID == bot_id
 
     async def connect_account(
         self,

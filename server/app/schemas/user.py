@@ -1,33 +1,34 @@
-from pydantic import BaseModel
-
 from datetime import datetime
 
+from pydantic import BaseModel, EmailStr, Field
+
+
 class CreateUserRequest(BaseModel):
-    name: str
+    name: str = Field(min_length=2, max_length=20)
 
-    email:str
+    email: EmailStr
 
-    password:str
+    password: str = Field(min_length=6, max_length=20)
 
 
 class LoginUserRequest(BaseModel):
-
-    email:str
+    email: str
 
     password: str
+
 
 class UserResponse(BaseModel):
     name: str
     id: int
     email: str
 
+
 class UserResponseForTelegram(BaseModel):
     name: str
     email: str
     created_at: datetime
 
+
 class UpdateUserRequest(BaseModel):
     name: str | None = None
     email: str | None = None
-
-    

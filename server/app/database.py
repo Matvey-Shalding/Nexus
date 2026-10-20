@@ -1,27 +1,15 @@
 import asyncio
-import os
 
 from dotenv import load_dotenv
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
-load_dotenv()
-
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-assert DATABASE_URL
+from app.config import settings
 
 # database engine
 
-engine: AsyncEngine = create_async_engine(DATABASE_URL, pool_pre_ping=True)
-
-
-# async def check_connection(engine: AsyncEngine):
-#     async with engine.connect() as conn:
-#         await conn.execute(text("SELECT 1"))
-#         await engine.dispose()
+engine: AsyncEngine = create_async_engine(settings.DATABASE_URL, pool_pre_ping=True)
 
 
 # one connection to a conversation
