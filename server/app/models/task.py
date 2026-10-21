@@ -1,4 +1,3 @@
-import enum
 from datetime import date, datetime
 from typing import TYPE_CHECKING
 
@@ -7,8 +6,6 @@ from sqlalchemy import (
     CheckConstraint,
     Date,
     DateTime,
-    Enum,
-    Float,
     ForeignKey,
     Integer,
     String,

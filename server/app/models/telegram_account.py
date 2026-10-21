@@ -1,12 +1,10 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from sqlalchemy import BigInteger, DateTime, ForeignKey, String, func, null
-
-from app.database import Base
-
+from sqlalchemy import BigInteger, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from typing import TYPE_CHECKING
+from app.database import Base
 
 if TYPE_CHECKING:
     from app.models.user import User
@@ -17,16 +15,21 @@ class TelegramAccount(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
-    telegram_user_id: Mapped[int] = mapped_column(BigInteger,nullable=False,unique=True)
+    telegram_user_id: Mapped[int] = mapped_column(
+        BigInteger, nullable=False, unique=True
+    )
 
-    telegram_username: Mapped[str] = mapped_column(String(50),nullable=False,unique=True)
+    telegram_username: Mapped[str] = mapped_column(
+        String(50), nullable=False, unique=True
+    )
 
     user: Mapped["User"] = relationship(back_populates="telegram_account")
 
-    user_id: Mapped[int] = mapped_column(ForeignKey(column="users.id",ondelete="CASCADE"),unique=True,nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey(column="users.id", ondelete="CASCADE"), unique=True, nullable=False
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
     )
-

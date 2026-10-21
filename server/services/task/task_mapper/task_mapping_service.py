@@ -1,10 +1,11 @@
-from app.types.task import TaskGroup
-
 from app.schemas.task import (
     TaskGroup as TaskGroupDTO,
+)
+from app.schemas.task import (
     TaskGroupCreationOptions,
     TaskResponse,
 )
+from app.types.task import TaskGroup
 
 
 def map_tasks(task_groups: list[TaskGroup]) -> list[TaskGroupDTO]:
@@ -12,7 +13,6 @@ def map_tasks(task_groups: list[TaskGroup]) -> list[TaskGroupDTO]:
     result: list[TaskGroupDTO] = []
 
     for task_group in task_groups:
-
         tasks = [TaskResponse.model_validate(task) for task in task_group["tasks"]]
 
         result.append(

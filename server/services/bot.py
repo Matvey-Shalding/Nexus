@@ -1,6 +1,8 @@
 import hashlib
 import secrets
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.error import (
@@ -14,7 +16,6 @@ from app.models.telegram_account import TelegramAccount
 from app.models.user import User
 from app.schemas.telegram_account import ConnectAccountRequest
 from repositories.bot import BotRepository
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class BotService:
@@ -66,7 +67,7 @@ class BotService:
         if db_link.used_at is not None:
             raise UsedTelegramLink()
 
-        if db_link.expires_at < datetime.now(timezone.utc):
+        if db_link.expires_at < datetime.now(UTC):
             raise ExpiredTelegramLink()
 
         existing_account = await self.bot_repository.get_account_by_user_id(

@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class TaskDefaultGroup(StrEnum):
     NO_DATE = "no_date"
     EXPIRED = "expired"
@@ -10,6 +11,7 @@ class TaskDefaultGroup(StrEnum):
     LATER = "later"
     COMPLETED = "completed"
 
+
 class TaskPriorityGroup(StrEnum):
     LOW = "priority:low"
     MEDIUM = "priority:medium"
@@ -17,10 +19,10 @@ class TaskPriorityGroup(StrEnum):
     DEFAULT = "priority:default"
     COMPLETED = "completed"
 
+
 class TaskDateGroup(StrEnum):
     NO_DATE = "no_date"
     EXPIRED = "expired"
     TODAY = "today"
     TOMORROW = "tomorrow"
     COMPLETED = "completed"
-

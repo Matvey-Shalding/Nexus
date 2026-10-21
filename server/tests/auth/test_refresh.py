@@ -16,14 +16,12 @@ async def test_refresh_valid_token_returns_200(setup_database, http_client):
         "password": "1234567",
     }
 
-    login_response = await http_client.post(
+    await http_client.post(
         url="/auth/login",
         json=login_data,
     )
 
-    refresh_response = await http_client.post(
-        url="/auth/refresh"
-    )
+    refresh_response = await http_client.post(url="/auth/refresh")
 
     assert refresh_response.status_code == 200
 
@@ -34,9 +32,7 @@ async def test_refresh_valid_token_returns_200(setup_database, http_client):
 
 async def test_refresh_no_login_returns_401(setup_database, http_client):
 
-    refresh_response = await http_client.post(
-        url="/auth/refresh"
-    )
+    refresh_response = await http_client.post(url="/auth/refresh")
 
     assert refresh_response.status_code == 401
 
@@ -47,9 +43,7 @@ async def test_refresh_invalid_token_returns_401(setup_database, http_client):
 
     http_client.cookies.set("refresh_token", "invalid_token")
 
-    refresh_response = await http_client.post(
-        url="/auth/refresh"
-    )
+    refresh_response = await http_client.post(url="/auth/refresh")
 
     assert refresh_response.status_code == 401
 
@@ -77,15 +71,12 @@ async def test_refresh_after_logout_returns_401(setup_database, http_client):
         json=login_data,
     )
 
-    await http_client.post(
-        url="/auth/logout"
-    )
+    await http_client.post(url="/auth/logout")
 
-    refresh_response = await http_client.post(
-        url="/auth/refresh"
-    )
+    refresh_response = await http_client.post(url="/auth/refresh")
 
     assert refresh_response.status_code == 401
+
 
 async def test_logout_clears_refresh_token(setup_database, http_client):
 
@@ -110,10 +101,6 @@ async def test_logout_clears_refresh_token(setup_database, http_client):
         json=login_data,
     )
 
-    await http_client.post(
-        url="/auth/logout"
-    )
+    await http_client.post(url="/auth/logout")
 
     assert "refresh_token" not in http_client.cookies
-
-

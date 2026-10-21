@@ -3,12 +3,11 @@ from app.models.task import Task
 from app.types.task import TaskGroup
 
 from .default_grouping import DefaultTaskGrouping
-from .priority_grouping import PriorityTaskGrouping
 from .due_date_grouping import DueDateTaskGrouping
+from .priority_grouping import PriorityTaskGrouping
 
 
 class TaskGroupingService:
-
     def __init__(self):
 
         self.default_grouping = DefaultTaskGrouping()
@@ -22,7 +21,6 @@ class TaskGroupingService:
     ) -> list[TaskGroup]:
 
         match group_by:
-
             case TaskGroupBy.DEFAULT:
                 return self.default_grouping.group(tasks)
 

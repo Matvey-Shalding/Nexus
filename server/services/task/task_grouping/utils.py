@@ -14,24 +14,16 @@ def get_tomorrow(
 def get_this_week_end(
     today: datetime.date,
 ) -> datetime.date:
-    return today + datetime.timedelta(
-        days=7 - today.isoweekday()
-    )
+    return today + datetime.timedelta(days=7 - today.isoweekday())
 
 
 def get_next_week_start(
     today: datetime.date,
 ) -> datetime.date:
-    return today + datetime.timedelta(
-        days=8 - today.isoweekday()
-    )
+    return today + datetime.timedelta(days=8 - today.isoweekday())
 
 
 def format_date(
     value: datetime.date,
 ) -> str:
-    return (
-        f"{value.strftime('%B')} "
-        f"{value.day}, "
-        f"{value.year}"
-    )
+    return f"{value.strftime('%B')} {value.day}, {value.year}"

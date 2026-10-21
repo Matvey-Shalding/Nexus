@@ -1,20 +1,14 @@
-from app.database import Base
-
 from datetime import datetime
 
-
-from app.models.telegram_account import TelegramAccount
-
-
-from .refresh_token import RefreshToken
-
-from .task import Task
-
-from .telegram_link import TelegramLink
-
+from sqlalchemy import DateTime, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from sqlalchemy import String, DateTime, func
+from app.database import Base
+from app.models.telegram_account import TelegramAccount
+
+from .refresh_token import RefreshToken
+from .task import Task
+from .telegram_link import TelegramLink
 
 
 class User(Base):

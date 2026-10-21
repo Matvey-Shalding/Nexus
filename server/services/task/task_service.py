@@ -1,5 +1,7 @@
 from datetime import date
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
 from app.error import InvalidDate, InvalidTaskId
 from app.models.task import Task
@@ -16,7 +18,6 @@ from repositories.task import TaskRepository
 from services.task.task_grouping.service import group_tasks
 from services.task.task_mapper.task_mapping_service import map_tasks
 from services.task.task_sorting.sort_tasks_service import sort_tasks
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class TaskService:

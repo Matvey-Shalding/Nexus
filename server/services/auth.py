@@ -3,6 +3,9 @@ import secrets
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
+from jose import JWTError, jwt
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.config import settings
 from app.deps import db_dependency
 from app.error import (
@@ -14,10 +17,8 @@ from app.models.user import User
 from app.schemas.user import CreateUserRequest
 from app.security import bcrypt_context
 from app.types.auth import AccessToken, Session
-from jose import JWTError, jwt
 from repositories.refresh_token import RefreshTokenRepository
 from repositories.user import UserRepository
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class AuthService:

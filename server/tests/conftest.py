@@ -1,25 +1,20 @@
 import pytest
-
-from tests.database import create_tables,drop_tables
+from httpx import ASGITransport, AsyncClient
+from server.app.main import app
 
 from app.database import get_db
-
-from tests.database import override_get_db
-
-from httpx import AsyncClient,ASGITransport
-
-from server.app.main import app
+from tests.database import create_tables, drop_tables, override_get_db
 
 app.dependency_overrides[get_db] = override_get_db
 
-@pytest.fixture()
 
+@pytest.fixture()
 async def setup_database():
 
     await drop_tables()
 
     await create_tables()
-    
+
     yield
 
     await drop_tables()
@@ -28,7 +23,7 @@ async def setup_database():
 @pytest.fixture()
 async def http_client():
 
-    async with AsyncClient(transport=ASGITransport(app=app),base_url="http://test") as client:
-
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
         yield client
-    

@@ -1,4 +1,4 @@
-from tests.helpers import register_user, login_user
+from tests.helpers import login_user, register_user
 
 
 async def test_user_valid_token_returns_200(setup_database, http_client):

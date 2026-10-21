@@ -1,27 +1,23 @@
 from typing import Annotated
 
-from app.models.telegram_link import TelegramLink
+from fastapi import APIRouter, Header
+from starlette import status
+
+from app.deps import db_dependency
+from app.schemas.link import LinkResponse
+from app.schemas.telegram_account import (
+    Account,
+    AccountExistsResponse,
+    ConnectAccountRequest,
+)
 from services.bot import BotService
 
 from .users import user_dependency
 
-from app.schemas.link import LinkResponse
-
-from app.schemas.telegram_account import (
-    Account,
-    ConnectAccountRequest,
-    AccountExistsResponse,
-)
-
-from fastapi import APIRouter, Header
-
-from starlette import status
-
-from app.deps import db_dependency
-
 telegram_router = APIRouter(prefix="/telegram", tags=["telegram"])
 
 bot_service = BotService()
+
 
 @telegram_router.get(
     "/link", status_code=status.HTTP_200_OK, response_model=LinkResponse
@@ -64,7 +60,7 @@ async def get_telegram_account_by_telegram_user_id(
     db: db_dependency, telegram_user_id: int
 ) -> AccountExistsResponse:
 
-    res =  await bot_service.get_account_by_telegram_user_id(db, telegram_user_id)
+    res = await bot_service.get_account_by_telegram_user_id(db, telegram_user_id)
 
     return AccountExistsResponse(is_connected=bool(res))
 
@@ -74,9 +70,7 @@ async def delete_account(db: db_dependency, current_user: user_dependency):
 
     return await bot_service.delete_account(db, current_user)
 
-@telegram_router.delete("/account/{telegram_user_id}",status_code=status.HTTP_200_OK)
 
-async def delete_account_by_telegram_id(db: db_dependency,telegram_user_id: int):
-    await bot_service.delete_account_by_telgram_id(db,telegram_user_id)
-
-
+@telegram_router.delete("/account/{telegram_user_id}", status_code=status.HTTP_200_OK)
+async def delete_account_by_telegram_id(db: db_dependency, telegram_user_id: int):
+    await bot_service.delete_account_by_telgram_id(db, telegram_user_id)

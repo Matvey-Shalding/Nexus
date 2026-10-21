@@ -1,12 +1,8 @@
 from datetime import datetime
-from typing import Callable
 
 from app.enums.task import TaskSortBy, TaskSortOrder
 from app.models.task import Task
 from app.types.task import TaskGroup
-from app.schemas.task import UpdateTaskRequest
-
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def sort_tasks(
@@ -17,7 +13,6 @@ def sort_tasks(
     is_desc = order_by == TaskSortOrder.DESC
 
     for task_group in task_groups:
-
         column: list[Task] = task_group["tasks"]
 
         match sort_by:

@@ -1,10 +1,9 @@
 from typing import Any
 
-from app.models.task import Task
-from app.models.user import User
-from app.schemas.task import CreateTaskRequest, UpdateTaskRequest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.task import Task
 
 
 class TaskRepository:

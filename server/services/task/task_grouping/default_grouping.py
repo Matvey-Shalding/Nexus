@@ -6,19 +6,19 @@ from app.types.task import TaskGroup
 
 from .factories import (
     create_completed_group,
-    create_no_date_group,
     create_expired_group,
+    create_later_group,
+    create_next_week_group,
+    create_no_date_group,
+    create_this_week_group,
     create_today_group,
     create_tomorrow_group,
-    create_this_week_group,
-    create_next_week_group,
-    create_later_group,
 )
 from .utils import (
+    get_next_week_start,
+    get_this_week_end,
     get_today,
     get_tomorrow,
-    get_this_week_end,
-    get_next_week_start,
 )
 
 

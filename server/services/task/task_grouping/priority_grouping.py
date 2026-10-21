@@ -1,10 +1,10 @@
-from app.models.task import Task, PriorityEnum
-from app.types.task import TaskGroup
 from app.enums.grouping import TaskDefaultGroup
+from app.models.task import PriorityEnum, Task
+from app.types.task import TaskGroup
 
 from .factories import (
-    create_priority_group,
     create_completed_group,
+    create_priority_group,
 )
 
 

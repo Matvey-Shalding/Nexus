@@ -1,4 +1,3 @@
-import pytest
 
 
 async def test_login_valid_user_returns_200(setup_database, http_client):
@@ -60,6 +59,7 @@ async def test_login_invalid_password_returns_401(setup_database, http_client):
     assert response.status_code == 401
 
     assert response.json() == {"detail": "Could not validate user."}
+
 
 async def test_login_nonexisting_email_returns_401(setup_database, http_client):
 

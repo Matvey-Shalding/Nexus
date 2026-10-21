@@ -21,9 +21,7 @@ async def test_logout_valid_returns_200(setup_database, http_client):
         json=login_data,
     )
 
-    response = await http_client.post(
-        url="/auth/logout"
-    )
+    response = await http_client.post(url="/auth/logout")
 
     assert response.status_code == 200
 

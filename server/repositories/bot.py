@@ -1,9 +1,10 @@
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
+
+from sqlalchemy import delete, select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.telegram_account import TelegramAccount
 from app.models.telegram_link import TelegramLink
-from sqlalchemy import delete, select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class BotRepository:

@@ -1,6 +1,6 @@
 import pytest
 
-from tests.helpers import register_user, login_user
+from tests.helpers import login_user, register_user
 
 
 @pytest.mark.parametrize(
@@ -21,9 +21,7 @@ async def test_update_user_valid_data_returns_200(
 
     access_token = await login_user(http_client)
 
-    headers = {
-        "Authorization": f"Bearer {access_token}"
-    }
+    headers = {"Authorization": f"Bearer {access_token}"}
 
     response = await http_client.patch(
         "/users/me",
@@ -63,23 +61,17 @@ async def test_update_user_duplicate_email_returns_409(
         email="mathew@gmail.com",
     )
 
-    headers = {
-        "Authorization": f"Bearer {access_token}"
-    }
+    headers = {"Authorization": f"Bearer {access_token}"}
 
     response = await http_client.patch(
         "/users/me",
         headers=headers,
-        json={
-            "email": "andrew@gmail.com"
-        },
+        json={"email": "andrew@gmail.com"},
     )
 
     assert response.status_code == 409
 
-    assert response.json() == {
-        "detail": "Such email already exists."
-    }
+    assert response.json() == {"detail": "Such email already exists."}
 
 
 @pytest.mark.parametrize(
@@ -99,16 +91,12 @@ async def test_update_user_invalid_name_returns_400(
 
     access_token = await login_user(http_client)
 
-    headers = {
-        "Authorization": f"Bearer {access_token}"
-    }
+    headers = {"Authorization": f"Bearer {access_token}"}
 
     response = await http_client.patch(
         "/users/me",
         headers=headers,
-        json={
-            "name": name
-        },
+        json={"name": name},
     )
 
     assert response.status_code == 400
@@ -137,23 +125,17 @@ async def test_update_user_invalid_email_returns_400(
 
     access_token = await login_user(http_client)
 
-    headers = {
-        "Authorization": f"Bearer {access_token}"
-    }
+    headers = {"Authorization": f"Bearer {access_token}"}
 
     response = await http_client.patch(
         "/users/me",
         headers=headers,
-        json={
-            "email": email
-        },
+        json={"email": email},
     )
 
     assert response.status_code == 400
 
-    assert response.json() == {
-        "detail": "Email address is invalid."
-    }
+    assert response.json() == {"detail": "Email address is invalid."}
 
 
 async def test_update_user_no_token_returns_401(
@@ -163,9 +145,7 @@ async def test_update_user_no_token_returns_401(
 
     response = await http_client.patch(
         "/users/me",
-        json={
-            "name": "mathew1"
-        },
+        json={"name": "mathew1"},
     )
 
     assert response.status_code == 401
@@ -178,12 +158,8 @@ async def test_update_user_invalid_token_returns_401(
 
     response = await http_client.patch(
         "/users/me",
-        headers={
-            "Authorization": "Bearer invalid_token"
-        },
-        json={
-            "name": "mathew1"
-        },
+        headers={"Authorization": "Bearer invalid_token"},
+        json={"name": "mathew1"},
     )
 
     assert response.status_code == 401

@@ -3,17 +3,17 @@ from app.models.task import Task
 from app.types.task import TaskGroup, TaskGroupCreationDefaults
 
 from .factories import (
-    create_no_date_group,
+    create_completed_group,
     create_expired_group,
+    create_group,
+    create_no_date_group,
     create_today_group,
     create_tomorrow_group,
-    create_completed_group,
-    create_group,
 )
 from .utils import (
+    format_date,
     get_today,
     get_tomorrow,
-    format_date,
 )
 
 
@@ -35,7 +35,6 @@ class DueDateTaskGrouping:
         lookup = {group["id"]: group for group in fixed_groups}
 
         for task in tasks:
-
             if task.completed:
                 completed_group["tasks"].append(task)
                 continue

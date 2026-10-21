@@ -1,9 +1,7 @@
 from datetime import date
 
 from app.enums.grouping import TaskDefaultGroup
-
 from app.models.task import PriorityEnum
-
 from app.types.task import (
     TaskGroup,
     TaskGroupCreationDefaults,

@@ -1,25 +1,13 @@
 from fastapi import APIRouter, Cookie, HTTPException
-
-
 from fastapi.responses import JSONResponse
-
 from starlette import status
-
-from app.deps import db_dependency
-
-from services.auth import AuthService
-
-from app.types.auth import AccessToken
-
-from app.schemas.user import CreateUserRequest, LoginUserRequest
-
-from starlette import status
-
-from services.auth import AuthService
 
 from app.config import REFRESH_TOKEN_EXPIRE_SECONDS, Environment
-
+from app.deps import db_dependency
 from app.error import AuthError, NoLoginError
+from app.schemas.user import CreateUserRequest, LoginUserRequest
+from app.types.auth import AccessToken
+from services.auth import AuthService
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -67,7 +55,6 @@ async def login(login_user_request: LoginUserRequest, db: db_dependency):
 async def refresh(db: db_dependency, refresh_token: str | None = Cookie(None)):
 
     try:
-
         if not refresh_token:
             raise NoLoginError
 
@@ -75,8 +62,7 @@ async def refresh(db: db_dependency, refresh_token: str | None = Cookie(None)):
 
         return await service.refresh(refresh_token, db)
 
-    except HTTPException as e:
-
+    except HTTPException:
         response = JSONResponse(content={"detail": "Session expired."}, status_code=401)
 
         response.delete_cookie(
