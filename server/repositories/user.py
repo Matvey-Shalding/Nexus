@@ -1,41 +1,23 @@
-from sqlalchemy import select
 from app.models.user import User
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas.user import CreateUserRequest
-from app.security import bcrypt_context
-from app.models.telegram_account import TelegramAccount
 
 
 class UserRepository:
-    async def get_user_by_email(self, db: AsyncSession, email: str):
+    async def get_user_by_email(self, db: AsyncSession, email: str) -> User | None:
         result = await db.execute(select(User).where(User.email == email))
         return result.scalar_one_or_none()
 
-    async def get_user_by_id(self, db: AsyncSession, id: int):
+    async def get_user_by_id(self, db: AsyncSession, id: int) -> User | None:
         result = await db.execute(select(User).where(User.id == id))
         return result.scalar_one_or_none()
 
-    async def add_user(self, create_user_request: CreateUserRequest, db: AsyncSession):
-        user_model = User(
-            name=create_user_request.name,
-            hashed_password=bcrypt_context.hash(create_user_request.password),
-            email=create_user_request.email,
-        )
-
+    def add_user(self, db: AsyncSession, user_model: User) -> User:
         db.add(user_model)
-
-        await db.commit()
-
-        await db.refresh(user_model)
-
         return user_model
 
-    async def update_user(self, data: dict, db: AsyncSession, current_user: User) -> User:
+    def update_user(self, db: AsyncSession, data: dict, current_user: User) -> User:
         for key, value in data.items():
             setattr(current_user, key, value)
-
-        await db.commit()
-
-        await db.refresh(current_user)
 
         return current_user

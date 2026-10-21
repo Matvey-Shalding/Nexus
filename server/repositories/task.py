@@ -1,3 +1,5 @@
+from typing import Any
+
 from app.models.task import Task
 from app.models.user import User
 from app.schemas.task import CreateTaskRequest, UpdateTaskRequest
@@ -6,58 +8,31 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class TaskRepository:
-    async def add_task(
-        self, db: AsyncSession, create_task_request: CreateTaskRequest, user_id: int
-    ) -> Task:
-
-        task_model = Task(
-            title=create_task_request.title,
-            due_date=create_task_request.due_date,
-            priority=create_task_request.priority,
-            completed=create_task_request.completed,
-            user_id=user_id,
-        )
-
-        db.add(task_model)
-
-        await db.commit()
-
-        await db.refresh(task_model)
-
-        return task_model
+    def add_task(self, db: AsyncSession, task: Task) -> Task:
+        db.add(task)
+        return task
 
     async def get_task_by_id(
         self, db: AsyncSession, task_id: int, user_id: int
     ) -> Task | None:
         res = await db.execute(
-            select(Task)
-            .where(Task.id == task_id)
-            .where(Task.user_id == user_id)
+            select(Task).where(Task.id == task_id).where(Task.user_id == user_id)
         )
 
         return res.scalar_one_or_none()
 
-    async def update_task(
-        self, db: AsyncSession, task: Task, update_task_request: UpdateTaskRequest
-    ):
+    def update_task(self, task: Task, update_task_request: dict[str, Any]):
 
-        for key, values in update_task_request.model_dump(exclude_unset=True).items():
-            setattr(task, key, values)
-
-        await db.commit()
-
-        await db.refresh(task)
+        for key, values in update_task_request.items():
+            if values:
+                setattr(task, key, values)
 
         return task
 
-    async def delete_task(self, db: AsyncSession, task: Task):
-
-        await db.delete(task)
-
-        await db.commit()
+    def delete_task(self, db: AsyncSession, task: Task):
+        db.delete(task)  # type: ignore
 
     async def get_tasks(self, db: AsyncSession, user_id: int):
-
         return (
             (await db.execute(select(Task).where(Task.user_id == user_id)))
             .scalars()

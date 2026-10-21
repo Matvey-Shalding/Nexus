@@ -1,10 +1,9 @@
-from app.database import Base
-
 from datetime import datetime
-
-from sqlalchemy import ForeignKey, String, DateTime, func
-
 from typing import TYPE_CHECKING
+
+from sqlalchemy import DateTime, ForeignKey, String, func
+
+from app.database import Base
 
 if TYPE_CHECKING:
     from app.models.user import User

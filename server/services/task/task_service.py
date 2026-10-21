@@ -34,7 +34,21 @@ class TaskService:
         if request.due_date:
             self._validate_task(request.due_date)
 
-        return await self.task_repository.add_task(db, request, current_user.id)
+        task = Task(
+            title=request.title,
+            due_date=request.due_date,
+            priority=request.priority,
+            completed=request.completed,
+            user_id=current_user.id,
+        )
+
+        self.task_repository.add_task(db, task)
+
+        await db.commit()
+
+        await db.refresh(task)
+
+        return task
 
     async def update_task(
         self,
@@ -42,7 +56,7 @@ class TaskService:
         request: UpdateTaskRequest,
         db: AsyncSession,
         current_user: User,
-    ):
+    ) -> Task:
 
         self._validate_task(request.due_date)
 
@@ -51,7 +65,13 @@ class TaskService:
         if task is None:
             raise InvalidTaskId()
 
-        return await self.task_repository.update_task(db, task, request)
+        task = self.task_repository.update_task(task, request.model_dump())
+
+        await db.commit()
+
+        await db.refresh(task)
+
+        return task
 
     async def delete_task(self, db: AsyncSession, task_id: int, current_user: User):
 
@@ -60,7 +80,9 @@ class TaskService:
         if task is None:
             raise InvalidTaskId()
 
-        return await self.task_repository.delete_task(db, task)
+        self.task_repository.delete_task(db, task)
+
+        await db.commit()
 
     async def get_tasks(
         self,

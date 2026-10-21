@@ -34,6 +34,8 @@ class BotService:
 
         await self.bot_repository.create_link(db, user.id, hashed_token)
 
+        await db.commit()
+
         return f"https://t.me/{settings.TELEGRAM_BOT_NAME}?start={raw_token}"
 
     def _validate_bot(self, bot_id: str):
@@ -91,6 +93,8 @@ class BotService:
             telegram_username=telegram_username,
         )
 
+        await db.commit()
+
     async def get_account(
         self, db: AsyncSession, current_user: User
     ) -> TelegramAccount | None:
@@ -100,10 +104,14 @@ class BotService:
     async def delete_account(self, db: AsyncSession, current_user: User):
         await self.bot_repository.delete_account_by_user_id(db, current_user.id)
 
+        await db.commit()
+
     async def delete_account_by_telgram_id(
         self, db: AsyncSession, telegram_user_id: int
     ):
         await self.bot_repository.delete_account_by_telegram_id(db, telegram_user_id)
+
+        await db.commit()
 
     async def get_account_by_telegram_user_id(
         self, db: AsyncSession, telegram_user_id: int

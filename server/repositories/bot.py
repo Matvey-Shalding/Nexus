@@ -1,31 +1,21 @@
-import os
+from datetime import UTC, datetime, timedelta, timezone
 
+from app.models.telegram_account import TelegramAccount
+from app.models.telegram_link import TelegramLink
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from datetime import datetime, timedelta, timezone
-
-from app.models.telegram_link import TelegramLink
-
-from app.security import bcrypt_context
-from app.models.telegram_account import TelegramAccount
-from app.schemas.telegram_account import AccountExistsResponse
 
 
 class BotRepository:
     async def create_link(self, db: AsyncSession, user_id: int, hashed_token: str):
 
-        expires_at: datetime = datetime.now(timezone.utc) + timedelta(minutes=15)
+        expires_at: datetime = datetime.now(UTC) + timedelta(minutes=15)
 
         link_model = TelegramLink(
             user_id=user_id, token_hash=hashed_token, expires_at=expires_at
         )
 
         db.add(link_model)
-
-        await db.commit()
-
-        await db.refresh(link_model)
 
     async def get_link(self, db: AsyncSession, hashed_link: str) -> TelegramLink | None:
         res = await db.execute(
@@ -51,13 +41,7 @@ class BotRepository:
 
         db.add(account_model)
 
-        setattr(link, "used_at", datetime.now(timezone.utc))
-
-        await db.commit()
-
-        await db.refresh(account_model)
-
-        await db.refresh(link)
+        link.used_at = datetime.now(UTC)
 
     async def get_account_by_user_id(
         self, db: AsyncSession, user_id: int
@@ -87,12 +71,10 @@ class BotRepository:
             delete(TelegramAccount).where(TelegramAccount.user_id == user_id)
         )
 
-        await db.commit()
-
     async def delete_account_by_telegram_id(self, db: AsyncSession, telegram_id: int):
 
         await db.execute(
-            delete(TelegramAccount).where(TelegramAccount.telegram_user_id == telegram_id)
+            delete(TelegramAccount).where(
+                TelegramAccount.telegram_user_id == telegram_id
+            )
         )
-
-        await db.commit()

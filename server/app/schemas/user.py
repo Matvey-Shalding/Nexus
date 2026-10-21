@@ -30,5 +30,5 @@ class UserResponseForTelegram(BaseModel):
 
 
 class UpdateUserRequest(BaseModel):
-    name: str | None = None
-    email: str | None = None
+    name: str | None = Field(min_length=2, max_length=20)
+    email: EmailStr | None = None
