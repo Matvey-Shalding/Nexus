@@ -8,7 +8,6 @@ from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
-from app.deps import db_dependency
 from app.error import (
     AuthError,
     DuplicateEmailError,
@@ -28,7 +27,7 @@ class AuthService:
 
     async def register(
         self,
-        db: db_dependency,
+        db: AsyncSession,
         create_user_request: CreateUserRequest,
     ) -> User:
 
@@ -58,7 +57,10 @@ class AuthService:
         return user
 
     async def authenticate_user(
-        self, email: str, password: str, db: db_dependency
+        self,
+        db: AsyncSession,
+        email: str,
+        password: str,
     ) -> User | None:
 
         user = await self.user_repository.get_user_by_email(db, email=email)
@@ -72,7 +74,11 @@ class AuthService:
 
         return user if is_same else None
 
-    async def get_user_by_token(self, token: str, db: AsyncSession) -> User | None:
+    async def get_user_by_token(
+        self,
+        db: AsyncSession,
+        token: str,
+    ) -> User | None:
         try:
             payload = jwt.decode(
                 token,
@@ -95,7 +101,11 @@ class AuthService:
     def hash_token(self, refresh_token: str) -> str:
         return hashlib.sha256(refresh_token.encode("utf-8")).hexdigest()
 
-    async def create_session(self, user: User, db: db_dependency) -> tuple[str, str]:
+    async def create_session(
+        self,
+        db: AsyncSession,
+        user: User,
+    ) -> tuple[str, str]:
         refresh_token = secrets.token_urlsafe(64)
 
         refresh_token_hashed = self.hash_token(refresh_token)
@@ -131,7 +141,11 @@ class AuthService:
             encode, settings.AUTH_SECRET_KEY, algorithm=settings.AUTH_ALGORITHM
         )
 
-    async def refresh(self, refresh_token: str, db: db_dependency) -> str:
+    async def refresh(
+        self,
+        db: AsyncSession,
+        refresh_token: str,
+    ) -> str:
 
         refresh_token_hashed = self.hash_token(refresh_token)
 
@@ -151,7 +165,7 @@ class AuthService:
 
         return self.create_access_token(user_id=db_token.user_id)
 
-    async def logout(self, refresh_token: str, db: db_dependency) -> None:
+    async def logout(self, db: AsyncSession, refresh_token: str) -> None:
 
         hashed_token = self.hash_token(refresh_token)
 

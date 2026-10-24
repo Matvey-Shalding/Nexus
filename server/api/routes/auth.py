@@ -24,7 +24,7 @@ def _set_auth_cookie(refresh_token: str, response: Response):
     )
 
 
-def _clear_auth_cookie(refresh_token: str, response: Response):
+def _clear_auth_cookie(response: Response):
     response.delete_cookie(
         "refresh_token",
         httponly=True,
@@ -77,13 +77,13 @@ async def refresh(
         if not refresh_token:
             raise NoLoginError
 
-        access_token: str = await service.refresh(refresh_token, db)
+        access_token: str = await service.refresh(db, refresh_token)
 
         return {"access_token": access_token, "token_type": "Bearer"}
 
     except HTTPException:
         if refresh_token:
-            _clear_auth_cookie(refresh_token, response)
+            _clear_auth_cookie(response)
 
         raise AuthError()
 
@@ -94,5 +94,5 @@ async def logout(
 ):
 
     if refresh_token:
-        await service.logout(refresh_token, db)
-        _clear_auth_cookie(refresh_token, response)
+        await service.logout(db, refresh_token)
+        _clear_auth_cookie(response)
