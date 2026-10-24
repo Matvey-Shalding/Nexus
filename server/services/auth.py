@@ -3,6 +3,7 @@ import secrets
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
+from anyio import to_thread
 from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,7 +17,6 @@ from app.models.refresh_token import RefreshToken
 from app.models.user import User
 from app.schemas.user import CreateUserRequest
 from app.security import bcrypt_context
-from app.types.auth import AccessToken, Session
 from repositories.refresh_token import RefreshTokenRepository
 from repositories.user import UserRepository
 
@@ -39,9 +39,13 @@ class AuthService:
         if user:
             raise DuplicateEmailError()
 
+        hashed_password: str = await to_thread.run_sync(
+            bcrypt_context.hash, create_user_request.password
+        )
+
         user = User(
             name=create_user_request.name,
-            hashed_password=bcrypt_context.hash(create_user_request.password),
+            hashed_password=hashed_password,
             email=create_user_request.email,
         )
 
@@ -62,10 +66,11 @@ class AuthService:
         if not user:
             return None
 
-        if not bcrypt_context.verify(password, user.hashed_password):
-            return None
+        is_same: bool = await to_thread.run_sync(
+            bcrypt_context.verify, password, user.hashed_password
+        )
 
-        return user
+        return user if is_same else None
 
     async def get_user_by_token(self, token: str, db: AsyncSession) -> User | None:
         try:
@@ -90,7 +95,7 @@ class AuthService:
     def hash_token(self, refresh_token: str) -> str:
         return hashlib.sha256(refresh_token.encode("utf-8")).hexdigest()
 
-    async def create_session(self, user: User, db: db_dependency) -> Session:
+    async def create_session(self, user: User, db: db_dependency) -> tuple[str, str]:
         refresh_token = secrets.token_urlsafe(64)
 
         refresh_token_hashed = self.hash_token(refresh_token)
@@ -111,7 +116,7 @@ class AuthService:
 
         await db.commit()
 
-        return {"access_token": access_token, "refresh_token": refresh_token}
+        return access_token, refresh_token
 
     def create_access_token(self, user_id: int) -> str:
         encode: dict[str, Any] = {"id": user_id}
@@ -126,7 +131,7 @@ class AuthService:
             encode, settings.AUTH_SECRET_KEY, algorithm=settings.AUTH_ALGORITHM
         )
 
-    async def refresh(self, refresh_token: str, db: db_dependency) -> AccessToken:
+    async def refresh(self, refresh_token: str, db: db_dependency) -> str:
 
         refresh_token_hashed = self.hash_token(refresh_token)
 
@@ -137,23 +142,14 @@ class AuthService:
         if not db_token:
             raise AuthError
 
-        # prevent runtime errors and manually fetch user
-
-        user = await self.user_repository.get_user_by_id(db, db_token.user_id)
-
-        if not user:
-            raise AuthError
-
         if db_token.expires_at < datetime.now(UTC):
-            await self.refresh_token_repository.delete_by_user_id(db, user.id)
+            await self.refresh_token_repository.delete_by_user_id(db, db_token.user_id)
 
             await db.commit()
 
             raise AuthError
 
-        access_token = self.create_access_token(user_id=user.id)
-
-        return {"access_token": access_token, "token_type": "Bearer"}
+        return self.create_access_token(user_id=db_token.user_id)
 
     async def logout(self, refresh_token: str, db: db_dependency) -> None:
 

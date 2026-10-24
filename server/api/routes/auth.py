@@ -1,27 +1,58 @@
-from fastapi import APIRouter, Cookie, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Cookie, HTTPException, Response
 from starlette import status
 
-from app.config import REFRESH_TOKEN_EXPIRE_SECONDS, Environment
+from app.config import Environment, settings
 from app.deps import db_dependency
 from app.error import AuthError, NoLoginError
+from app.schemas.auth import Session
 from app.schemas.user import CreateUserRequest, LoginUserRequest
-from app.types.auth import AccessToken
 from services.auth import AuthService
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
-
-@auth_router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register(create_user_request: CreateUserRequest, db: db_dependency):
-
-    await AuthService().register(db=db, create_user_request=create_user_request)
+service = AuthService()
 
 
-@auth_router.post("/login", status_code=status.HTTP_200_OK)
-async def login(login_user_request: LoginUserRequest, db: db_dependency):
+def _set_auth_cookie(refresh_token: str, response: Response):
+    response.set_cookie(
+        "refresh_token",
+        refresh_token,
+        httponly=True,
+        max_age=settings.REFRESH_TOKEN_EXPIRE_SECONDS,
+        secure=settings.ENVIRONMENT == Environment.PRODUCTION,
+        samesite="lax",
+    )
 
-    service = AuthService()
+
+def _clear_auth_cookie(refresh_token: str, response: Response):
+    response.delete_cookie(
+        "refresh_token",
+        httponly=True,
+        secure=settings.ENVIRONMENT == Environment.PRODUCTION,
+        samesite="lax",
+    )
+
+
+@auth_router.post(
+    "/register", status_code=status.HTTP_201_CREATED, response_model=Session
+)
+async def register(
+    create_user_request: CreateUserRequest, response: Response, db: db_dependency
+):
+
+    user = await service.register(db=db, create_user_request=create_user_request)
+
+    access_token, refresh_token = await service.create_session(user=user, db=db)
+
+    _set_auth_cookie(refresh_token, response)
+
+    return {"access_token": access_token, "token_type": "Bearer"}
+
+
+@auth_router.post("/login", status_code=status.HTTP_200_OK, response_model=Session)
+async def login(
+    login_user_request: LoginUserRequest, db: db_dependency, response: Response
+):
 
     user = await service.authenticate_user(
         email=login_user_request.email, password=login_user_request.password, db=db
@@ -30,64 +61,38 @@ async def login(login_user_request: LoginUserRequest, db: db_dependency):
     if not user:
         raise AuthError
 
-    session = await service.create_session(user=user, db=db)
+    access_token, refresh_token = await service.create_session(user=user, db=db)
 
-    content = {"access_token": session.get("access_token"), "token_type": "Bearer"}
+    _set_auth_cookie(refresh_token, response)
 
-    response = JSONResponse(content=content)
-
-    # refresh_token only stored in http only cookie
-
-    response.set_cookie(
-        "refresh_token",
-        session.get("refresh_token"),
-        httponly=True,
-        max_age=REFRESH_TOKEN_EXPIRE_SECONDS,
-        secure=Environment == Environment.PRODUCTION,
-    )
-
-    return response
+    return {"access_token": access_token, "token_type": "Bearer"}
 
 
-@auth_router.post(
-    "/refresh", response_model=AccessToken, status_code=status.HTTP_200_OK
-)
-async def refresh(db: db_dependency, refresh_token: str | None = Cookie(None)):
+@auth_router.post("/refresh", response_model=Session, status_code=status.HTTP_200_OK)
+async def refresh(
+    db: db_dependency, response: Response, refresh_token: str | None = Cookie(None)
+):
 
     try:
         if not refresh_token:
             raise NoLoginError
 
-        service = AuthService()
+        access_token: str = await service.refresh(refresh_token, db)
 
-        return await service.refresh(refresh_token, db)
+        return {"access_token": access_token, "token_type": "Bearer"}
 
     except HTTPException:
-        response = JSONResponse(content={"detail": "Session expired."}, status_code=401)
+        if refresh_token:
+            _clear_auth_cookie(refresh_token, response)
 
-        response.delete_cookie(
-            "refresh_token",
-            httponly=True,
-            secure=Environment == Environment.PRODUCTION,
-        )
-
-        return response
+        raise AuthError()
 
 
 @auth_router.post("/logout", status_code=status.HTTP_200_OK)
-async def logout(db: db_dependency, refresh_token: str | None = Cookie(None)):
-
-    service = AuthService()
+async def logout(
+    db: db_dependency, response: Response, refresh_token: str | None = Cookie(None)
+):
 
     if refresh_token:
         await service.logout(refresh_token, db)
-
-    response = JSONResponse(content=None)
-
-    response.delete_cookie(
-        "refresh_token",
-        httponly=True,
-        secure=Environment == Environment.PRODUCTION,
-    )
-
-    return response
+        _clear_auth_cookie(refresh_token, response)

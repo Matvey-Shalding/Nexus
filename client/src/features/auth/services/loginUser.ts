@@ -1,14 +1,15 @@
-import { ILoginRequest, login, useAuthStore } from '..';
+import { login } from '../api/login';
+import { ILoginRequest } from '../types/Login';
+
+import { setAccessToken } from './setAccessToken';
 
 export const loginUser = async (data: ILoginRequest) => {
-	const response = await login({
+	const session = await login({
 		email: data.email,
 		password: data.password,
 	});
 
-	const setAccessToken = useAuthStore.getState().setAccessToken;
+	setAccessToken(session.data);
 
-	setAccessToken(response.data.access_token);
-
-	return response;
+	return session;
 };

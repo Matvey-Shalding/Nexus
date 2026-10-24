@@ -1,9 +1,11 @@
-import { IRegisterRequest, register } from '..';
-
-import { loginUser } from './loginUser';
+import { register } from '../api/register';
+import { IRegisterRequest } from '../types/Register';
+import { setAccessToken } from './setAccessToken';
 
 export const registerUser = async (data: IRegisterRequest) => {
-	await register(data);
+	const session = await register(data);
 
-	return await loginUser({ email: data.email, password: data.password });
+	setAccessToken(session.data);
+
+	return session;
 };

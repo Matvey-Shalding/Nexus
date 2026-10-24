@@ -1,7 +1,9 @@
-import { ILoginRequest, ILoginResponse } from '..';
 import { axiosInstance } from '@/shared/config/axios';
 import { ApiRoutes } from '@/shared/config/routes';
 
+import { ILoginRequest } from '../types/Login';
+import { ISession } from '../types/Session';
+
 export const login = async (data: ILoginRequest) => {
-	return await axiosInstance.post<ILoginResponse>(ApiRoutes.LOGIN, data);
+	return await axiosInstance.post<ISession>(ApiRoutes.LOGIN, data);
 };
