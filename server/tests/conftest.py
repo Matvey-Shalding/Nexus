@@ -1,8 +1,8 @@
 import pytest
-from httpx import ASGITransport, AsyncClient
-from server.app.main import app
-
 from app.database import get_db
+from httpx import ASGITransport, AsyncClient
+
+from server.app.main import app
 from tests.database import create_tables, drop_tables, override_get_db
 
 app.dependency_overrides[get_db] = override_get_db

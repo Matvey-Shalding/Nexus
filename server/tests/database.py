@@ -1,7 +1,6 @@
+from app.database import Base
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.pool import NullPool
-
-from app.database import Base
 
 TEST_DATABASE_URL = "postgresql+asyncpg://postgres:123456@localhost:5432/test_nexus"
 

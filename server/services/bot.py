@@ -2,8 +2,6 @@ import hashlib
 import secrets
 from datetime import UTC, datetime
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.config import settings
 from app.error import (
     ExpiredTelegramLink,
@@ -16,6 +14,7 @@ from app.models.telegram_account import TelegramAccount
 from app.models.user import User
 from app.schemas.telegram_account import ConnectAccountRequest
 from repositories.bot import BotRepository
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class BotService:

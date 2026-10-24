@@ -1,5 +1,4 @@
 import pytest
-
 from tests.helpers import login_user, register_user
 
 

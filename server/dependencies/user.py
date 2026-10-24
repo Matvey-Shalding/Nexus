@@ -1,13 +1,12 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException
-from fastapi.security import HTTPAuthorizationCredentials
-from starlette import status
-
 from app.deps import db_dependency
 from app.models.user import User
 from app.security import http_bearer
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
 from services.auth import AuthService
+from starlette import status
 
 
 async def get_current_user(

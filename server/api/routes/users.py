@@ -1,13 +1,12 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
-from starlette import status
-
 from app.deps import db_dependency
 from app.models.user import User
 from app.schemas.user import UpdateUserRequest, UserResponse, UserResponseForTelegram
 from dependencies.user import get_current_user
+from fastapi import APIRouter, Depends
 from services.user import UserService
+from starlette import status
 
 users_router = APIRouter(prefix="/users", tags=["users"])
 

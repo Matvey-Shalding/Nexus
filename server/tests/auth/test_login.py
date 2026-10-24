@@ -1,5 +1,3 @@
-
-
 async def test_login_valid_user_returns_200(setup_database, http_client):
 
     register_data = {

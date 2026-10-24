@@ -1,14 +1,14 @@
 from contextlib import asynccontextmanager
 
+from api.routes.auth import auth_router
+from api.routes.tasks import tasks_router
+from api.routes.telegram import telegram_router
+from api.routes.users import users_router
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
-from api.routes.auth import auth_router
-from api.routes.tasks import tasks_router
-from api.routes.telegram import telegram_router
-from api.routes.users import users_router
 from app.database import engine
 
 # enable .env configuration

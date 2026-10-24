@@ -1,8 +1,5 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Header
-from starlette import status
-
 from app.deps import db_dependency
 from app.schemas.link import LinkResponse
 from app.schemas.telegram_account import (
@@ -10,7 +7,9 @@ from app.schemas.telegram_account import (
     AccountExistsResponse,
     ConnectAccountRequest,
 )
+from fastapi import APIRouter, Header
 from services.bot import BotService
+from starlette import status
 
 from .users import user_dependency
 

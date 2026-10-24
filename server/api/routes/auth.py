@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Cookie, HTTPException, Response
-from starlette import status
-
 from app.config import Environment, settings
 from app.deps import db_dependency
 from app.error import AuthError, NoLoginError
 from app.schemas.auth import Session
 from app.schemas.user import CreateUserRequest, LoginUserRequest
+from fastapi import APIRouter, Cookie, HTTPException, Response
 from services.auth import AuthService
+from starlette import status
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 

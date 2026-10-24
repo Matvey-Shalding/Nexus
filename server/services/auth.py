@@ -4,9 +4,6 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from anyio import to_thread
-from jose import JWTError, jwt
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.config import settings
 from app.error import (
     AuthError,
@@ -16,8 +13,10 @@ from app.models.refresh_token import RefreshToken
 from app.models.user import User
 from app.schemas.user import CreateUserRequest
 from app.security import bcrypt_context
+from jose import JWTError, jwt
 from repositories.refresh_token import RefreshTokenRepository
 from repositories.user import UserRepository
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class AuthService:
