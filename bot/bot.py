@@ -1,14 +1,10 @@
 import asyncio
-from typing import Any
+import logging
 
 from aiogram import Bot, Dispatcher
 
-import logging
-
-from .api import API
-from .router import router
-
 from .config import Config
+from .router import router
 
 
 async def main():

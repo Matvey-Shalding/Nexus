@@ -1,9 +1,9 @@
 from typing import TypedDict
 
-from datetime import datetime
 
 class GetAccountResponse(TypedDict):
-        is_connected: bool
+    is_connected: bool
+
 
 class GetProfileResponse(TypedDict):
     name: str

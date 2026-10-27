@@ -19,8 +19,7 @@ def inline_not_connected_keyboard():
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="🔗 Open Nexus to connect",
-                    callback_data="connect_account"
+                    text="🔗 Open Nexus to connect", callback_data="connect_account"
                 )
             ]
         ]

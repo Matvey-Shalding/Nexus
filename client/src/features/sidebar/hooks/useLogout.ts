@@ -1,5 +1,6 @@
 import { logout, useAuthStore } from '@/features/auth';
 import { Routes } from '@/shared/config/routes';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -11,6 +12,8 @@ export const useLogout = () => {
 
 	const { clearAccessToken } = useAuthStore();
 
+	const queryClient = useQueryClient();
+
 	const handleLogout = async () => {
 		setIsLoggingOut(true);
 
@@ -18,6 +21,7 @@ export const useLogout = () => {
 			loading: 'Logging out...',
 			success: () => {
 				clearAccessToken();
+				queryClient.clear();
 				router.push(Routes.LOGIN);
 				return 'Logged out successfully';
 			},

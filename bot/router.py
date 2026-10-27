@@ -1,11 +1,10 @@
+import logging
 from datetime import datetime
 
 from aiogram import F, Router
 from aiogram.filters import CommandObject, CommandStart
 from aiogram.types import CallbackQuery, Message
 from aiogram.utils.formatting import Bold, Text
-
-from bot.schemas import GetProfileResponse
 
 from .api import API
 from .keyboard import (
@@ -15,9 +14,10 @@ from .keyboard import (
     settings_disconnect_keyboard,
     settings_keyboard,
 )
+from .schemas import GetProfileResponse
 
+logger = logging.getLogger(__name__)
 router = Router()
-
 API_instance = API()
 
 
@@ -37,7 +37,6 @@ async def cmd_start(message: Message, command: CommandObject):
                 telegram_username=telegram_username or "",
                 link=link,
             )
-
             await message.answer(
                 "Your Nexus account has been successfully connected.",
                 reply_markup=connected_keyboard(),
@@ -57,7 +56,8 @@ async def cmd_start(message: Message, command: CommandObject):
                 reply_markup=not_connected_keyboard(),
             )
 
-    except Exception:
+    except Exception as _:
+        logger.exception("Failed to connect or retrieve Telegram account.")
         await message.answer(
             "I couldn't verify your Nexus account. Please try again later."
         )
@@ -66,23 +66,21 @@ async def cmd_start(message: Message, command: CommandObject):
 @router.message(F.text == "⚙️ Settings")
 async def open_settings(message: Message):
     await message.answer(
-        "⚙️ Settings\n\nManage your Nexus account.",
+        "⚙️ Settings\n\nManage your Nexus account.\nChoose an option:",
+        reply_markup=settings_keyboard(),
     )
-    await message.answer("Choose an option:", reply_markup=settings_keyboard())
 
 
 @router.message(F.text == "🔗 Connect Nexus Account")
 async def connect_account(message: Message):
-
     await message.answer(
-        "Connect your Nexus account.\n To use Nexus through Telegram, you first need to link your account.Link: http://localhost:3000/?connect=telegram",
+        "Connect your Nexus account.\nTo use Nexus through Telegram, you first need to link your account.\nLink: http://localhost:3000/?connect=telegram",
         reply_markup=inline_not_connected_keyboard(),
     )
 
 
 @router.callback_query(F.data == "settings:back")
 async def go_back(call: CallbackQuery):
-
     await call.answer()
 
     if not call.message:
@@ -103,12 +101,18 @@ async def open_profile(call: CallbackQuery):
     try:
         profile: GetProfileResponse = await API_instance.get_profile(call.from_user.id)
     except Exception:
+        logger.exception("Failed to load profile for user %s", call.from_user.id)
         await call.message.answer(
             "Something went wrong while loading your profile. Please try again."
         )
         return
 
     timestamp = profile.get("created_at")
+    formatted_date = (
+        datetime.fromisoformat(timestamp).strftime("%B %d, %Y")
+        if timestamp
+        else "Unknown"
+    )
 
     profile_text = Text(
         Bold("Your Nexus profile"),
@@ -123,19 +127,19 @@ async def open_profile(call: CallbackQuery):
         "\n\n",
         Bold("Member since"),
         "\n",
-        (datetime.fromisoformat(timestamp)).strftime("%B %d, %Y") or "Unknown",
+        formatted_date,
     )
 
-    await call.message.answer(
-        text=profile_text.as_html(),
-        parse_mode="HTML",
-        reply_markup=connected_keyboard(),
-    )
+    if isinstance(call.message, Message):
+        await call.message.edit_text(
+            text=profile_text.as_html(),
+            parse_mode="HTML",
+            # reply_markup=connected_keyboard(),
+        )
 
 
 @router.callback_query(F.data == "settings:disconnect")
 async def disconnect_telegram(call: CallbackQuery):
-
     await call.answer()
 
     if not call.message:
@@ -150,7 +154,6 @@ async def disconnect_telegram(call: CallbackQuery):
 
 @router.callback_query(F.data == "settings:disconnect:confirm")
 async def disconnect_telegram_confirm(call: CallbackQuery):
-
     await call.answer()
 
     if not call.message:
@@ -159,13 +162,16 @@ async def disconnect_telegram_confirm(call: CallbackQuery):
     try:
         await API_instance.disconnect_telegram(call.from_user.id)
 
-        await call.message.answer(
-            "Account successfully disconnected", reply_markup=not_connected_keyboard()
-        )
+        if isinstance(call.message, Message):
+            await call.message.edit_text(
+                text="Account successfully disconnected.",
+            )
+            await call.message.answer(
+                "You are now disconnected.", reply_markup=not_connected_keyboard()
+            )
 
-    except Exception:
+    except Exception as _:
+        logger.exception("Failed to disconnect account for user %s", call.from_user.id)
         await call.message.answer(
-            "Something went wrong while loading your profile. Please try again."
+            "Something went wrong while disconnecting your account. Please try again."
         )
-        return
-
