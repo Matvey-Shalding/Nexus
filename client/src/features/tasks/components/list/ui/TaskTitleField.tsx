@@ -7,24 +7,20 @@ import React from 'react';
 interface Props {
 	title: string;
 	inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-	handleTitleUpdate: (value: string) => void;
+	updateTitle: (title: string) => void;
+	updateCompleted: (completed: boolean) => void;
 	addTaskMode?: boolean;
 	isCompleted?: boolean;
-	handleCompletedUpdate?: (value: boolean) => void;
 }
 
 export const TaskTitleField: React.FC<Props> = ({
 	title,
-	handleTitleUpdate,
+	updateTitle,
 	inputProps,
 	addTaskMode = false,
 	isCompleted = false,
-	handleCompletedUpdate,
+	updateCompleted,
 }) => {
-	const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		handleTitleUpdate(e.target.value);
-	};
-
 	return (
 		<div className="border-border flex items-center gap-x-1 border-r py-2 pr-1">
 			<div
@@ -41,7 +37,7 @@ export const TaskTitleField: React.FC<Props> = ({
 
 			<Checkbox
 				checked={isCompleted}
-				onCheckedChange={checked => handleCompletedUpdate?.(!!checked)}
+				onCheckedChange={checked => updateCompleted(checked)}
 				disabled={addTaskMode}
 				className="size-6 mr-2"
 			/>
@@ -49,7 +45,7 @@ export const TaskTitleField: React.FC<Props> = ({
 			<Input
 				autoCapitalize="on"
 				value={title}
-				onChange={onTitleChange}
+				onChange={e => updateTitle(e.target.value)}
 				{...inputProps}
 				className={cn(
 					'font-heading! rounded-none border-none bg-transparent p-0 text-lg! font-medium transition-colors focus-visible:ring-0',

@@ -17,43 +17,34 @@ interface Props {
 	groupId: string;
 }
 export const Task: React.FC<Props> = ({ task, groupId }) => {
-	const {
-		ref,
-		isDragging,
-		isCompleted,
-		handleCompletedUpdate,
-		title,
-		handleTitleUpdate,
-		selectedDate: date,
-		handleDateUpdate,
-		selectedPriority: priority,
-		handlePriorityUpdate,
-		deleteTask,
-	} = useTaskController(task, groupId);
+	const { ref, isDragging, deleteTask, updateTitle, updateDate, updateCompleted, updatePriority,title } = useTaskController(
+		task,
+		groupId,
+	);
 
 	return (
 		<TaskLayout
 			isDragging={isDragging}
 			ref={ref}
-			isCompleted={isCompleted}
+			isCompleted={task.completed}
 		>
 			<TaskTitleField
-				isCompleted={isCompleted}
-				handleCompletedUpdate={handleCompletedUpdate}
+				isCompleted={task.completed}
 				title={title}
-				handleTitleUpdate={handleTitleUpdate}
+				updateTitle={updateTitle}
+				updateCompleted={updateCompleted}
 			/>
 			<div className="flex items-center justify-between basis-full">
 				<div className="flex items-center gap-x-2.5">
 					<TaskDateField
-						isCompleted={isCompleted}
-						selectedDate={date}
-						handleDateUpdate={handleDateUpdate}
+						isCompleted={task.completed}
+						selectedDate={task.due_date}
+						updateDate={updateDate}
 					/>
 					<TaskPriorityField
-						isCompleted={isCompleted}
-						selectedPriority={priority}
-						handlePriorityUpdate={handlePriorityUpdate}
+						updatePriority={updatePriority}
+						isCompleted={task.completed}
+						selectedPriority={task.priority}
 					/>
 				</div>
 				<TaskDeleteButton onDelete={deleteTask} />

@@ -12,11 +12,11 @@ import { formatPriority } from '../../../utils/formatPriority';
 
 interface Props {
 	selectedPriority: TPriority;
-	handlePriorityUpdate: (priority: TPriority) => void;
+	updatePriority: (priority: TPriority) => void;
 	isCompleted?: boolean;
 }
 
-export const TaskPriorityField: React.FC<Props> = ({ selectedPriority, handlePriorityUpdate, isCompleted = false }) => {
+export const TaskPriorityField: React.FC<Props> = ({ selectedPriority, updatePriority, isCompleted = false }) => {
 	const priorityLabel = formatPriority(selectedPriority);
 	const styleClass = getPriorityStyles(selectedPriority);
 
@@ -24,7 +24,7 @@ export const TaskPriorityField: React.FC<Props> = ({ selectedPriority, handlePri
 
 	const handleSelect = (priority: TPriority) => {
 		setIsOpen(false);
-		handlePriorityUpdate(priority);
+		updatePriority(priority);
 	};
 
 	return (

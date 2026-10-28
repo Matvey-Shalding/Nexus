@@ -7,24 +7,20 @@ import React from 'react';
 interface Props {
 	title: string;
 	inputProps?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
-	handleTitleUpdate: (value: string) => void;
+	updateTitle: (title: string) => void;
+	updateCompleted: (completed: boolean) => void;
 	addTaskMode?: boolean;
 	isCompleted?: boolean;
-	handleCompletedUpdate?: (value: boolean) => void;
 }
 
 export const TaskTitleField: React.FC<Props> = ({
 	title,
-	handleTitleUpdate,
+	updateTitle,
 	inputProps,
 	addTaskMode = false,
 	isCompleted = false,
-	handleCompletedUpdate,
+	updateCompleted,
 }) => {
-	const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		handleTitleUpdate(e.target.value);
-	};
-
 	return (
 		<div className="flex gap-x-2.5">
 			<div className="flex h-fit items-center gap-x-0.5">
@@ -45,7 +41,7 @@ export const TaskTitleField: React.FC<Props> = ({
 
 				<Checkbox
 					checked={isCompleted}
-					onCheckedChange={checked => handleCompletedUpdate?.(!!checked)}
+					onCheckedChange={updateCompleted}
 					disabled={addTaskMode}
 					className="size-6"
 				/>
@@ -54,7 +50,7 @@ export const TaskTitleField: React.FC<Props> = ({
 			<Textarea
 				autoCapitalize="on"
 				value={title}
-				onChange={handleTitleChange}
+				onChange={e => updateTitle(e.target.value)}
 				{...inputProps}
 				className={cn(
 					'font-heading! rounded-none border-none bg-transparent p-0 text-lg/tight! font-medium transition-colors focus-visible:ring-0 align-middle',

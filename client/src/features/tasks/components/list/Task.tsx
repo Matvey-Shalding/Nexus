@@ -17,41 +17,30 @@ interface Props {
 	groupId: string;
 }
 export const Task: React.FC<Props> = ({ task, groupId }) => {
-	const {
-		ref,
-		isDragging,
-		isCompleted,
-		handleCompletedUpdate,
-		title,
-		handleTitleUpdate,
-		selectedDate: date,
-		handleDateUpdate,
-		selectedPriority: priority,
-		handlePriorityUpdate,
-		deleteTask,
-	} = useTaskController(task, groupId);
+	const { ref, isDragging, deleteTask, updateTitle, updateDate, updateCompleted, updatePriority, title } =
+		useTaskController(task, groupId);
 
 	return (
 		<TaskLayout
 			isDragging={isDragging}
 			ref={ref}
-			isCompleted={isCompleted}
+			isCompleted={task.completed}
 		>
 			<TaskTitleField
-				isCompleted={isCompleted}
-				handleCompletedUpdate={handleCompletedUpdate}
+				isCompleted={task.completed}
 				title={title}
-				handleTitleUpdate={handleTitleUpdate}
+				updateTitle={updateTitle}
+				updateCompleted={updateCompleted}
 			/>
 			<TaskDateField
-				isCompleted={isCompleted}
-				selectedDate={date}
-				handleDateUpdate={handleDateUpdate}
+				isCompleted={task.completed}
+				selectedDate={task.due_date}
+				updateDate={updateDate}
 			/>
 			<TaskPriorityField
-				isCompleted={isCompleted}
-				selectedPriority={priority}
-				handlePriorityUpdate={handlePriorityUpdate}
+				isCompleted={task.completed}
+				selectedPriority={task.priority}
+				updatePriority={updatePriority}
 			/>
 			<TaskDeleteButton onDelete={deleteTask} />
 		</TaskLayout>

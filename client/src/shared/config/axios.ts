@@ -82,12 +82,14 @@ axiosInstance.interceptors.response.use(
 		if (isRefreshing) {
 			return new Promise<string>((resolve, reject) => {
 				failedQueue.push({ resolve, reject });
-			}).then(token => {
-				error.config.headers.Authorization = `Bearer ${token}`;
-				return axiosInstance(error.config);
-      }).catch(err => {
-        return Promise.reject(err)
 			})
+				.then(token => {
+					error.config.headers.Authorization = `Bearer ${token}`;
+					return axiosInstance(error.config);
+				})
+				.catch(err => {
+					return Promise.reject(err);
+				});
 		}
 
 		isRefreshing = true;
@@ -98,6 +100,7 @@ axiosInstance.interceptors.response.use(
 			useAuthStore.getState().setAccessToken(newAccessToken);
 
 			error.config._retry = true;
+			k;
 
 			for (let i = 0; i < failedQueue.length; i++) {
 				failedQueue[i].resolve(newAccessToken);

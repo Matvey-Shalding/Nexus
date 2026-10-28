@@ -7,17 +7,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared
 import React, { useState } from 'react';
 
 interface Props {
-	selectedDate: Date | undefined;
-	handleDateUpdate: (date: Date | undefined) => void;
+	selectedDate: string | null;
 	isCompleted?: boolean;
+	updateDate: (date: Date | undefined) => void;
 }
 
-export const TaskDateField: React.FC<Props> = ({ selectedDate, handleDateUpdate, isCompleted = false }) => {
+export const TaskDateField: React.FC<Props> = ({ selectedDate, isCompleted = false, updateDate }) => {
 	const date = mapDateToClient(selectedDate);
 	const [open, setOpen] = useState(false);
 
 	const handleSelect = (date: Date | undefined) => {
-		handleDateUpdate(date);
+		updateDate(date);
 		setOpen(false);
 	};
 
@@ -51,7 +51,7 @@ export const TaskDateField: React.FC<Props> = ({ selectedDate, handleDateUpdate,
 				align="start"
 			>
 				<Calendar
-					selected={selectedDate}
+					selected={selectedDate ? new Date(selectedDate) : undefined}
 					onSelect={handleSelect}
 				/>
 			</DropdownMenuContent>
