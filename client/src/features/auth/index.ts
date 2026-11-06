@@ -1,3 +1,14 @@
+export { getCurrentUser } from '@/features/auth/api/getCurrentUser';
 export { logout } from '@/features/auth/api/logout';
 export { refresh } from '@/features/auth/api/refresh';
+export { LoginForm } from '@/features/auth/components/LoginForm';
+export { RegisterForm } from '@/features/auth/components/RegisterForm';
+export { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
+export { useLoginForm } from '@/features/auth/hooks/useLoginForm';
+export { useRegisterForm } from '@/features/auth/hooks/useRegisterForm';
+export { useUpdateUser } from '@/features/auth/hooks/useUpdateUser';
+export { loginSchema } from '@/features/auth/schemas/loginSchema';
+export type { TLoginSchema } from '@/features/auth/schemas/loginSchema';
+export { registerSchema } from '@/features/auth/schemas/registerSchema';
+export type { TRegisterSchema } from '@/features/auth/schemas/registerSchema';
 export { useAuthStore } from '@/features/auth/store/auth.store';

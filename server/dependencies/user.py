@@ -1,12 +1,13 @@
 from typing import Annotated
 
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
+from starlette import status
+
 from app.deps import db_dependency
 from app.models.user import User
 from app.security import http_bearer
-from fastapi import Depends, HTTPException
-from fastapi.security import HTTPAuthorizationCredentials
 from services.auth import AuthService
-from starlette import status
 
 
 async def get_current_user(
@@ -16,7 +17,7 @@ async def get_current_user(
 
     token = credentials.credentials
 
-    user = await AuthService().get_user_by_token(token, db)
+    user = await AuthService().get_user_by_token(db, token)
 
     if user is None:
         raise HTTPException(

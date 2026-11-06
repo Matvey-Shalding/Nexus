@@ -13,6 +13,10 @@ export const useLoginForm = () => {
 	} = useForm<TLoginSchema>({
 		resolver: zodResolver(loginSchema),
 		mode: 'onChange',
+		defaultValues: {
+			email: '',
+			password: '',
+		},
 	});
 
 	return {

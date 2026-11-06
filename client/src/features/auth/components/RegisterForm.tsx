@@ -94,6 +94,7 @@ export const RegisterForm: React.FC<Props> = memo(({ className }: { className?: 
 								<div className="flex flex-col gap-y-1">
 									<FieldError errors={[errors.root]} />
 									<Button
+										suppressHydrationWarning
 										disabled={!isValid || isSubmitting}
 										size="lg"
 										type="submit"

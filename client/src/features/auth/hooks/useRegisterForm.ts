@@ -12,7 +12,13 @@ export const useRegisterForm = () => {
 		setError,
 	} = useForm<TRegisterSchema>({
 		resolver: zodResolver(registerSchema),
-		mode: 'onChange',
+    mode: 'onChange',
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      name: ""
+		}
 	});
 	return {
 		handleSubmit,

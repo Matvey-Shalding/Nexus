@@ -8,10 +8,6 @@ export const axiosInstance = axios.create({
 	withCredentials: true,
 });
 
-let isRefreshing: boolean = false;
-
-const failedQueue: Array<{ resolve: (token: string) => void; reject: (err: unknown) => void }> = [];
-
 let initializationPromise: Promise<string | null> | null = null;
 
 const initializeAccessToken = async (): Promise<string | null> => {
@@ -79,43 +75,18 @@ axiosInstance.interceptors.response.use(
 			return Promise.reject(error);
 		}
 
-		if (isRefreshing) {
-			return new Promise<string>((resolve, reject) => {
-				failedQueue.push({ resolve, reject });
-			})
-				.then(token => {
-					error.config.headers.Authorization = `Bearer ${token}`;
-					return axiosInstance(error.config);
-				})
-				.catch(err => {
-					return Promise.reject(err);
-				});
-		}
-
-		isRefreshing = true;
-
 		try {
 			const newAccessToken = (await refresh()).data.access_token;
 
 			useAuthStore.getState().setAccessToken(newAccessToken);
 
 			error.config._retry = true;
-			k;
-
-			for (let i = 0; i < failedQueue.length; i++) {
-				failedQueue[i].resolve(newAccessToken);
-			}
 
 			return axiosInstance(error.config);
-		} catch (error) {
+		} catch {
 			useAuthStore.getState().clearAccessToken();
-			for (let i = 0; i < failedQueue.length; i++) {
-				failedQueue[i].reject(error);
-			}
+
 			return Promise.reject(error);
-		} finally {
-			failedQueue.length = 0;
-			isRefreshing = false;
 		}
 	},
 );

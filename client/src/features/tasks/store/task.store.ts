@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { create } from 'zustand';
-import { StateStorage } from 'zustand/middleware';
+import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import {
 	TASK_GROUP_BY,
@@ -14,7 +14,15 @@ import {
 
 const cookieStorage: StateStorage = {
 	getItem: (name: string) => {
-		return Cookies.get(name);
+		return Cookies.get(name) ?? null;
+	},
+
+	setItem: (name: string, value: string) => {
+		Cookies.set(name, value);
+	},
+
+	removeItem: (name: string) => {
+		Cookies.remove(name);
 	},
 };
 
@@ -29,14 +37,22 @@ interface TaskViewState {
 	setTaskView: (taskView: TaskView) => void;
 }
 
-export const useTaskView = create<TaskViewState>()(set => ({
-	groupBy: TASK_GROUP_BY.DEFAULT,
-	sortBy: TASK_SORT_BY.AUTO,
-	sortOrder: TASK_SORT_ORDER.ASC,
-	taskView: 'list',
+export const useTaskView = create<TaskViewState>()(
+	persist(
+		set => ({
+			groupBy: TASK_GROUP_BY.DEFAULT,
+			sortBy: TASK_SORT_BY.AUTO,
+			sortOrder: TASK_SORT_ORDER.ASC,
+			taskView: 'list',
 
-	setGroupBy: groupBy => set({ groupBy }),
-	setSortBy: sortBy => set({ sortBy }),
-	setSortOrder: sortOrder => set({ sortOrder }),
-	setTaskView: taskView => set({ taskView }),
-}));
+			setGroupBy: groupBy => set({ groupBy }),
+			setSortBy: sortBy => set({ sortBy }),
+			setSortOrder: sortOrder => set({ sortOrder }),
+			setTaskView: taskView => set({ taskView }),
+		}),
+		{
+			name: 'task-view',
+			storage: createJSONStorage(() => cookieStorage),
+		},
+	),
+);

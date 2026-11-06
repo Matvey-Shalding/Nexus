@@ -3,7 +3,10 @@ import secrets
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from anyio import to_thread
+from fastapi.concurrency import run_in_threadpool
+from jose import JWTError, jwt
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.config import settings
 from app.error import (
     AuthError,
@@ -13,10 +16,8 @@ from app.models.refresh_token import RefreshToken
 from app.models.user import User
 from app.schemas.user import CreateUserRequest
 from app.security import bcrypt_context
-from jose import JWTError, jwt
 from repositories.refresh_token import RefreshTokenRepository
 from repositories.user import UserRepository
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class AuthService:
@@ -37,9 +38,11 @@ class AuthService:
         if user:
             raise DuplicateEmailError()
 
-        hashed_password: str = await to_thread.run_sync(
-            bcrypt_context.hash, create_user_request.password
-        )
+        # hashed_password: str = await run_in_threadpool(
+        #     bcrypt_context.hash, create_user_request.password
+        # )
+
+        hashed_password = bcrypt_context.hash(create_user_request.password)
 
         user = User(
             name=create_user_request.name,
@@ -67,13 +70,11 @@ class AuthService:
         if not user:
             return None
 
-        is_same: bool = await to_thread.run_sync(
-            bcrypt_context.verify, password, user.hashed_password
-        )
+        is_same: bool = bcrypt_context.verify(password, user.hashed_password)
 
         return user if is_same else None
 
-    async def get_user_by_token(
+    async def get_user_by_token(  
         self,
         db: AsyncSession,
         token: str,

@@ -1,11 +1,12 @@
+from fastapi import HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
+
 from app.error import AuthError, TelegramAccountNotFound
 from app.models.user import User
 from app.schemas.user import UpdateUserRequest
-from fastapi import HTTPException
 from repositories.bot import BotRepository
 from repositories.user import UserRepository
-from sqlalchemy.ext.asyncio import AsyncSession
-from starlette import status
 
 
 class UserService:
