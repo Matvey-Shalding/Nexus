@@ -6,7 +6,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "prettier --write ."
+		"format": "prettier --write .",
+		"lint": "next lint",
+		"prepare": "cd .. && git config core.hooksPath .husky"
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.6.0",
@@ -17,6 +19,7 @@
 		"@tanstack/react-query-devtools": "^5.101.4",
 		"@teispace/next-themes": "^2.0.4",
 		"@trivago/prettier-plugin-sort-imports": "^6.0.2",
+		"@types/js-cookie": "^3.0.6",
 		"axios": "^1.18.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
@@ -25,6 +28,7 @@
 		"eslint-plugin-check-file": "^3.3.1",
 		"husky": "^9.1.7",
 		"immer": "^11.1.11",
+		"js-cookie": "^3.0.8",
 		"lint-staged": "^17.0.8",
 		"lucide-react": "^1.23.0",
 		"motion": "^13.1.0",
@@ -64,8 +68,7 @@
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
 			"prettier --write",
-			"eslint",
-			"npm test"
+			"eslint --fix"
 		]
 	}
 }

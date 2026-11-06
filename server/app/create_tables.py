@@ -2,6 +2,8 @@ import asyncio
 
 from app.database import Base, engine
 
+import app.models
+
 # import ALL models
 
 
