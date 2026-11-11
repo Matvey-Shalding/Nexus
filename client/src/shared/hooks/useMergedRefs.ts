@@ -13,7 +13,7 @@ export function assignRef<T>(ref: PossibleRef<T>, value: T) {
 
 	try {
 		(ref as React.MutableRefObject<T>).current = value;
-	} catch (error) {
+	} catch {
 		throw new Error(`Cannot assign value '${value}' to ref '${ref}'`);
 	}
 }
@@ -27,6 +27,5 @@ export function mergeRefs<T>(...refs: PossibleRef<T>[]) {
 }
 
 export function useMergedRefs<T>(...refs: PossibleRef<T>[]) {
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	return useMemo(() => mergeRefs(...refs), refs);
+	return useMemo(() => mergeRefs(...refs), [refs]);
 }

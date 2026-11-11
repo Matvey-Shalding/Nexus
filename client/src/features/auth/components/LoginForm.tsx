@@ -84,7 +84,7 @@ export const LoginForm: React.FC<Props> = memo(({ className }: { className?: str
 									</Button>
 								</div>
 								<FieldDescription className="text-center">
-									Don't have an account? <Link href={Routes.REGISTER}>Sign up</Link>
+									Don&apost have an account? <Link href={Routes.REGISTER}>Sign up</Link>
 								</FieldDescription>
 							</Field>
 						</FieldGroup>

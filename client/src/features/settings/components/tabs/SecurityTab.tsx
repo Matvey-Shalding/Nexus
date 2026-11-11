@@ -5,7 +5,7 @@ import { TabsContent } from '@/shared/ui/tabs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loader, Send } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { deleteAccount } from '../../api/deleteAccount';
@@ -68,7 +68,7 @@ export const SecurityTab: React.FC<Props> = ({}) => {
 
 	const router = useRouter();
 
-	const params = new URLSearchParams(searchParams.toString());
+	const params = useCallback(() => new URLSearchParams(searchParams.toString()), [searchParams])
 
 	const pathname = usePathname();
 
@@ -94,7 +94,7 @@ export const SecurityTab: React.FC<Props> = ({}) => {
 				toast.error('Something went wrong. Try again later');
 			}
 		}
-	}, [searchParams, generateLink, isPending]);
+	}, [searchParams, generateLink, isPending, params, router, pathname, isConnected]);
 
 	const handleDisconnect = () => {
 		toast.promise(disconnectAccount, {

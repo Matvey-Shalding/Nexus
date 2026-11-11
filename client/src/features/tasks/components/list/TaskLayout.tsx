@@ -67,5 +67,3 @@ export const TaskLayout = forwardRef<HTMLDivElement, Props>(
 		);
 	},
 );
-
-TaskLayout.displayName = 'TaskLayout';

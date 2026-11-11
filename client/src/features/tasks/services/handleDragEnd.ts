@@ -3,6 +3,7 @@ import { ITaskDragData, ITaskGroupDefaultValues, MoveTaskRequest } from '../type
 
 import { handleCreateMoveTaskRequest } from './handleCreateMoveTaskRequest';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handleDragEnd = (event: any, moveTask: (data: MoveTaskRequest) => void) => {
 	const source = event.operation.source;
 

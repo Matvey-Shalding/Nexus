@@ -6,10 +6,7 @@ import React from 'react';
 import { useKanbanController } from '../hooks/useKanbanController';
 import { ITaskDragData } from '../types/Task';
 
-interface Props {
-	className?: string;
-}
-export const Kanban: React.FC<Props> = ({}) => {
+export const Kanban: React.FC = () => {
 	const { taskGroups, isLoading, onDragEnd, View } = useKanbanController();
 
 	if (isLoading || !taskGroups) return <View.TaskLoader />;

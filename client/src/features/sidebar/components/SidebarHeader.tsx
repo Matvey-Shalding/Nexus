@@ -8,11 +8,8 @@ import { Button } from '../../../shared/ui/button';
 import { Logo } from '../../../shared/ui/logo';
 import { SidebarHeader as Header, useSidebar } from '../../../shared/ui/sidebar';
 
-interface Props {
-	className?: string;
-}
-export const SidebarHeader: React.FC<Props> = ({ className }) => {
-	const { toggleSidebar, open, isMobile, state } = useSidebar();
+export const SidebarHeader: React.FC = () => {
+	const { toggleSidebar, open, state } = useSidebar();
 
 	return (
 		<Header className="relative">

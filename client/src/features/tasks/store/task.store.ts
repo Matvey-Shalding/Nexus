@@ -1,58 +1,42 @@
-import Cookies from 'js-cookie';
-import { create } from 'zustand';
-import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
+import Cookie from 'js-cookie';
+import { createStore } from 'zustand';
 
-import {
-	TASK_GROUP_BY,
-	TASK_SORT_BY,
-	TASK_SORT_ORDER,
-	TaskGroupBy,
-	TaskSortBy,
-	TaskSortOrder,
-	TaskView,
-} from '../types/TaskView';
+import { TaskGroupBy, TaskSortBy, TaskSortOrder, TaskView } from '../types/TaskView';
 
-const cookieStorage: StateStorage = {
-	getItem: (name: string) => {
-		return Cookies.get(name) ?? null;
-	},
-
-	setItem: (name: string, value: string) => {
-		Cookies.set(name, value);
-	},
-
-	removeItem: (name: string) => {
-		Cookies.remove(name);
-	},
-};
-
-interface TaskViewState {
+export interface TaskViewProps {
 	groupBy: TaskGroupBy;
 	sortBy: TaskSortBy;
 	sortOrder: TaskSortOrder;
 	taskView: TaskView;
+}
+
+export interface TaskViewState extends TaskViewProps {
 	setGroupBy: (groupBy: TaskGroupBy) => void;
 	setSortBy: (sortBy: TaskSortBy) => void;
 	setSortOrder: (sortOrder: TaskSortOrder) => void;
 	setTaskView: (taskView: TaskView) => void;
 }
 
-export const useTaskView = create<TaskViewState>()(
-	persist(
-		set => ({
-			groupBy: TASK_GROUP_BY.DEFAULT,
-			sortBy: TASK_SORT_BY.AUTO,
-			sortOrder: TASK_SORT_ORDER.ASC,
-			taskView: 'list',
-
-			setGroupBy: groupBy => set({ groupBy }),
-			setSortBy: sortBy => set({ sortBy }),
-			setSortOrder: sortOrder => set({ sortOrder }),
-			setTaskView: taskView => set({ taskView }),
-		}),
-		{
-			name: 'task-view',
-			storage: createJSONStorage(() => cookieStorage),
+export const createTaskStore = (initialTaskStore: TaskViewProps) => {
+	return createStore<TaskViewState>()(set => ({
+		...initialTaskStore,
+		setGroupBy: groupBy => {
+			set({ groupBy });
+			Cookie.set('group-by', groupBy);
 		},
-	),
-);
+		setSortBy: sortBy => {
+			set({ sortBy });
+			Cookie.set('sort-by', sortBy);
+		},
+		setSortOrder: sortOrder => {
+			set({ sortOrder });
+			Cookie.set('sort-order', sortOrder);
+		},
+		setTaskView: taskView => {
+			set({ taskView });
+			Cookie.set('task-view', taskView);
+		},
+	}));
+};
+
+export type TaskStore = ReturnType<typeof createTaskStore>;

@@ -1,12 +1,10 @@
 import { axiosInstance } from '@/shared/config/axios';
 import { ApiRoutes } from '@/shared/config/routes';
 
-import { useTaskView } from '../store/task.store';
 import { ITaskGroup } from '../types/Task';
+import { TaskGroupBy, TaskSortBy, TaskSortOrder } from '../types/TaskView';
 
-export const getTaskGroups = async () => {
-	const { groupBy, sortBy, sortOrder } = useTaskView.getState();
-
+export const getTaskGroups = async (groupBy: TaskGroupBy,sortBy: TaskSortBy,sortOrder: TaskSortOrder) => {
 	const response = await axiosInstance.get<ITaskGroup[]>(ApiRoutes.TASKS, {
 		params: {
 			group_by: groupBy,

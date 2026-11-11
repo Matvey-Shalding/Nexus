@@ -5,7 +5,7 @@ import { CollisionPriority } from '@dnd-kit/abstract';
 import { useDroppable } from '@dnd-kit/react';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { DND_KIT_TYPES } from '../../config/dnd-kit';
 import { ITask, ITaskGroupDefaultValues } from '../../types/Task';

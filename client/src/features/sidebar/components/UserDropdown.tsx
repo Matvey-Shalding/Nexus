@@ -15,8 +15,6 @@ import React, { useState } from 'react';
 
 import { UserInfo } from './UserInfo';
 
-('lucide-react');
-
 interface Props {
 	isMobile: boolean;
 	open: boolean;

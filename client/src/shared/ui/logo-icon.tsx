@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import { ComponentPropsWithoutRef } from 'react';
 
 type LogoProps = ComponentPropsWithoutRef<'svg'>;

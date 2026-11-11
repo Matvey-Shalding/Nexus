@@ -33,7 +33,7 @@ export const LogoutDialog: React.FC<Props> = ({ isDialogOpen, setIsDialogOpen })
 					<AlertDialogTitle>Ready to leave?</AlertDialogTitle>
 
 					<AlertDialogDescription>
-						You'll be signed out of Nexus on this device. Your notes and workspace will remain safely saved.
+						You&aposll be signed out of Nexus on this device. Your notes and workspace will remain safely saved.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>

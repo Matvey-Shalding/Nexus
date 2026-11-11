@@ -8,15 +8,17 @@ import { motion } from 'motion/react';
 import React from 'react';
 
 import { taskGroupByOptions, taskSortByOptions, taskSortOrderOptions, taskViewOptions } from '../config/taskViewConfig';
-import { useTaskView } from '../store/task.store';
 import { TASK_VIEW } from '../types/TaskView';
 
+import { useTaskView } from './KanbanProvider';
 import { TaskViewSelectorFilter } from './TaskViewSelectorFilter';
 
 export const TaskViewSelector: React.FC = () => {
 	const [open, setOpen] = React.useState(false);
 
-	const { taskView, setTaskView, groupBy, setGroupBy, sortBy, setSortBy, sortOrder, setSortOrder } = useTaskView();
+	const { taskView, setTaskView, groupBy, setGroupBy, sortBy, setSortBy, sortOrder, setSortOrder } = useTaskView(
+		state => state,
+	);
 
 	return (
 		<Popover

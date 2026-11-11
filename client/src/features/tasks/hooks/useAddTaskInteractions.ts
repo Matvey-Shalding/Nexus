@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { TPriority } from '../types/Priority';
 import { CreateTaskDraft } from '../types/Task';
@@ -14,10 +14,12 @@ export const useAddTaskInteractions = (
 	createTask: (data: CreateTaskDraft) => void,
 	reset: () => void,
 ) => {
-	const isInsideTask = (target: Node) => {
-		return taskRef?.current?.contains(target);
-	};
-
+	const isInsideTask = useCallback(
+		(target: Node) => {
+			return taskRef?.current?.contains(target);
+		},
+		[taskRef],
+	);
 	useEffect(() => {
 		const handleClick = (event: MouseEvent) => {
 			const target = event.target as Node;
@@ -45,5 +47,5 @@ export const useAddTaskInteractions = (
 			document.removeEventListener('mousedown', handleClick);
 			document.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [title, priority, date, mode]);
+	}, [title, priority, date, mode, isInsideTask, createTask, reset]);
 };

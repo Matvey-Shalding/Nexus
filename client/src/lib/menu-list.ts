@@ -1,25 +1,6 @@
-import { Bookmark, LayoutGrid, LucideIcon, Settings, SquarePen, Tag, Users } from 'lucide-react';
+import { Bookmark, LayoutGrid, Settings, SquarePen, Tag, Users } from 'lucide-react';
 
-type Submenu = {
-	href: string;
-	label: string;
-	active?: boolean;
-};
-
-type Menu = {
-	href: string;
-	label: string;
-	active?: boolean;
-	icon: LucideIcon;
-	submenus?: Submenu[];
-};
-
-type Group = {
-	groupLabel: string;
-	menus: Menu[];
-};
-
-export function getMenuList(pathname: string): Group[] {
+export function getMenuList() {
 	return [
 		{
 			groupLabel: '',

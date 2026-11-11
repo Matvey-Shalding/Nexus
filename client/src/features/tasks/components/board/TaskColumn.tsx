@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useMergedRefs } from '@/shared/hooks/useMergedRefs';
 import { CollisionPriority } from '@dnd-kit/abstract';
 import { useDroppable } from '@dnd-kit/react';
 import { AnimatePresence } from 'motion/react';
@@ -42,8 +41,6 @@ export const TaskColumn: React.FC<Props> = ({ title, tasks, creationEnabled, def
 			columnRef.current.style.setProperty('min-height', `${window.innerHeight - top}px`);
 		}
 	}, [columnRef]);
-
-	const ref = useMergedRefs(droppableRef, columnRef);
 
 	return (
 		<div
