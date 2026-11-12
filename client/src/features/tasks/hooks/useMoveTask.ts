@@ -1,13 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { updateTask as patchTask } from '../api/updateTask';
-import { useTaskView } from '../components/KanbanProvider';
 import { ITask, ITaskGroup, MoveTaskRequest } from '../types/Task';
+import { TaskGroupBy, TaskSortBy, TaskSortOrder } from '../types/TaskView';
 
-export function useMoveTask() {
+export function useMoveTask(groupBy: TaskGroupBy, sortBy: TaskSortBy, sortOrder: TaskSortOrder) {
 	const queryClient = useQueryClient();
-
-	const { groupBy, sortBy, sortOrder } = useTaskView(state => state);
 
 	const { mutate: moveTask } = useMutation({
 		mutationFn: (request: MoveTaskRequest) => patchTask(request.updateData),

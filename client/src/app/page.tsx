@@ -1,12 +1,14 @@
-'use client';
-
 import { Routes } from '@/shared/config';
-import { redirect, useSearchParams } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-	const searchParams = useSearchParams().toString();
+interface PageProps {
+	searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
 
-	redirect(searchParams ? Routes.DASHBOARD + '/?' + searchParams : Routes.DASHBOARD);
+export default async function Home({ searchParams }: PageProps) {
+	const resolvedParams = await searchParams;
+	const params = new URLSearchParams(resolvedParams as Record<string, string>);
+	const query = params.toString();
 
-	return null;
+	redirect(query ? `${Routes.DASHBOARD}?${query}` : Routes.DASHBOARD);
 }

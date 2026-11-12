@@ -1,8 +1,9 @@
 from typing import Any
 
-from app.models.task import Task
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.task import Task
 
 
 class TaskRepository:
@@ -27,8 +28,8 @@ class TaskRepository:
 
         return task
 
-    def delete_task(self, db: AsyncSession, task: Task):
-        db.delete(task)  # type: ignore
+    async def delete_task(self, db: AsyncSession, task: Task):
+        await db.delete(task)
 
     async def get_tasks(self, db: AsyncSession, user_id: int):
         return (

@@ -13,6 +13,18 @@ interface Props {
 	disableAnimation?: boolean;
 }
 
+const layoutVariants = {
+	initial: { height: 0, opacity: 0 },
+	animate: { height: 'auto', opacity: 1 },
+	exit: { height: 0, opacity: 0 },
+};
+
+const contentVariants = {
+	initial: { opacity: 0, y: -8, scale: 0.98 },
+	animate: { opacity: 1, y: 0, scale: 1 },
+	exit: { opacity: 0, y: 8, scale: 0.98 },
+};
+
 export const TaskLayout = forwardRef<HTMLDivElement, Props>(
 	({ children, taskRef, isCompleted = false, isDragging = false, disableAnimation = false }, ref) => {
 		const mergedRef = useMergedRefs(taskRef, ref);
@@ -36,28 +48,18 @@ export const TaskLayout = forwardRef<HTMLDivElement, Props>(
 
 		return (
 			<motion.div
-				initial={{ height: 0, opacity: 0 }}
-				animate={{ height: 'auto', opacity: 1 }}
-				exit={{ height: 0, opacity: 0 }}
+				variants={layoutVariants}
+				initial="initial"
+				animate="animate"
+				exit="exit"
 				transition={{ duration: 0.2, ease: 'easeOut' }}
 			>
 				<motion.div
 					ref={mergedRef}
-					initial={{
-						opacity: 0,
-						y: -8,
-						scale: 0.98,
-					}}
-					animate={{
-						opacity: 1,
-						y: 0,
-						scale: 1,
-					}}
-					exit={{
-						opacity: 0,
-						y: 8,
-						scale: 0.98,
-					}}
+					variants={contentVariants}
+					initial="initial"
+					animate="animate"
+					exit="exit"
 					transition={{ duration: 0.15, ease: 'easeOut' }}
 					className={className}
 				>

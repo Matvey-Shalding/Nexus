@@ -1,3 +1,4 @@
+import { DragEndEvent } from '@dnd-kit/react';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 
@@ -17,11 +18,10 @@ export const useKanbanController = () => {
 		queryFn: () => getTaskGroups(groupBy, sortBy, sortOrder),
 	});
 
-	const { moveTask } = useMoveTask();
+	const { moveTask } = useMoveTask(groupBy, sortBy, sortOrder);
 
 	const onDragEnd = useCallback(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(event: any) => {
+		(event: DragEndEvent) => {
 			handleDragEnd(event, moveTask);
 		},
 		[moveTask],

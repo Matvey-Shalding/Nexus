@@ -1,10 +1,11 @@
+import { DragEndEvent } from '@dnd-kit/react';
+
 import { DND_KIT_TYPES } from '../config/dnd-kit';
 import { ITaskDragData, ITaskGroupDefaultValues, MoveTaskRequest } from '../types/Task';
 
 import { handleCreateMoveTaskRequest } from './handleCreateMoveTaskRequest';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const handleDragEnd = (event: any, moveTask: (data: MoveTaskRequest) => void) => {
+export const handleDragEnd = (event: DragEndEvent, moveTask: (data: MoveTaskRequest) => void) => {
 	const source = event.operation.source;
 
 	const target = event.operation.target;
@@ -15,9 +16,9 @@ export const handleDragEnd = (event: any, moveTask: (data: MoveTaskRequest) => v
 
 	const taskId = Number(source.id);
 
-	const targetGroupId = target.id;
+	const targetGroupId = String(target.id);
 
-	const draggedTaskData: ITaskDragData = source.data satisfies ITaskDragData;
+	const draggedTaskData = source.data as ITaskDragData;
 
 	const sourceGroupId = draggedTaskData.groupId;
 
