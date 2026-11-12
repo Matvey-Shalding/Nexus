@@ -1,11 +1,10 @@
 'use server';
 
-import { Kanban } from '@/features/tasks';
+import { getTaskGroups } from '@/features/tasks/api/getTaskGroups';
+import { KanbanPage } from '@/features/tasks/components/KanbanPage';
 import { KanbanProvider } from '@/features/tasks/components/KanbanProvider';
-import { TaskViewSelector } from '@/features/tasks/components/TaskViewSelector';
 import { TASK_GROUP_BY, TASK_SORT_BY, TASK_SORT_ORDER, TASK_VIEW } from '@/features/tasks/types/TaskView';
-import { cn } from '@/lib/utils';
-import { Title } from '@/shared/components';
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 import { cookies } from 'next/headers';
 import z from 'zod';
 
@@ -20,24 +19,25 @@ export default async function Page() {
 
 	const sortOrder = z.enum(TASK_SORT_ORDER).catch(TASK_SORT_ORDER.ASC).parse(cookie.get('sort-order')?.value);
 
-	return (
-		<KanbanProvider
-			initialProps={{
-				taskView,
-				groupBy,
-				sortBy,
-				sortOrder,
-			}}
-		>
-			<div className={cn('w-full p-6 flex flex-col', taskView === 'list' ? 'max-w-4xl' : 'max-h-screen pb-0')}>
-				<div className="flex w-full justify-between items-center">
-					<Title title="Tasks">
-						<TaskViewSelector />
-					</Title>
-				</div>
+	const queryClient = new QueryClient();
 
-				<Kanban />
-			</div>
-		</KanbanProvider>
+	queryClient.query({
+		queryKey: ['tasks', { groupBy, sortBy, sortOrder }],
+		queryFn: () => getTaskGroups(groupBy, sortBy, sortOrder),
+	});
+
+	return (
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<KanbanProvider
+				initialProps={{
+					taskView,
+					groupBy,
+					sortBy,
+					sortOrder,
+				}}
+			>
+				<KanbanPage />
+			</KanbanProvider>
+		</HydrationBoundary>
 	);
 }

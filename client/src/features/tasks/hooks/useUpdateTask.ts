@@ -6,7 +6,6 @@ import { updateTask as patchTask } from '../api/updateTask';
 import { useTaskView } from '../components/KanbanProvider';
 import { UpdateTaskRequest } from '../types/Task';
 
-k;
 export const useUpdateTask = () => {
 	const queryClient = useQueryClient();
 
