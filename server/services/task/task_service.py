@@ -66,7 +66,9 @@ class TaskService:
         if task is None:
             raise InvalidTaskId()
 
-        task = self.task_repository.update_task(task, request.model_dump())
+        task = self.task_repository.update_task(
+            task, request.model_dump(exclude_unset=True)
+        )
 
         await db.commit()
 

@@ -21,10 +21,9 @@ class TaskRepository:
         return res.scalar_one_or_none()
 
     def update_task(self, task: Task, update_task_request: dict[str, Any]):
-
+        print(update_task_request.items())
         for key, values in update_task_request.items():
-            if values:
-                setattr(task, key, values)
+            setattr(task, key, values)
 
         return task
 

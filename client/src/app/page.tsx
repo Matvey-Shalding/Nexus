@@ -5,6 +5,8 @@ interface PageProps {
 	searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+//TODO: why dropping into no date is not working
+
 export default async function Home({ searchParams }: PageProps) {
 	const resolvedParams = await searchParams;
 	const params = new URLSearchParams(resolvedParams as Record<string, string>);

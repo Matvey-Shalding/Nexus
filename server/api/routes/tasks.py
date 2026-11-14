@@ -1,5 +1,8 @@
 from typing import Annotated
 
+from fastapi import APIRouter, Depends
+from starlette import status
+
 from app.deps import db_dependency
 from app.enums.task import TaskGroupBy, TaskSortBy, TaskSortOrder
 from app.models.user import User
@@ -10,9 +13,7 @@ from app.schemas.task import (
     UpdateTaskRequest,
 )
 from dependencies.user import get_current_user
-from fastapi import APIRouter, Depends
 from services.task.task_service import TaskService
-from starlette import status
 
 user_dependency = Annotated[User, Depends(get_current_user)]
 
