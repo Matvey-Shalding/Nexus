@@ -26,7 +26,7 @@ export const handleDragEnd = (event: DragEndEvent, moveTask: (data: MoveTaskRequ
 
 	const defaults: ITaskGroupDefaultValues | null = target.data.defaults satisfies ITaskGroupDefaultValues | null;
 
-	const updateData = handleCreateMoveTaskRequest(taskId, targetGroupId, sourceGroupId, defaults);
+	const updateData = handleCreateMoveTaskRequest(draggedTaskData.task, targetGroupId, sourceGroupId, defaults);
 
 	moveTask({ updateData, targetGroupId, draggedTaskData });
 };

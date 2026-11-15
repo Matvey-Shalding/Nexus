@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { CollisionPriority } from '@dnd-kit/abstract';
-import { useDroppable } from '@dnd-kit/react';
+import { useDragOperation, useDroppable } from '@dnd-kit/react';
 import { AnimatePresence } from 'motion/react';
 import React, { useEffect } from 'react';
 
@@ -10,6 +10,7 @@ import { DND_KIT_TYPES } from '../../config/dnd-kit';
 import { ITask, ITaskGroupDefaultValues } from '../../types/Task';
 
 import { Board } from './Board';
+import { TaskLayout } from './TaskLayout';
 
 interface Props {
 	className?: string;
@@ -32,6 +33,8 @@ export const TaskColumn: React.FC<Props> = ({ title, tasks, creationEnabled, def
 		disabled: id === 'expired',
 	});
 
+	const { source } = useDragOperation();
+
 	const columnRef = React.useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -51,23 +54,25 @@ export const TaskColumn: React.FC<Props> = ({ title, tasks, creationEnabled, def
 				<span className={cn('font-heading text-xl font-medium')}>{title}</span>
 				<span className="text-muted-foreground">{tasks.length}</span>
 			</div>
-			<div className={cn('overflow-y-auto pr-3')}>
-				<div
-					ref={droppableRef}
-					className={cn('flex flex-col gap-y-4', isDropTarget && ['bg-primary/15'])}
-				>
-					<AnimatePresence initial={false}>
-						{tasks.map(task => (
-							<Board.Task
-								groupId={id}
-								key={task.id}
-								task={task}
-							/>
-						))}
+			<div
+				ref={droppableRef}
+				className="overflow-y-auto flex flex-col gap-y-4 pr-3 basis-full min-h-full"
+			>
+				<AnimatePresence initial={false}>
+					{tasks.map(task => (
+						<Board.Task
+							groupId={id}
+							key={task.id}
+							task={task}
+						/>
+					))}
 
-						{creationEnabled && <Board.AddTask defaultValues={defaultValues} />}
+					<AnimatePresence key={id}>
+						{source && isDropTarget && source?.data.groupId != id && <TaskLayout isDropPreview />}
 					</AnimatePresence>
-				</div>
+
+					{creationEnabled && <Board.AddTask defaultValues={defaultValues} />}
+				</AnimatePresence>
 			</div>
 		</div>
 	);

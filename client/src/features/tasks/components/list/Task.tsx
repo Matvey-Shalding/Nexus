@@ -13,6 +13,8 @@ import { useTaskActions } from '../../hooks/useTaskActions';
 import { useTaskController } from '../../hooks/useTaskController';
 import { TPriority } from '../../types/Priority';
 import { ITask } from '../../types/Task';
+import { formatPriority } from '../../utils/formatPriority';
+import { getPriorityStyles, priorityStyles } from '../../utils/getPriorityStyles';
 
 import { TaskLayout } from './TaskLayout';
 
@@ -145,16 +147,19 @@ export const Task: React.FC<Props> = ({ task, groupId }) => {
 					}}
 					className="bg-popover/90 flex min-w-44 flex-col gap-2 p-3"
 				>
-					{Object.keys(styleClass).map(key => {
-						const priority = Number(key) as TPriority;
+					{Object.keys(priorityStyles).map(key => {
+						const priority = Number(key) as TPriority
 						return (
 							<Button
 								key={key}
 								size="sm"
 								onClick={() => updatePriority(priority)}
-								className={cn('relative justify-start rounded-lg px-3 pr-9 text-base transition-colors', styleClass)}
+								className={cn(
+									'relative justify-start rounded-lg px-3 pr-9 text-base transition-colors',
+									getPriorityStyles(priority),
+								)}
 							>
-								{priorityLabel}
+								{formatPriority(priority)}
 								{task.priority === priority && <CheckCheck className="absolute right-3 size-4" />}
 							</Button>
 						);

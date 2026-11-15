@@ -13,6 +13,7 @@ import { useTaskActions } from '../../hooks/useTaskActions';
 import { useTaskController } from '../../hooks/useTaskController';
 import { TPriority } from '../../types/Priority';
 import { ITask } from '../../types/Task';
+import { formatPriority } from '../../utils/formatPriority';
 import { getPriorityStyles, priorityStyles } from '../../utils/getPriorityStyles';
 
 import { TaskLayout } from './TaskLayout';
@@ -154,7 +155,7 @@ export const Task: React.FC<Props> = ({ task, groupId }) => {
 											getPriorityStyles(priority),
 										)}
 									>
-										{priorityLabel}
+										{formatPriority(priority)}
 
 										{task.priority === priority && <CheckCheck className="absolute right-3 size-4" />}
 									</Button>

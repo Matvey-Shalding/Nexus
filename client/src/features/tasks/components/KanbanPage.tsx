@@ -12,7 +12,7 @@ export const KanbanPage = () => {
 
 	return (
 		<div className={cn('w-full p-6 flex flex-col', taskView === 'list' ? 'max-w-4xl' : 'max-h-screen pb-0')}>
-			<div className="flex w-full justify-between items-center">
+			<div className="flex w-full it justify-between items-center">
 				<Title title="Tasks">
 					<TaskViewSelector />
 				</Title>

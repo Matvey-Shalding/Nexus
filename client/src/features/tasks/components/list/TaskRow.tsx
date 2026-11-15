@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { CollisionPriority } from '@dnd-kit/abstract';
-import { useDroppable } from '@dnd-kit/react';
+import { useDragOperation, useDroppable } from '@dnd-kit/react';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
@@ -11,6 +11,7 @@ import { DND_KIT_TYPES } from '../../config/dnd-kit';
 import { ITask, ITaskGroupDefaultValues } from '../../types/Task';
 
 import { List } from './List';
+import { TaskLayout } from './TaskLayout';
 
 interface Props {
 	className?: string;
@@ -35,10 +36,12 @@ export const TaskRow: React.FC<Props> = ({ title, tasks, creationEnabled, defaul
 
 	const [isGroupOpen, setIsGroupOpen] = React.useState(true);
 
+	const { source } = useDragOperation();
+
 	return (
 		<div
 			ref={ref}
-			className={cn('flex w-full flex-col transition-colors duration-150', isDropTarget && ['bg-primary/15'])}
+			className="flex w-full flex-col"
 		>
 			<div
 				onClick={() => setIsGroupOpen(prev => !prev)}
@@ -74,6 +77,10 @@ export const TaskRow: React.FC<Props> = ({ title, tasks, creationEnabled, defaul
 									task={task}
 								/>
 							))}
+
+							<AnimatePresence key={id}>
+								{source && isDropTarget && source?.data.groupId != id && <TaskLayout isDropPreview />}
+							</AnimatePresence>
 
 							{creationEnabled && <List.AddTask defaultValues={defaultValues} />}
 						</AnimatePresence>

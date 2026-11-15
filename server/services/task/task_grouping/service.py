@@ -30,7 +30,5 @@ class TaskGroupingService:
             case TaskGroupBy.DUE_DATE:
                 return self.due_date_grouping.group(tasks)
 
-        raise ValueError(f"Unsupported grouping: {group_by}")
-
 
 group_tasks = TaskGroupingService().group_tasks

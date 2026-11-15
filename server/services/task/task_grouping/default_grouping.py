@@ -39,7 +39,7 @@ class DefaultTaskGrouping:
             create_tomorrow_group(tomorrow),
         ]
 
-        if today.isoweekday() < 7:
+        if today.isoweekday() < 6:
             groups.append(create_this_week_group(this_week_end))
 
         groups.extend(

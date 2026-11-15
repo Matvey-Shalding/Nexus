@@ -50,7 +50,6 @@ function DropdownMenuContent({
 				onPointerDown={e => onPointerDown?.(e)}
 			>
 				<MenuPrimitive.Positioner
-					onClick={() => console.log('Positioner click')}
 					className="isolate z-50 outline-none pointer-events-auto!"
 					align={align}
 					alignOffset={alignOffset}
