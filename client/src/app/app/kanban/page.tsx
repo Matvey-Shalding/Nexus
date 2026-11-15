@@ -1,10 +1,8 @@
 'use server';
 
-import { getTaskGroups } from '@/features/tasks/api/getTaskGroups';
 import { KanbanPage } from '@/features/tasks/components/KanbanPage';
 import { KanbanProvider } from '@/features/tasks/components/KanbanProvider';
 import { TASK_GROUP_BY, TASK_SORT_BY, TASK_SORT_ORDER, TASK_VIEW } from '@/features/tasks/types/TaskView';
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 import { cookies } from 'next/headers';
 import z from 'zod';
 
@@ -19,25 +17,16 @@ export default async function Page() {
 
 	const sortOrder = z.enum(TASK_SORT_ORDER).catch(TASK_SORT_ORDER.ASC).parse(cookie.get('sort-order')?.value);
 
-	const queryClient = new QueryClient();
-
-	queryClient.query({
-		queryKey: ['tasks', { groupBy, sortBy, sortOrder }],
-		queryFn: () => getTaskGroups(groupBy, sortBy, sortOrder),
-	});
-
 	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<KanbanProvider
-				initialProps={{
-					taskView,
-					groupBy,
-					sortBy,
-					sortOrder,
-				}}
-			>
-				<KanbanPage />
-			</KanbanProvider>
-		</HydrationBoundary>
+		<KanbanProvider
+			initialProps={{
+				taskView,
+				groupBy,
+				sortBy,
+				sortOrder,
+			}}
+		>
+			<KanbanPage />
+		</KanbanProvider>
 	);
 }

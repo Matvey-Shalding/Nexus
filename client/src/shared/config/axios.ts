@@ -1,5 +1,5 @@
 import { refresh, useAuthStore } from '@/features/auth';
-import axios from 'axios';
+import axios, { InternalAxiosRequestConfig } from 'axios';
 
 import { ApiRoutes } from './routes';
 
@@ -8,85 +8,59 @@ export const axiosInstance = axios.create({
 	withCredentials: true,
 });
 
-let initializationPromise: Promise<string | null> | null = null;
+const AUTH_ROUTES: string[] = [ApiRoutes.LOGIN, ApiRoutes.REGISTER, ApiRoutes.REFRESH];
+const isAuthRoute = (url?: string) => !!url && AUTH_ROUTES.includes(url);
 
-const initializeAccessToken = async (): Promise<string | null> => {
-	const accessToken = useAuthStore.getState().accessToken;
+let refreshPromise: Promise<string | null> | null = null;
 
-	if (accessToken) {
-		return accessToken;
-	}
-
-	if (!initializationPromise) {
-		initializationPromise = refresh()
+const refreshAccessToken = (): Promise<string | null> => {
+	if (!refreshPromise) {
+		refreshPromise = refresh()
 			.then(response => {
-				const accessToken = response.data.access_token;
-
-				useAuthStore.getState().setAccessToken(accessToken);
-
-				return accessToken;
+				const token: string = response.data.access_token;
+				useAuthStore.getState().setAccessToken(token);
+				return token;
 			})
 			.catch(() => {
 				useAuthStore.getState().clearAccessToken();
-
 				return null;
 			})
 			.finally(() => {
-				initializationPromise = null;
+				refreshPromise = null;
 			});
 	}
-
-	return initializationPromise;
+	return refreshPromise;
 };
 
 axiosInstance.interceptors.request.use(async config => {
-	let accessToken = useAuthStore.getState().accessToken;
+	// Never gate auth endpoints on having a token (this is what prevents the deadlock)
+	if (isAuthRoute(config.url)) return config;
 
-	if (!accessToken) {
-		accessToken = await initializeAccessToken();
+	const token = useAuthStore.getState().accessToken ?? (await refreshAccessToken());
+
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
 	}
-
-	if (accessToken) {
-		config.headers.Authorization = `Bearer ${accessToken}`;
-	}
-
 	return config;
 });
+
+type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
 axiosInstance.interceptors.response.use(
 	response => response,
 	async error => {
-		if (error.response?.status !== 401) {
+		const config = error.config as RetriableConfig | undefined;
+
+		if (error.response?.status !== 401 || !config || config._retry || isAuthRoute(config.url)) {
 			return Promise.reject(error);
 		}
 
-		const url = error.config?.url;
+		config._retry = true;
 
-		if (url === ApiRoutes.REFRESH) {
-			useAuthStore.getState().clearAccessToken();
-			return Promise.reject(error);
-		}
+		const token = await refreshAccessToken();
 
-		if (url === ApiRoutes.REGISTER || url === ApiRoutes.LOGIN) {
-			return Promise.reject(error);
-		}
+		if (!token) return Promise.reject(error);
 
-		if (error.config._retry) {
-			return Promise.reject(error);
-		}
-
-		try {
-			const newAccessToken = (await refresh()).data.access_token;
-
-			useAuthStore.getState().setAccessToken(newAccessToken);
-
-			error.config._retry = true;
-
-			return axiosInstance(error.config);
-		} catch {
-			useAuthStore.getState().clearAccessToken();
-
-			return Promise.reject(error);
-		}
+		return axiosInstance(config); // request interceptor attaches the new token
 	},
 );
