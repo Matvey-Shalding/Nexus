@@ -1,22 +1,15 @@
 from httpx import AsyncClient
 
-from .config import Config
 from .schemas import GetAccountResponse, GetProfileResponse
 
 
 class API:
-    client: AsyncClient
-
-    def __init__(self):
-
-        config = Config()
-
-        self.client = AsyncClient(
-            base_url=config.BASE_URL, headers={"bot-id": config.BOT_ID}
-        )
-
     async def connect_telegram(
-        self, telegram_user_id: int, link: str, telegram_username: str
+        self,
+        telegram_user_id: int,
+        link: str,
+        telegram_username: str,
+        client: AsyncClient,
     ):
 
         data: dict[str, str | int] = {
@@ -25,16 +18,18 @@ class API:
             "telegram_username": telegram_username,
         }
 
-        await self.client.post(url="/telegram/account", json=data)
+        await client.post(url="/telegram/account", json=data)
 
-    async def get_telegram(self, telegram_user_id: int) -> GetAccountResponse:
+    async def get_telegram(
+        self, telegram_user_id: int, client: AsyncClient
+    ) -> GetAccountResponse:
 
-        return (
-            await self.client.get(url=f"/telegram/account/{telegram_user_id}")
-        ).json()
+        return (await client.get(url=f"/telegram/account/{telegram_user_id}")).json()
 
-    async def get_profile(self, telegram_user_id: int) -> GetProfileResponse:
-        return (await self.client.get(url=f"/users/{telegram_user_id}/me")).json()
+    async def get_profile(
+        self, telegram_user_id: int, client: AsyncClient
+    ) -> GetProfileResponse:
+        return (await client.get(url=f"/users/{telegram_user_id}/me")).json()
 
-    async def disconnect_telegram(self, telegram_user_id: int):
-        await self.client.delete(url=f"/telegram/account/{telegram_user_id}")
+    async def disconnect_telegram(self, telegram_user_id: int, client: AsyncClient):
+        await client.delete(url=f"/telegram/account/{telegram_user_id}")

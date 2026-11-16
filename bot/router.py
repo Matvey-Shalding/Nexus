@@ -1,7 +1,8 @@
 import logging
 from datetime import datetime
 
-from aiogram import F, Router
+import httpx
+from aiogram import Dispatcher, F, Router
 from aiogram.filters import CommandObject, CommandStart
 from aiogram.types import CallbackQuery, Message
 from aiogram.utils.formatting import Bold, Text
@@ -21,8 +22,24 @@ router = Router()
 API_instance = API()
 
 
+@router.startup()
+async def on_startup(dispatcher: Dispatcher):
+    client = httpx.AsyncClient()
+
+    dispatcher["client"] = client
+
+
+@router.shutdown()
+async def on_shutdown(dispatcher: Dispatcher):
+    client: httpx.AsyncClient = dispatcher["client"]
+
+    await client.aclose()
+
+
 @router.message(CommandStart())
-async def cmd_start(message: Message, command: CommandObject):
+async def cmd_start(
+    message: Message, command: CommandObject, client: httpx.AsyncClient
+):
     if not message.from_user:
         return
 
@@ -36,6 +53,7 @@ async def cmd_start(message: Message, command: CommandObject):
                 telegram_user_id=telegram_user_id,
                 telegram_username=telegram_username or "",
                 link=link,
+                client=client,
             )
             await message.answer(
                 "Your Nexus account has been successfully connected.",
@@ -43,7 +61,7 @@ async def cmd_start(message: Message, command: CommandObject):
             )
             return
 
-        account = await API_instance.get_telegram(telegram_user_id)
+        account = await API_instance.get_telegram(telegram_user_id, client)
 
         if account["is_connected"]:
             await message.answer(
@@ -92,14 +110,16 @@ async def go_back(call: CallbackQuery):
 
 
 @router.callback_query(F.data == "settings:profile")
-async def open_profile(call: CallbackQuery):
+async def open_profile(call: CallbackQuery, client: httpx.AsyncClient):
     await call.answer()
 
     if not call.message:
         return
 
     try:
-        profile: GetProfileResponse = await API_instance.get_profile(call.from_user.id)
+        profile: GetProfileResponse = await API_instance.get_profile(
+            call.from_user.id, client
+        )
     except Exception:
         logger.exception("Failed to load profile for user %s", call.from_user.id)
         await call.message.answer(
@@ -153,14 +173,14 @@ async def disconnect_telegram(call: CallbackQuery):
 
 
 @router.callback_query(F.data == "settings:disconnect:confirm")
-async def disconnect_telegram_confirm(call: CallbackQuery):
+async def disconnect_telegram_confirm(call: CallbackQuery, client: httpx.AsyncClient):
     await call.answer()
 
     if not call.message:
         return
 
     try:
-        await API_instance.disconnect_telegram(call.from_user.id)
+        await API_instance.disconnect_telegram(call.from_user.id, client)
 
         if isinstance(call.message, Message):
             await call.message.edit_text(
