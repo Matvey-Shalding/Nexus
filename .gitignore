@@ -1,2 +1,33 @@
-.env
+# Environment variables (catches .env, .env.local, .env.production, etc.)
+.env*
+!.env.example
+
+# Bun & Node
+node_modules/
+.bun/
+bun.lockb
+bun.lock
+
+# Next.js & TypeScript
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+
+# Python & uv
+venv/
+.venv/
+__pycache__/
+*.py[cod]
 .ruff_cache/
+.pytest_cache/
+
+# Security & Misc
+*.pem
+.DS_Store
+.vscode/
+.idea/
